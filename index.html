@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melovia - Dijital Gitar Simülatörü</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0c0c12;
+            --panel: #13131a;
+            --card: #1a1a24;
+            --accent: #8b5cf6;
+            --accent-dim: rgba(139, 92, 246, 0.3);
+            --cyan: #06b6d4;
+            --pink: #ec4899;
+            --text: #e0e0e8;
+            --dim: #707080;
+            --muted: #404050;
+            --border: rgba(255, 255, 255, 0.06);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            border-radius: 0 0 16px 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #c084fc, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .version {
+            font-size: 9px;
+            padding: 2px 6px;
+            background: rgba(6, 182, 212, 0.25);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            color: #22d3ee;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav-btn {
+            padding: 7px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            color: var(--dim);
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .nav-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .icon-btn {
+            width: 30px;
+            height: 30px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--dim);
+            cursor: pointer;
+        }
+
+        .main {
+            padding: 16px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Note Bar */
+        .note-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px 16px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+
+        .note-label {
+            color: var(--muted);
+        }
+
+        .note-value {
+            color: var(--cyan);
+            font-weight: 500;
+        }
+
+        .note-divider {
+            color: var(--border);
+            margin: 0 10px;
+        }
+
+        /* Pair Row */
+        .pair-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) 180px;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .pair-card {
+            padding: 14px;
+            background: rgba(100, 100, 120, 0.08);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pair-card:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .pair-card.active {
+            border-color: #06b6d4;
+            background: rgba(6, 182, 212, 0.12);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .pair-title {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .pair-frets {
+            font-size: 10px;
+            color: var(--muted);
+            margin: 4px 0 6px;
+        }
+
+        .pair-nums {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .pair-nums span {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* First number - Green - Soft but Vibrant */
+        .pair-nums span:first-child {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #4ade80;
+        }
+
+        /* Second number - Pink - Soft but Vibrant */
+        .pair-nums span:last-child {
+            background: rgba(236, 72, 153, 0.15);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            color: #f472b6;
+        }
+
+        .ctrl-box {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .ctrl-box h4 {
+            font-size: 10px;
+            color: var(--muted);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .ctrl-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .ctrl-btn {
+            flex: 1;
+            padding: 8px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* FRETBOARD */
+        .fretboard-wrap {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .fretboard-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+
+        .fb-spacer {
+            width: 40px;
+        }
+
+        /* Guitar Type Custom Dropdown */
+        .guitar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .guitar-dropdown-btn {
+            padding: 8px 20px;
+            background: rgba(100, 100, 120, 0.12);
+            border: 1px solid rgba(100, 100, 120, 0.25);
+            border-radius: 20px;
+            color: var(--dim);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .guitar-dropdown-btn:hover {
+            background: rgba(100, 100, 120, 0.2);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .guitar-dropdown-btn::after {
+            content: '▼';
+            font-size: 8px;
+            opacity: 0.6;
+        }
+
+        .guitar-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+            background: rgba(30, 30, 40, 0.95);
+            border: 1px solid rgba(100, 100, 120, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            min-width: 150px;
+            display: none;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .guitar-dropdown.open .guitar-dropdown-menu {
+            display: block;
+        }
+
+        .guitar-dropdown-item {
+            padding: 10px 16px;
+            color: var(--dim);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            display: block;
+        }
+
+        .guitar-dropdown-item:hover {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.25));
+            color: var(--text);
+        }
+
+        .guitar-dropdown-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.3), rgba(168, 85, 247, 0.35));
+            color: #c4b5fd;
+        }
+
+        .fb-label {
+            color: var(--muted);
+        }
+
+        .fb-select {
+            padding: 6px 10px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 11px;
+        }
+
+        .fb-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        /* Left arrow - Blue tones */
+        .fb-btn:first-of-type {
+            background: rgba(59, 130, 246, 0.25);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+        }
+
+        /* Right arrow - Purple tones */
+        .fb-btn.accent {
+            background: rgba(168, 85, 247, 0.4);
+            border: 1px solid rgba(168, 85, 247, 0.6);
+            color: #c084fc;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+
+        .fb-btn:hover {
+            transform: scale(1.08);
+        }
+
+        /* Range - Blue to Purple gradient */
+        .fb-range {
+            padding: 5px 16px;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.4), rgba(168, 85, 247, 0.35));
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 11px;
+            color: #c4b5fd;
+        }
+
+        .fretboard-container {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .fretboard-gap {
+            width: 8px;
+        }
+
+        .string-labels {
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            min-width: 32px;
+            padding: 4px 6px;
+            gap: 2px;
+            border-radius: 8px;
+        }
+
+        .fretboard-nut {
+            width: 6px;
+            background: linear-gradient(180deg, #f5f5f0, #d8d4c8, #c0bdb0);
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+        }
+
+        .fretboard {
+            display: flex;
+            flex: 1;
+            min-height: 160px;
+            background: linear-gradient(180deg, #1a0f05, #2a1808, #3a2510, #2a1808, #1a0f05);
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .string-label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dim);
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 24px;
+        }
+
+        .string-label:hover {
+            border-color: var(--accent);
+        }
+
+        .string-label.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+        }
+
+        .frets-row {
+            display: flex;
+            flex: 1;
+        }
+
+        .fret-col {
+            flex: 1;
+            min-width: 32px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Fret bars - extend slightly beyond strings but not to fretboard edge */
+        .fret-col::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 4%;
+            height: 92%;
+            width: 2px;
+            background: linear-gradient(180deg,
+                    rgba(144, 136, 120, 0.3) 0%,
+                    rgba(144, 136, 120, 0.85) 10%,
+                    rgba(144, 136, 120, 0.9) 50%,
+                    rgba(144, 136, 120, 0.85) 90%,
+                    rgba(144, 136, 120, 0.3) 100%);
+        }
+
+        .string-cell {
+            flex: 1;
+            position: relative;
+            cursor: pointer;
+            min-height: 12px;
+        }
+
+        .string-cell::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Thick wound strings (E6, A, D) - Bronze/Copper color */
+        .string-cell[data-s="6"]::before {
+            height: 2px;
+            background: #b8860b;
+        }
+
+        .string-cell[data-s="5"]::before {
+            height: 1.6px;
+            background: #cd9b1d;
+        }
+
+        .string-cell[data-s="4"]::before {
+            height: 1.3px;
+            background: #daa520;
+        }
+
+        /* Plain steel strings (G, B, E1) - Silver/Steel color */
+        .string-cell[data-s="3"]::before {
+            height: 1px;
+            background: #c0c0c0;
+        }
+
+        .string-cell[data-s="2"]::before {
+            height: 0.8px;
+            background: #d0d0d0;
+        }
+
+        .string-cell[data-s="1"]::before {
+            height: 0.6px;
+            background: #e0e0e0;
+        }
+
+        @keyframes vibrate {
+
+            0%,
+            100% {
+                transform: translateY(-50%)
+            }
+
+            10% {
+                transform: translateY(calc(-50% + 2px))
+            }
+
+            20% {
+                transform: translateY(calc(-50% - 2px))
+            }
+
+            30% {
+                transform: translateY(calc(-50% + 1px))
+            }
+        }
+
+        .string-cell.vibrating::before {
+            animation: vibrate 0.4s ease-out;
+        }
+
+        .note-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 24px;
+            height: 20px;
+            padding: 0 4px;
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 600;
+            background: var(--accent);
+            color: white;
+            z-index: 10;
+        }
+
+        .string-cell.active .note-dot {
+            display: flex;
+        }
+
+        .inlay {
+            position: absolute;
+            left: 50%;
+            background: radial-gradient(circle at 35% 35%, #fff, #e0e0d8, #c0c0b8);
+            border-radius: 50%;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+        }
+
+        .inlay.single {
+            width: 7px;
+            height: 7px;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Double inlays: aligned with string 2 (top) and string 5 (bottom) */
+        .inlay.double1 {
+            width: 7px;
+            height: 7px;
+            top: 25%;
+            transform: translate(-50%, -50%);
+        }
+
+        .inlay.double2 {
+            width: 7px;
+            height: 7px;
+            top: 75%;
+            transform: translate(-50%, -50%);
+        }
+
+        .fret-num {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--muted);
+            display: none;
+        }
+
+        .fret-num.show {
+            display: block;
+        }
+
+        .fret-num.hl {
+            color: var(--pink);
+        }
+
+        /* Zone Grids - Side by Side */
+        .zones-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .zone-panel {
+            background: rgba(100, 100, 120, 0.08);
+            border: 1px solid rgba(100, 100, 120, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        /* Zone 1 - Green left border */
+        .zone-panel:first-child {
+            border-left: 4px solid rgba(34, 197, 94, 0.5);
+        }
+
+        /* Zone 2 - Pink left border */
+        .zone-panel:last-child {
+            border-left: 4px solid rgba(236, 72, 153, 0.5);
+        }
+
+        .zone-head {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .zone-tag {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* Zone 1 tag - Green - Soft but Vibrant */
+        .zone-tag.z1 {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #4ade80;
+        }
+
+        /* Zone 2 tag - Pink - Soft but Vibrant */
+        .zone-tag.z2 {
+            background: rgba(236, 72, 153, 0.15);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            color: #f472b6;
+        }
+
+        .zone-type {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        /* Zone 1 type text - Green */
+        .zone-panel:first-child .zone-type {
+            color: rgba(74, 222, 128, 0.7);
+        }
+
+        /* Zone 2 type text - Pink */
+        .zone-panel:last-child .zone-type {
+            color: rgba(244, 114, 182, 0.7);
+        }
+
+        .key-grid {
+            display: grid;
+            grid-template-columns: 55px repeat(6, 40px);
+            gap: 8px 10px;
+            align-items: center;
+            justify-items: center;
+            justify-content: center;
+        }
+
+        .grid-label {
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            justify-self: stretch;
+            text-align: right;
+            color: var(--muted);
+            padding-right: 5px;
+            width: 100%;
+        }
+
+        .grid-header {
+            font-size: 10px;
+            font-weight: 600;
+            text-align: center;
+            padding: 4px 0;
+            color: var(--dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .key-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--card);
+            border: 2px solid var(--muted);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .key-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .key-btn.active {
+            transform: scale(0.92);
+        }
+
+        /* String 1 (e) - Pink - Soft but Vibrant */
+        .key-btn.s1 {
+            background: rgba(236, 72, 153, 0.12);
+            border-color: rgba(236, 72, 153, 0.35);
+            color: #f472b6;
+        }
+
+        /* String 2 (B) - Orange - Soft but Vibrant */
+        .key-btn.s2 {
+            background: rgba(249, 115, 22, 0.12);
+            border-color: rgba(249, 115, 22, 0.35);
+            color: #fb923c;
+        }
+
+        /* String 3 (G) - Yellow - Soft but Vibrant */
+        .key-btn.s3 {
+            background: rgba(234, 179, 8, 0.12);
+            border-color: rgba(234, 179, 8, 0.35);
+            color: #facc15;
+        }
+
+        /* String 4 (D) - Green - Soft but Vibrant */
+        .key-btn.s4 {
+            background: rgba(34, 197, 94, 0.12);
+            border-color: rgba(34, 197, 94, 0.35);
+            color: #4ade80;
+        }
+
+        /* String 5 (A) - Cyan - Soft but Vibrant */
+        .key-btn.s5 {
+            background: rgba(6, 182, 212, 0.12);
+            border-color: rgba(6, 182, 212, 0.35);
+            color: #22d3ee;
+        }
+
+        /* String 6 (E) - Purple - Soft but Vibrant */
+        .key-btn.s6 {
+            background: rgba(139, 92, 246, 0.12);
+            border-color: rgba(139, 92, 246, 0.35);
+            color: #a78bfa;
+        }
+
+        .key-btn.s1.active {
+            background: rgba(236, 72, 153, 0.5);
+            color: white;
+            box-shadow: 0 0 8px rgba(236, 72, 153, 0.4);
+        }
+
+        .key-btn.s2.active {
+            background: rgba(249, 115, 22, 0.5);
+            color: white;
+            box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
+        }
+
+        .key-btn.s3.active {
+            background: rgba(234, 179, 8, 0.5);
+            color: #111;
+            box-shadow: 0 0 8px rgba(234, 179, 8, 0.4);
+        }
+
+        .key-btn.s4.active {
+            background: rgba(34, 197, 94, 0.5);
+            color: white;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+        }
+
+        .key-btn.s5.active {
+            background: rgba(6, 182, 212, 0.5);
+            color: white;
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+        }
+
+        .key-btn.s6.active {
+            background: rgba(139, 92, 246, 0.5);
+            color: white;
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Zone 2 Grid - Different color scheme (warm tones) - Soft but Vibrant */
+        #zone2Grid .key-btn.s1 {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+        }
+
+        #zone2Grid .key-btn.s2 {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.35);
+            color: #fcd34d;
+        }
+
+        #zone2Grid .key-btn.s3 {
+            background: rgba(132, 204, 22, 0.12);
+            border-color: rgba(132, 204, 22, 0.35);
+            color: #bef264;
+        }
+
+        #zone2Grid .key-btn.s4 {
+            background: rgba(20, 184, 166, 0.12);
+            border-color: rgba(20, 184, 166, 0.35);
+            color: #5eead4;
+        }
+
+        #zone2Grid .key-btn.s5 {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: rgba(99, 102, 241, 0.35);
+            color: #a5b4fc;
+        }
+
+        #zone2Grid .key-btn.s6 {
+            background: rgba(236, 72, 153, 0.12);
+            border-color: rgba(236, 72, 153, 0.35);
+            color: #f472b6;
+        }
+
+        /* Piano */
+        .piano-wrap {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .piano-wrap h2 {
+            font-size: 16px;
+            margin-bottom: 14px;
+        }
+
+        .piano {
+            display: flex;
+            justify-content: center;
+            background: #080808;
+            border-radius: 8px;
+            padding: 12px;
+            height: 160px;
+        }
+
+        .white-key {
+            width: 40px;
+            height: 140px;
+            background: linear-gradient(180deg, #f0f0f0, #d8d8d8);
+            border: 1px solid #888;
+            border-radius: 0 0 4px 4px;
+            margin: 0 1px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 6px;
+            font-size: 9px;
+            color: #666;
+        }
+
+        .white-key.active {
+            background: #ccc;
+        }
+
+        .black-key {
+            width: 26px;
+            height: 90px;
+            background: linear-gradient(180deg, #333, #111);
+            border: 1px solid #000;
+            border-radius: 0 0 3px 3px;
+            margin-left: -14px;
+            margin-right: -14px;
+            z-index: 10;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 5px;
+            font-size: 7px;
+            color: #888;
+        }
+
+        .black-key.active {
+            background: #444;
+        }
+
+        /* Lessons */
+        .lessons-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .lessons-header h2 {
+            font-size: 18px;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .lesson-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .lesson-card:hover {
+            border-color: var(--accent);
+        }
+
+        .lesson-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--card);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 10px;
+        }
+
+        .lesson-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .lesson-artist {
+            font-size: 11px;
+            color: var(--dim);
+            margin-bottom: 8px;
+        }
+
+        .lesson-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lesson-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .lesson-btn.primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .lesson-btn.secondary {
+            background: var(--card);
+            color: var(--dim);
+            border: 1px solid var(--border);
+        }
+
+        @media (max-width: 900px) {
+            .pair-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .zones-wrap {
+                grid-template-columns: 1fr;
+            }
+
+            .lessons-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo"><span>🎵</span><span class="logo-text">Melovia</span><span class="version">v0.1</span></div>
+        <nav class="nav">
+            <button class="nav-btn active" onclick="showSection('guitar')">🎸 Gitar</button>
+            <button class="nav-btn" onclick="showSection('piano')">🎹 Piyano</button>
+            <button class="nav-btn" onclick="showSection('lessons')">📚 Dersler</button>
+        </nav>
+        <div class="header-right">
+            <button class="icon-btn">⚙</button>
+            <button class="icon-btn" onclick="showHelp()">?</button>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="section active" id="guitar">
+            <!-- Fretboard FIRST (EN ÜSTTE) -->
+            <div class="fretboard-wrap">
+                <div class="fretboard-toolbar">
+                    <div class="guitar-dropdown" id="guitarDropdown">
+                        <button class="guitar-dropdown-btn" onclick="toggleGuitarDropdown()">
+                            <span id="guitarTypeLabel">🎸 Klasik Gitar</span>
+                        </button>
+                        <div class="guitar-dropdown-menu">
+                            <button class="guitar-dropdown-item active" data-type="classic"
+                                onclick="selectGuitarType('classic', '🎸 Klasik Gitar')">🎸 Klasik Gitar</button>
+                            <button class="guitar-dropdown-item" data-type="electric"
+                                onclick="selectGuitarType('electric', '⚡ Elektro Gitar')">⚡ Elektro Gitar</button>
+                            <button class="guitar-dropdown-item" data-type="bass"
+                                onclick="selectGuitarType('bass', '🎸 Bas Gitar')">🎸 Bas Gitar</button>
+                        </div>
+                    </div>
+                    <div class="fb-spacer"></div>
+                    <span class="fb-label">� Görünüm:</span>
+                    <button class="fb-btn" onclick="shiftFrets(-1)">◀</button>
+                    <span class="fb-range" id="fretRange">Perde 1-12</span>
+                    <button class="fb-btn accent" onclick="shiftFrets(1)">▶</button>
+                </div>
+                <div class="fretboard-container">
+                    <div class="string-labels" id="stringLabels"></div>
+                    <div class="fretboard-gap"></div>
+                    <div class="fretboard-nut"></div>
+                    <div class="fretboard" id="fretboard"></div>
+                </div>
+            </div>
+
+            <!-- Note Bar -->
+            <div class="note-bar">
+                <span class="note-label">Nota:</span>
+                <span class="note-value" id="noteDisplay">Mi (E2) - 82.4 Hz</span>
+                <span class="note-divider">|</span>
+                <span class="note-label">Pozisyon:</span>
+                <span class="note-value" id="posDisplay">Tel 6, Perde 0</span>
+            </div>
+
+            <!-- Pair Row SECOND -->
+            <div class="pair-row">
+                <div class="pair-card active" data-pair="1" onclick="setPair(1)">
+                    <div class="pair-title">Pair 1</div>
+                    <div class="pair-frets">0 - 7. Perde</div>
+                    <div class="pair-nums"><span>1</span><span>2</span></div>
+                </div>
+                <div class="pair-card" data-pair="2" onclick="setPair(2)">
+                    <div class="pair-title">Pair 2</div>
+                    <div class="pair-frets">8 - 15. Perde</div>
+                    <div class="pair-nums"><span>3</span><span>4</span></div>
+                </div>
+                <div class="pair-card" data-pair="3" onclick="setPair(3)">
+                    <div class="pair-title">Pair 3</div>
+                    <div class="pair-frets">16 - 19. Perde</div>
+                    <div class="pair-nums"><span>5</span><span>6</span></div>
+                </div>
+                <div class="ctrl-box">
+                    <h4>🎛️ Kontroller</h4>
+                    <div class="ctrl-btns">
+                        <button class="ctrl-btn" onclick="setPair(Math.min(3, currentPair + 1))">+</button>
+                        <button class="ctrl-btn" onclick="setPair(Math.max(1, currentPair - 1))">-</button>
+                        <button class="ctrl-btn" onclick="stopAll()">MUTE</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zone Grids Side by Side -->
+            <div class="zones-wrap">
+                <div class="zone-panel">
+                    <div class="zone-head">
+                        <span class="zone-tag z1" id="zone1Tag">Zone 1 (0-3)</span>
+                        <span class="zone-type">🎸 Primary Grid</span>
+                    </div>
+                    <div class="key-grid" id="zone1Grid"></div>
+                </div>
+                <div class="zone-panel">
+                    <div class="zone-head">
+                        <span class="zone-tag z2" id="zone2Tag">Zone 2 (4-7)</span>
+                        <span class="zone-type">🎹 Vertical Cluster</span>
+                    </div>
+                    <div class="key-grid" id="zone2Grid"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="piano">
+            <div class="piano-wrap">
+                <h2>🎹 Piyano Modu</h2>
+                <div class="piano" id="pianoKeys"></div>
+            </div>
+        </section>
+
+        <section class="section" id="lessons">
+            <div class="lessons-header">
+                <h2>📚 Gitar Dersleri</h2>
+            </div>
+            <div class="lessons-grid" id="lessonsGrid"></div>
+        </section>
+    </main>
+
+    <script src="js/noteMapping.js"></script>
+    <script src="js/audioEngine.js"></script>
+    <script>
+        let currentPair = 1;
+        let currentMode = 'guitar';
+        let fretStart = 1;
+        const visibleFrets = 12;
+        const maxFrets = 19;
+        const tuning = ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'];
+        const stringLabels = ['E', 'A', 'D', 'G', 'B', 'E'];
+        const inlays = [3, 5, 7, 9, 12, 15, 17, 19];
+        const doubleInlay = [12];
+
+        // Zone 1,3,5 keys (Pair odd parts)
+        const oddZoneKeys = [
+            ['1', '2', '3', '4', '5', '6'],
+            ['Q', 'W', 'E', 'R', 'T', 'Y'],
+            ['A', 'S', 'D', 'F', 'G', 'H'],
+            ['<', 'Z', 'X', 'C', 'V', 'B']
+        ];
+
+        // Zone 2,4,6 keys (Pair even parts)
+        // Turkish keyboard: I key gives 'ı', İ key gives 'i'
+        const evenZoneKeys = [
+            ['7', '8', '9', '0', '*', '-'],
+            ['U', 'I', 'O', 'P', 'Ğ', 'Ü'],   // I = string 2
+            ['J', 'K', 'L', 'Ş', 'İ', ','],   // İ = string 5
+            ['N', 'M', 'Ö', 'Ç', '.', '"']    // " = string 6
+        ];
+
+        // Turkish character mapping for keyboard input
+        const turkishKeyMap = {
+            'ı': 'I',  // lowercase ı -> uppercase I (dotless)
+            'i': 'İ',  // lowercase i -> uppercase İ (dotted)
+            'ğ': 'Ğ',
+            'ü': 'Ü',
+            'ş': 'Ş',
+            'ö': 'Ö',
+            'ç': 'Ç'
+        };
+
+        // Guitar type configurations
+        const guitarTypes = {
+            classic: { name: 'Klasik Gitar', frets: 19, strings: 6 },
+            electric: { name: 'Elektro Gitar', frets: 24, strings: 6 },
+            bass: { name: 'Bas Gitar', frets: 24, strings: 4 }
+        };
+
+        let currentGuitarType = 'classic';
+
+        // Custom dropdown functions
+        function toggleGuitarDropdown() {
+            const dropdown = document.getElementById('guitarDropdown');
+            dropdown.classList.toggle('open');
+        }
+
+        function selectGuitarType(type, label) {
+            currentGuitarType = type;
+            document.getElementById('guitarTypeLabel').textContent = label;
+
+            // Update active state
+            document.querySelectorAll('.guitar-dropdown-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.type === type) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Close dropdown
+            document.getElementById('guitarDropdown').classList.remove('open');
+
+            const config = guitarTypes[type];
+            console.log('Guitar type changed to:', config.name, '- Frets:', config.frets, '- Strings:', config.strings);
+            // Future: update fretboard based on guitar type
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('guitarDropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+
+        function getPairOffsets(pair) {
+            const base = (pair - 1) * 8;
+            return {
+                zone1Start: base,
+                zone1End: base + 3,
+                zone2Start: base + 4,
+                zone2End: Math.min(base + 7, maxFrets)
+            };
+        }
+
+        let audioReady = false;
+        async function ensureAudio() {
+            if (!audioReady && typeof audioEngine !== 'undefined') {
+                await audioEngine.init();
+                audioReady = true;
+            }
+        }
+
+        function setPair(pair) {
+            currentPair = pair;
+            document.querySelectorAll('.pair-card').forEach(c => c.classList.toggle('active', parseInt(c.dataset.pair) === pair));
+            buildZoneGrids();
+            updateZoneTags();
+        }
+
+        function updateZoneTags() {
+            const off = getPairOffsets(currentPair);
+            const z1 = (currentPair - 1) * 2 + 1;
+            const z2 = (currentPair - 1) * 2 + 2;
+            document.getElementById('zone1Tag').textContent = `Zone ${z1} (${off.zone1Start}-${off.zone1End})`;
+            document.getElementById('zone2Tag').textContent = `Zone ${z2} (${off.zone2Start}-${off.zone2End})`;
+        }
+
+        // ===== FRETBOARD =====
+        function buildFretboard() {
+            const fretboardEl = document.getElementById('fretboard');
+            const labelsEl = document.getElementById('stringLabels');
+            const endF = Math.min(fretStart + visibleFrets - 1, maxFrets);
+
+            // Build string labels separately
+            let labelsHtml = '';
+            for (let s = 6; s >= 1; s--) {
+                labelsHtml += `<div class="string-label" data-s="${s}" onclick="playOpenString(${s})">${stringLabels[6 - s]}</div>`;
+            }
+            labelsEl.innerHTML = labelsHtml;
+
+            // Build fretboard
+            let h = '<div class="frets-row">';
+            for (let f = fretStart; f <= endF; f++) {
+                const hasInlay = inlays.includes(f);
+                const isDouble = doubleInlay.includes(f);
+
+                h += `<div class="fret-col" data-f="${f}">`;
+                if (hasInlay) {
+                    if (isDouble) {
+                        h += '<div class="inlay double1"></div><div class="inlay double2"></div>';
+                    } else {
+                        h += '<div class="inlay single"></div>';
+                    }
+                }
+
+                for (let s = 6; s >= 1; s--) {
+                    h += `<div class="string-cell" data-s="${s}" data-f="${f}" onclick="playFretCell(this)"><div class="note-dot"></div></div>`;
+                }
+                // Only show fret number for inlay frets
+                const showNum = hasInlay ? 'show' : '';
+                const hlClass = f === 12 ? 'hl' : '';
+                h += `<div class="fret-num ${showNum} ${hlClass}">${f}</div></div>`;
+            }
+            h += '</div>';
+            fretboardEl.innerHTML = h;
+            document.getElementById('fretRange').textContent = `Perde ${fretStart}-${endF}`;
+        }
+
+        async function playOpenString(s) {
+            await ensureAudio();
+            playNote(s, 0, null);
+            const label = document.querySelector(`.string-label[data-s="${s}"]`);
+            if (label) {
+                label.classList.add('active');
+                setTimeout(() => label.classList.remove('active'), 400);
+            }
+        }
+
+        async function playFretCell(cell) {
+            await ensureAudio();
+            playNote(parseInt(cell.dataset.s), parseInt(cell.dataset.f), cell);
+        }
+
+        function shiftFrets(dir) {
+            fretStart = Math.max(1, Math.min(fretStart + dir * 4, maxFrets - visibleFrets + 1));
+            buildFretboard();
+        }
+
+        // ===== ZONE GRIDS =====
+        function buildZoneGrids() {
+            const off = getPairOffsets(currentPair);
+            buildZoneGrid('zone1Grid', off.zone1Start, off.zone1End, oddZoneKeys);
+            buildZoneGrid('zone2Grid', off.zone2Start, off.zone2End, evenZoneKeys);
+        }
+
+        function buildZoneGrid(id, startF, endF, keys) {
+            const c = document.getElementById(id);
+            let h = '<div class="grid-label"></div>';
+            ['e1', 'B', 'G', 'D', 'A', 'E6'].forEach(l => h += `<div class="grid-header">${l}</div>`);
+
+            for (let i = 0; i <= endF - startF; i++) {
+                const fret = startF + i;
+                const label = fret === 0 ? 'Açık Tel:' : `Perde ${fret}:`;
+
+                h += `<div class="grid-label">${label}</div>`;
+                for (let s = 1; s <= 6; s++) {
+                    const key = keys[i] ? keys[i][s - 1] : '';
+                    // Use toLocaleLowerCase for proper Turkish handling
+                    const keyLower = key.toLocaleLowerCase('tr-TR');
+                    // Special attribute for double quote
+                    const quoteAttr = key === '"' ? ' data-quote="true"' : '';
+                    h += `<button class="key-btn s${s}" data-s="${s}" data-f="${fret}" data-key="${keyLower}" data-key-upper="${key}"${quoteAttr} onclick="playKeyBtn(this)">${key}</button>`;
+                }
+            }
+            c.innerHTML = h;
+        }
+
+        async function playKeyBtn(btn) {
+            await ensureAudio();
+            btn.classList.add('active');
+            setTimeout(() => btn.classList.remove('active'), 300);
+            playNote(parseInt(btn.dataset.s), parseInt(btn.dataset.f), null);
+        }
+
+        function playNote(stringNum, fret, elem) {
+            const note = getNote(stringNum, fret);
+
+            if (typeof audioEngine !== 'undefined') audioEngine.playGuitarString(stringNum, fret);
+
+            document.querySelectorAll('.string-cell.active, .string-label.active').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.string-cell.vibrating').forEach(e => e.classList.remove('vibrating'));
+
+            // Vibrate
+            document.querySelectorAll(`.string-cell[data-s="${stringNum}"]`).forEach(cell => {
+                cell.classList.add('vibrating');
+                setTimeout(() => cell.classList.remove('vibrating'), 400);
+            });
+
+            // Open string highlight
+            if (fret === 0) {
+                const label = document.querySelector(`.string-label[data-s="${stringNum}"]`);
+                if (label) {
+                    label.classList.add('active');
+                    setTimeout(() => label.classList.remove('active'), 400);
+                }
+            }
+
+            // Show on fretboard
+            const fretCell = document.querySelector(`.string-cell[data-s="${stringNum}"][data-f="${fret}"]`);
+            if (fretCell) {
+                const dot = fretCell.querySelector('.note-dot');
+                if (dot) dot.textContent = note;
+                fretCell.classList.add('active');
+                setTimeout(() => fretCell.classList.remove('active'), 400);
+            }
+
+            updateNoteDisplay(note, stringNum, fret);
+        }
+
+        function getNote(s, f) {
+            const open = tuning[s - 1];
+            return typeof NoteMapping !== 'undefined' ? NoteMapping.transpose(open, f) : open;
+        }
+
+        function updateNoteDisplay(note, s, f) {
+            let turkish = note, freq = 0;
+            if (typeof NoteMapping !== 'undefined') {
+                turkish = NoteMapping.getTurkishName(note);
+                freq = NoteMapping.getFrequency(note);
+            }
+            document.getElementById('noteDisplay').textContent = `${turkish} (${note}) - ${freq.toFixed(1)} Hz`;
+            document.getElementById('posDisplay').textContent = `Tel ${s}, Perde ${f}`;
+        }
+
+        function stopAll() { if (typeof audioEngine !== 'undefined') audioEngine.stopAll(); }
+
+        function showHelp() {
+            alert('Klavye Kısayolları:\n\nZone 1,3,5: 1-6, Q-Y, A-H, <-B\nZone 2,4,6: 7 8 9 0 * -, U-Ü, J-;, N-"\n\n[ / ]: Pair Değiştir\nSPACE: Mute');
+        }
+
+        // Keyboard - Turkish character aware
+        document.addEventListener('keydown', async e => {
+            if (currentMode !== 'guitar') return;
+            await ensureAudio();
+
+            if (e.key === ' ') { e.preventDefault(); stopAll(); return; }
+
+            // Pair navigation: [ ] or Numpad +/-
+            if (e.key === ']' || e.key === '+' || e.code === 'NumpadAdd') {
+                setPair(Math.min(3, currentPair + 1));
+                return;
+            }
+            if (e.key === '[' || e.code === 'NumpadSubtract') {
+                setPair(Math.max(1, currentPair - 1));
+                return;
+            }
+
+            // Handle Turkish characters properly
+            let pressedKey = e.key;
+            let searchKey = pressedKey.toLocaleLowerCase('tr-TR');
+
+            // Try to find button with the pressed key
+            let btn = null;
+
+            // Special handling for " (double quote) - use data-quote attribute
+            if (pressedKey === '"') {
+                btn = document.querySelector('.key-btn[data-quote="true"]');
+            } else {
+                btn = document.querySelector(`.key-btn[data-key="${searchKey}"]`);
+            }
+
+            // Try exact match for special characters
+            if (!btn && (pressedKey === '-' || pressedKey === '*' || pressedKey === '.')) {
+                btn = document.querySelector(`.key-btn[data-key="${pressedKey}"]`);
+            }
+
+            // If not found and it's a Turkish character, try uppercase match
+            if (!btn) {
+                const upperKey = turkishKeyMap[pressedKey] || pressedKey.toLocaleUpperCase('tr-TR');
+                btn = document.querySelector(`.key-btn[data-key-upper="${upperKey}"]`);
+            }
+
+            if (btn) playKeyBtn(btn);
+        });
+
+        // Piano
+        const pianoKeysList = [
+            { n: 'C4', b: false, k: 'a' }, { n: 'C#4', b: true, k: 'w' }, { n: 'D4', b: false, k: 's' },
+            { n: 'D#4', b: true, k: 'e' }, { n: 'E4', b: false, k: 'd' }, { n: 'F4', b: false, k: 'f' },
+            { n: 'F#4', b: true, k: 't' }, { n: 'G4', b: false, k: 'g' }, { n: 'G#4', b: true, k: 'y' },
+            { n: 'A4', b: false, k: 'h' }, { n: 'A#4', b: true, k: 'u' }, { n: 'B4', b: false, k: 'j' }, { n: 'C5', b: false, k: 'k' }
+        ];
+
+        function buildPiano() {
+            let h = '';
+            pianoKeysList.forEach(pk => {
+                const cls = pk.b ? 'black-key' : 'white-key';
+                h += `<div class="${cls}" data-note="${pk.n}" data-pkey="${pk.k}" onclick="playPianoKey(this)">${pk.k.toUpperCase()}</div>`;
+            });
+            document.getElementById('pianoKeys').innerHTML = h;
+        }
+
+        async function playPianoKey(el) {
+            await ensureAudio();
+            if (typeof audioEngine !== 'undefined') audioEngine.playNoteName(el.dataset.note, 2, 'piano');
+            el.classList.add('active');
+            setTimeout(() => el.classList.remove('active'), 200);
+        }
+
+        document.addEventListener('keydown', async e => {
+            if (currentMode !== 'piano') return;
+            await ensureAudio();
+            const pk = pianoKeysList.find(p => p.k === e.key.toLowerCase());
+            if (pk) {
+                const el = document.querySelector(`[data-pkey="${pk.k}"]`);
+                if (el) playPianoKey(el);
+            }
+        });
+
+        // Lessons
+        function buildLessons() {
+            const lessons = [
+                { icon: '🎵', title: 'Ders 1: Nota Bilgisi', artist: 'Arkadaşım Eşek' },
+                { icon: '🎸', title: 'Ders 2: İlk Akorlarım', artist: 'Hayat Bayram Olsa' },
+                { icon: '✋', title: 'Ders 3: Teknik', artist: 'Palm Mute' }
+            ];
+            let h = '';
+            lessons.forEach(l => {
+                h += `<div class="lesson-card"><div class="lesson-icon">${l.icon}</div><div class="lesson-title">${l.title}</div><div class="lesson-artist">${l.artist}</div><div class="lesson-btns"><button class="lesson-btn primary">▶ Başlat</button><button class="lesson-btn secondary">📄 Detay</button></div></div>`;
+            });
+            document.getElementById('lessonsGrid').innerHTML = h;
+        }
+
+        function showSection(id) {
+            currentMode = id;
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach((b, i) => b.classList.toggle('active', ['guitar', 'piano', 'lessons'][i] === id));
+        }
+
+        // INIT
+        buildFretboard();
+        buildZoneGrids();
+        updateZoneTags();
+        buildPiano();
+        buildLessons();
+    </script>
+</body>
+
+</html>
