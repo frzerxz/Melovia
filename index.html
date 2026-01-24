@@ -929,58 +929,229 @@
             background: #444;
         }
 
-        /* Lessons */
+        /* Lessons - Enhanced Design */
         .lessons-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .lessons-header h2 {
-            font-size: 18px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .level-xp {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .level-badge {
+            padding: 6px 14px;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #a78bfa;
+        }
+
+        .xp-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .xp-bar-bg {
+            width: 150px;
+            height: 8px;
+            background: var(--card);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .xp-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .xp-text {
+            font-size: 11px;
+            color: var(--dim);
         }
 
         .lessons-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
         }
 
         .lesson-card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            background: rgba(100, 100, 120, 0.08);
+            border: 1px solid rgba(100, 100, 120, 0.2);
+            border-radius: 14px;
             padding: 16px;
-            text-align: center;
+            transition: all 0.2s;
+            position: relative;
         }
 
         .lesson-card:hover {
-            border-color: var(--accent);
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(100, 100, 120, 0.12);
+        }
+
+        .lesson-card.locked {
+            opacity: 0.6;
+        }
+
+        .lesson-card.locked .lesson-btn.primary {
+            display: none;
+        }
+
+        .lesson-card.locked .lesson-btns::before {
+            content: '🔒 Kilitli';
+            display: flex;
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(100, 100, 120, 0.15);
+            border: 1px solid rgba(100, 100, 120, 0.3);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 16px;
+            min-height: 48px;
         }
 
         .lesson-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--card);
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            border: 1px solid rgba(139, 92, 246, 0.3);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin: 0 auto 10px;
+            font-size: 22px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .lesson-info {
+            width: 100%;
+            text-align: center;
+            padding: 0 40px;
+            /* İkon ve yıldız payı */
+        }
+
+        .lesson-title-row {
+            display: block;
+            margin-bottom: 4px;
         }
 
         .lesson-title {
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .lesson-stars {
+            color: #f59e0b;
+            font-size: 11px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 48px;
+            display: flex;
+            align-items: center;
         }
 
         .lesson-artist {
             font-size: 11px;
             color: var(--dim);
-            margin-bottom: 8px;
+            display: block;
+        }
+
+        .lesson-category {
+            display: block;
+            width: fit-content;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin: 0 auto 10px;
+        }
+
+        .lesson-category.melodi {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #4ade80;
+        }
+
+        .lesson-category.ritim {
+            background: rgba(249, 115, 22, 0.2);
+            border: 1px solid rgba(249, 115, 22, 0.4);
+            color: #fb923c;
+        }
+
+        .lesson-category.teknik {
+            background: rgba(236, 72, 153, 0.2);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            color: #f472b6;
+        }
+
+        .lesson-category.parmak {
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            color: #22d3ee;
+        }
+
+        .lesson-category.sarki {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: #a78bfa;
+        }
+
+        .lesson-desc {
+            font-size: 11px;
+            color: var(--dim);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .lesson-chords {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+
+        .chord-btn {
+            padding: 4px 10px;
+            background: rgba(100, 100, 120, 0.15);
+            border: 1px solid rgba(100, 100, 120, 0.3);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--dim);
         }
 
         .lesson-btns {
@@ -990,23 +1161,44 @@
 
         .lesson-btn {
             flex: 1;
-            padding: 10px;
+            padding: 10px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .lesson-btn.primary {
-            background: var(--accent);
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
             color: white;
+            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+        }
+
+        .lesson-btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
         }
 
         .lesson-btn.secondary {
-            background: var(--card);
+            background: rgba(100, 100, 120, 0.15);
             color: var(--dim);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(100, 100, 120, 0.3);
+        }
+
+        .lesson-btn.secondary:hover {
+            background: rgba(100, 100, 120, 0.25);
+        }
+
+        .lesson-btn.locked {
+            background: rgba(100, 100, 120, 0.1);
+            color: var(--muted);
+            cursor: not-allowed;
         }
 
         @media (max-width: 900px) {
@@ -1023,10 +1215,399 @@
             }
         }
 
+        /* Lesson HUD (Heads-Up Display) */
+        .lesson-hud {
+            display: none;
+            /* Başlangıçta gizli */
+            background: #13131f;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            margin-top: 10px;
+        }
+
+        .lesson-hud.active {
+            display: block;
+        }
+
+        .hud-progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .hud-progress-fill {
+            height: 100%;
+            background: #4ade80;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .hud-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .hud-song-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hud-song-icon {
+            font-size: 18px;
+        }
+
+        .hud-song-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .hud-song-artist {
+            color: var(--dim);
+            font-size: 12px;
+            margin-left: 6px;
+        }
+
+        .hud-step-counter {
+            font-family: monospace;
+            color: #4ade80;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Compact HUD Styles */
+        .hud-compact-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 20, 30, 0.4);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 8px 16px;
+            margin-bottom: 0;
+            gap: 12px;
+        }
+
+        .hud-left,
+        .hud-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .no-shrink {
+            flex-shrink: 0;
+        }
+
+        .hud-center-info {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hud-text-group {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            text-align: left;
+        }
+
+        .note-badge-compact {
+            font-size: 20px;
+            font-weight: 800;
+            color: #4ade80;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+        }
+
+        .hud-tech-details {
+            display: flex;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--dim);
+        }
+
+        .hud-key-hint-compact {
+            width: 28px;
+            height: 28px;
+            background: #8b5cf6;
+            color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .hud-controls-inline {
+            display: flex;
+            gap: 6px;
+        }
+
+        .hud-btn-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--dim);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .hud-btn-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .hud-btn-icon.close {
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .hud-btn-icon.close:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: #fff;
+        }
+
+        .hud-timeline-wrap {
+            position: relative;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .hud-target-line {
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            bottom: 10%;
+            width: 2px;
+            background: #4ade80;
+            transform: translateX(-50%);
+            z-index: 10;
+            box-shadow: 0 0 10px #4ade80;
+        }
+
+        .hud-timeline {
+            display: flex;
+            gap: 40px;
+            /* Geniş boşluk */
+            position: absolute;
+            left: 50%;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            /* transform ile kaydıracağız */
+        }
+
+        .timeline-note {
+            min-width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--dim);
+            opacity: 0.4;
+            transform: scale(0.8);
+            transition: all 0.3s;
+        }
+
+        .timeline-note.active {
+            background: #4ade80;
+            color: #000;
+            border-color: #4ade80;
+            font-weight: bold;
+            transform: scale(1.3);
+            opacity: 1;
+            z-index: 5;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+        }
+
+        .timeline-note.passed {
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+            opacity: 0.2;
+        }
+
+        .hud-restart-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--dim);
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+
+        .hud-restart-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .hud-close-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        /* Responsive adjustments */
         @media (max-width: 600px) {
             .lessons-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* Lesson Detail Modal */
+        .lesson-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .lesson-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--panel);
+            border: 1px solid rgba(100, 100, 120, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--dim);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-section {
+            margin-bottom: 18px;
+        }
+
+        .modal-section h4 {
+            font-size: 12px;
+            color: var(--dim);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .chord-diagram {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .chord-card {
+            background: rgba(100, 100, 120, 0.1);
+            border: 1px solid rgba(100, 100, 120, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .chord-card .chord-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .chord-card .chord-fingers {
+            font-size: 10px;
+            color: var(--dim);
+        }
+
+        .tip-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .tip-box p {
+            font-size: 12px;
+            color: var(--dim);
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -1065,9 +1646,54 @@
                     </div>
                     <div class="fb-spacer"></div>
                     <span class="fb-label">� Görünüm:</span>
+                    <span class="fb-label"> Görünüm:</span>
                     <button class="fb-btn" onclick="shiftFrets(-1)">◀</button>
                     <span class="fb-range" id="fretRange">Perde 1-12</span>
                     <button class="fb-btn accent" onclick="shiftFrets(1)">▶</button>
+                </div>
+
+                <!-- Live Lesson HUD (Compact Design) -->
+                <div class="lesson-hud" id="lessonHud">
+                    <div class="hud-progress-bar">
+                        <div class="hud-progress-fill" id="hudProgress" style="width: 0%"></div>
+                    </div>
+
+                    <div class="hud-compact-row">
+                        <!-- SOL: Şarkı Bilgisi -->
+                        <div class="hud-left no-shrink">
+                            <span class="hud-song-icon">🎵</span>
+                            <div class="hud-text-group">
+                                <span class="hud-song-title" id="hudTitle">...</span>
+                                <span class="hud-song-artist" id="hudArtist">...</span>
+                            </div>
+                        </div>
+
+                        <!-- ORTA: Aktif Nota ve İpuçları -->
+                        <div class="hud-center-info">
+                            <span class="note-badge-compact" id="hudCurrentNote">-</span>
+                            <div class="hud-tech-details">
+                                <span class="detail-tag" id="hudStringInfo">Tel -</span>
+                                <span class="detail-tag" id="hudFretInfo">Perde -</span>
+                            </div>
+                            <div class="hud-key-hint-compact" id="hudKeyHint">?</div>
+                        </div>
+
+                        <!-- SAĞ: Sayaç ve Kontroller -->
+                        <div class="hud-right no-shrink">
+                            <div class="hud-step-counter" id="hudCounter">0 / 0</div>
+                            <div class="hud-controls-inline">
+                                <button class="hud-btn-icon" onclick="startLesson()" title="Baştan Başlat">↺</button>
+                                <button class="hud-btn-icon close" onclick="stopLesson()" title="Dersi Bitir">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hud-timeline-wrap">
+                        <div class="hud-target-line"></div>
+                        <div class="hud-timeline" id="hudTimeline">
+                            <!-- Timeline items will be injected here -->
+                        </div>
+                    </div>
                 </div>
                 <div class="fretboard-container">
                     <div class="string-labels" id="stringLabels"></div>
@@ -1141,11 +1767,182 @@
 
         <section class="section" id="lessons">
             <div class="lessons-header">
-                <h2>📚 Gitar Dersleri</h2>
+                <h2>🎸 Gitar Dersleri</h2>
+                <div class="level-xp">
+                    <span class="level-badge">Seviye 1: Başlangıç</span>
+                    <div class="xp-bar">
+                        <div class="xp-bar-bg">
+                            <div class="xp-bar-fill" style="width: 34%"></div>
+                        </div>
+                        <span class="xp-text">850 / 2500 XP</span>
+                    </div>
+                </div>
             </div>
-            <div class="lessons-grid" id="lessonsGrid"></div>
+            <div class="lessons-grid">
+                <!-- Ders 1: Başlangıç - Çok Kolay -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🎵</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 1: İlk Melodim</span>
+                                <span class="lesson-stars">★☆☆</span>
+                            </div>
+                            <span class="lesson-artist">Arkadaşım Eşek - Barış Manço</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category melodi">Melodi Çalışması</span>
+                    <p class="lesson-desc">Orijinal ton Em. Basit nota dizilişi ile gitar çalmaya ilk adım. Tek parmak
+                        melodi pratiği.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Em</span>
+                        <span class="chord-btn">Am</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(1)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Ders 2: Temel Akorlar - Kolay -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🎸</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 2: Temel Akorlar</span>
+                                <span class="lesson-stars">★★☆</span>
+                            </div>
+                            <span class="lesson-artist">Hayat Bayram Olsa - Şenay</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category ritim">Ritim Çalışması</span>
+                    <p class="lesson-desc">Am ve E akorlarını öğren. 4/4 ritim kalıbı ile basit akor geçişleri. Dm
+                        akoruna giriş.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Am</span>
+                        <span class="chord-btn">E</span>
+                        <span class="chord-btn">Dm</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(2)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Ders 3: Palm Mute - Orta -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🖐️</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 3: Palm Mute</span>
+                                <span class="lesson-stars">★★☆</span>
+                            </div>
+                            <span class="lesson-artist">Kesme Ritim Tekniği</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category teknik">Teknik Alıştırma</span>
+                    <p class="lesson-desc">Sağ el avuç içi ile tel susturma. Köprüye yakın pozisyon. Rock ve metal
+                        ritmlerinde kullanılır.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">E5</span>
+                        <span class="chord-btn">A5</span>
+                        <span class="chord-btn">D5</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(3)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Ders 4: Arpej P-I-M-A - Orta-Zor -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🎶</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 4: Arpej Tekniği</span>
+                                <span class="lesson-stars">★★★</span>
+                            </div>
+                            <span class="lesson-artist">Caddelerde Rüzgar - Nilüfer</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category parmak">Parmak Çalışması</span>
+                    <p class="lesson-desc">P-I-M-A kuralı: Başparmak (6-5-4), İşaret (3), Orta (2), Yüzük (1). Klasik
+                        gitar tekniği.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Am</span>
+                        <span class="chord-btn">Dm</span>
+                        <span class="chord-btn">E</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(4)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Ders 5: Akor Geçişleri - Zor -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🎤</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 5: Hızlı Geçişler</span>
+                                <span class="lesson-stars">★★★</span>
+                            </div>
+                            <span class="lesson-artist">Akdeniz Akşamları - Haluk Levent</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category sarki">Klasik Türk Şarkısı</span>
+                    <p class="lesson-desc">4 akor döngüsü: Am→G→F→E. Barre akor F için parmak gücü gerektirir. Hızlı
+                        geçiş pratiği.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Am</span>
+                        <span class="chord-btn">G</span>
+                        <span class="chord-btn">F</span>
+                        <span class="chord-btn">E</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(5)">📄 Detay</button>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
+
+    <!-- Lesson Detail Modal -->
+    <div class="lesson-modal" id="lessonModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title" id="modalTitle">Ders Detayı</h3>
+                    <p style="color: var(--dim); font-size: 12px;" id="modalArtist"></p>
+                </div>
+                <button class="modal-close" onclick="closeLessonModal()">✕</button>
+            </div>
+
+            <div class="modal-section">
+                <h4>📝 Açıklama</h4>
+                <p style="color: var(--text); font-size: 13px;" id="modalDesc"></p>
+            </div>
+
+            <div class="modal-section">
+                <h4>🎸 Gerekli Akorlar</h4>
+                <div class="chord-diagram" id="modalChords"></div>
+            </div>
+
+            <div class="modal-section">
+                <h4>💡 İpuçları</h4>
+                <div class="tip-box">
+                    <p id="modalTips"></p>
+                </div>
+            </div>
+
+            <button class="modal-btn" onclick="startLesson()">▶ Dersi Başlat</button>
+        </div>
+    </div>
 
     <script src="js/noteMapping.js"></script>
     <script src="js/audioEngine.js"></script>
@@ -1196,6 +1993,259 @@
         };
 
         let currentGuitarType = 'classic';
+        let currentLessonId = null;
+
+        // Ders verileri (araştırmaya dayalı)
+        const lessonsData = {
+            1: {
+                title: 'Ders 1: İlk Melodim',
+                artist: 'Arkadaşım Eşek - Barış Manço',
+                desc: 'Bu ders, gitar çalmaya ilk adımınızı atmanızı sağlar. Barış Manço\'nun sevilen çocuk şarkısı "Arkadaşım Eşek" orijinal tonunda Em (Mi minör) çalınır.',
+                chords: [
+                    { name: 'Em', fingers: 'x-2-2-0-0-0' },
+                    { name: 'Am', fingers: 'x-0-2-2-1-0' }
+                ],
+                tips: 'Başlangıç için yavaş tempo ile çalışın. Önce melodiyi ezberleyin.',
+                songData: [
+                    // PART 1: The Hook
+                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }, { note: 'RE (D3)', s: 4, f: 0, key: '3' },
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'F' }, { note: 'LA (A3)', s: 3, f: 2, key: 'F' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '5' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '5' },
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'F' },
+                    // PART 2: The Verse
+                    { note: 'SOL (G3)', s: 3, f: 0, key: '4' }, { note: 'SOL (G3)', s: 3, f: 0, key: '4' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '5' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '5' },
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'F' },
+                    { note: 'SOL (G3)', s: 3, f: 0, key: '4' }, { note: 'SOL (G3)', s: 3, f: 0, key: '4' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '5' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '5' },
+                    // PART 3: The Descent
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'F' }, { note: 'SOL (G3)', s: 3, f: 0, key: '4' },
+                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' },
+                    { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
+                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
+                    { note: 'RE (D3)', s: 4, f: 0, key: '3' },
+                    // PART 4: Outro Loop x3 + Finale (4. ve 5. Teller - Kalın Ton)
+                    // Cycle 1
+                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
+                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'RE (D3)', s: 4, f: 0, key: '3' },
+                    { note: 'DO (C3)', s: 5, f: 3, key: 'X' },
+                    // Cycle 2
+                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
+                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'RE (D3)', s: 4, f: 0, key: '3' },
+                    { note: 'DO (C3)', s: 5, f: 3, key: 'X' },
+                    // Cycle 3
+                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
+                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'RE (D3)', s: 4, f: 0, key: '3' },
+                    { note: 'DO (C3)', s: 5, f: 3, key: 'X' },
+                    // Grand Finale
+                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }
+                ]
+            },
+            2: {
+                title: 'Ders 2: Temel Akorlar',
+                artist: 'Hayat Bayram Olsa - Şenay',
+                desc: 'Am ve E akorlarını öğrenin. Şenay\'ın nostaljik parçası ile 4/4 ritim kalıbında basit akor geçişleri yapacaksınız. Dm akoru ile üçlü akor progresyonuna giriş.',
+                chords: [
+                    { name: 'Am', fingers: 'x-0-2-2-1-0' },
+                    { name: 'E', fingers: '0-2-2-1-0-0' },
+                    { name: 'Dm', fingers: 'x-x-0-2-3-1' }
+                ],
+                tips: 'Akor geçişlerinde parmakları kaldırmadan kaydırın. Am→E geçişi en kolay geçişlerden biridir. Her gün 10 dakika pratik yapın.'
+            },
+            3: {
+                title: 'Ders 3: Palm Mute',
+                artist: 'Kesme Ritim Tekniği',
+                desc: 'Palm mute, sağ el avuç içinin kenarını gitarın köprüsüne hafifçe yerleştirerek telleri susturma tekniğidir. Rock ve metal müzikte "chug" sesi elde etmek için kullanılır.',
+                chords: [
+                    { name: 'E5', fingers: '0-2-2-x-x-x' },
+                    { name: 'A5', fingers: 'x-0-2-2-x-x' },
+                    { name: 'D5', fingers: 'x-x-0-2-3-x' }
+                ],
+                tips: 'Köprüye yakın pozisyonda daha net, uzaktayken daha boğuk ses çıkar. Basıncı ayarlamak için pratik gerekir. Power chord\'lar ile başlayın.'
+            },
+            4: {
+                title: 'Ders 4: Arpej Tekniği',
+                artist: 'Caddelerde Rüzgar - Nilüfer',
+                desc: 'P-I-M-A klasik gitar tekniği: Başparmak (P) kalın telleri, İşaret (I) 3. teli, Orta (M) 2. teli, Yüzük (A) 1. teli çalar. Arpej, akor notalarını sırayla çalmaktır.',
+                chords: [
+                    { name: 'Am', fingers: 'x-0-2-2-1-0' },
+                    { name: 'Dm', fingers: 'x-x-0-2-3-1' },
+                    { name: 'E', fingers: '0-2-2-1-0-0' }
+                ],
+                tips: 'Sağ el tenis topu tutar gibi olmalı. Boş tellerden başlayın. P-İ-M-A, P-İ-M-A-M-İ kalıplarını çalışın. Metronom ile tempo artırın.'
+            },
+            5: {
+                title: 'Ders 5: Hızlı Geçişler',
+                artist: 'Akdeniz Akşamları - Haluk Levent',
+                desc: 'Haluk Levent\'in klasik parçası Am→G→F→E akor döngüsünü kullanır. F akoru barre (bareli) akor olduğu için parmak gücü gerektirir. Hızlı geçiş pratiği için idealdir.',
+                chords: [
+                    { name: 'Am', fingers: 'x-0-2-2-1-0' },
+                    { name: 'G', fingers: '3-2-0-0-0-3' },
+                    { name: 'F', fingers: '1-3-3-2-1-1' },
+                    { name: 'E', fingers: '0-2-2-1-0-0' }
+                ],
+                tips: 'F akoru için işaret parmağınızla tüm tellere basın (barre). Önce yavaş çalışın, sonra hızlanın. Her gün F akoru pratiği yapın.'
+            }
+        };
+
+        // Modal fonksiyonları
+        function showLessonDetail(lessonId) {
+            const lesson = lessonsData[lessonId];
+            if (!lesson) return;
+
+            currentLessonId = lessonId;
+
+            document.getElementById('modalTitle').textContent = lesson.title;
+            document.getElementById('modalArtist').textContent = lesson.artist;
+            document.getElementById('modalDesc').textContent = lesson.desc;
+            document.getElementById('modalTips').textContent = lesson.tips;
+
+            // Akor kartlarını oluştur
+            const chordsContainer = document.getElementById('modalChords');
+            chordsContainer.innerHTML = lesson.chords.map(chord => `
+                <div class="chord-card">
+                    <div class="chord-name">${chord.name}</div>
+                    <div class="chord-fingers">${chord.fingers}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('lessonModal').classList.add('active');
+        }
+
+        function closeLessonModal() {
+            document.getElementById('lessonModal').classList.remove('active');
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+
+            // Nav butonlarını güncelle
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.target === id) btn.classList.add('active');
+            });
+        }
+
+        let currentLessonState = { active: false, step: 0, total: 0, data: null };
+
+        function startLesson() {
+            closeLessonModal();
+            // Varsayılan olarak Ders 1 başlatılır
+            const lessonId = currentLessonId || 1;
+            const lesson = lessonsData[lessonId];
+
+            if (!lesson || !lesson.songData) {
+                alert('Bu ders için henüz interaktif içerik hazırlanmadı.\nDers 1: Arkadaşım Eşek hazır!');
+                if (lessonId !== 1) {
+                    currentLessonId = 1;
+                    startLesson();
+                    return;
+                }
+                return;
+            }
+
+            // Gitar moduna geç
+            showSection('guitar');
+
+            // HUD'u göster
+            const hud = document.getElementById('lessonHud');
+            hud.classList.add('active');
+
+            // Timeline'ı OLUŞTUR (Init)
+            const timeline = document.getElementById('hudTimeline');
+            timeline.innerHTML = '';
+
+            // Tüm notaları ekle
+            lesson.songData.forEach((step, index) => {
+                const el = document.createElement('div');
+                el.className = 'timeline-note';
+                el.textContent = step.note.split(' ')[0]; // Kısaltılmış ad
+                el.dataset.index = index;
+                timeline.appendChild(el);
+            });
+
+            // State'i sıfırla
+            currentLessonState = {
+                active: true,
+                step: 0,
+                total: lesson.songData.length,
+                data: lesson.songData
+            };
+
+            // HUD Bilgilerini güncelle
+            const artistParts = lesson.artist.split('-');
+            document.getElementById('hudTitle').textContent = artistParts[0] ? artistParts[0].trim() : lesson.title;
+            document.getElementById('hudArtist').textContent = artistParts[1] ? artistParts[1].trim() : '';
+
+            updateHudStep();
+        }
+
+        function updateHudStep() {
+            if (!currentLessonState.active) return;
+
+            const stepIndex = currentLessonState.step;
+            const total = currentLessonState.total;
+
+            // Bitiş Kontrolü
+            if (stepIndex >= total) {
+                // Şarkı Bitti! Timeline'ı sonuna kaydır
+                updateTimelineScroll(stepIndex);
+
+                setTimeout(() => {
+                    // Basit bir konfetinin veya modalın yerini alacak alert (şimdilik)
+                    alert('TEBRİKLER! ŞARKI TAMAMLANDI! 🎉\nDoğruluk: %100\nHarika bir performans!');
+                    stopLesson();
+                }, 300);
+                return;
+            }
+
+            const step = currentLessonState.data[stepIndex];
+
+            // Sayaç ve Progress
+            document.getElementById('hudCounter').textContent = `${stepIndex + 1} / ${total}`;
+            const progressPct = (stepIndex / total) * 100;
+            document.getElementById('hudProgress').style.width = `${progressPct}%`;
+
+            // Ana Gösterge (HUD Ortası)
+            document.getElementById('hudCurrentNote').textContent = step.note;
+            document.getElementById('hudStringInfo').textContent = `Tel ${step.s}`;
+            document.getElementById('hudFretInfo').textContent = `Perde ${step.f}`;
+            document.getElementById('hudKeyHint').textContent = step.key;
+
+            // Timeline Görünümü (Class Güncelleme)
+            const notes = document.querySelectorAll('.timeline-note');
+            notes.forEach((el, idx) => {
+                el.className = 'timeline-note'; // Reset
+                if (idx < stepIndex) el.classList.add('passed');
+                if (idx === stepIndex) el.classList.add('active');
+            });
+
+            // Timeline Kaydırma
+            updateTimelineScroll(stepIndex);
+        }
+
+        function updateTimelineScroll(index) {
+            const timeline = document.getElementById('hudTimeline');
+            // Her nota 40px (width) + 40px (gap) = 80px yer kaplıyor.
+            // Başlangıçta 50% left'te duruyor, yani ilk eleman ortada.
+            // Her adımda 80px sola kaymalı ki bir sonraki merkeze gelsin.
+            const itemWidth = 80;
+            const offset = -(index * itemWidth);
+            timeline.style.transform = `translateX(${offset}px)`;
+        }
+
+        function stopLesson() {
+            currentLessonState.active = false;
+            document.getElementById('lessonHud').classList.remove('active');
+        }
+
+        // Modal dışına tıklandığında kapat
+        document.getElementById('lessonModal')?.addEventListener('click', (e) => {
+            if (e.target.classList.contains('lesson-modal')) {
+                closeLessonModal();
+            }
+        });
 
         // Custom dropdown functions
         function toggleGuitarDropdown() {
@@ -1359,6 +2409,20 @@
             btn.classList.add('active');
             setTimeout(() => btn.classList.remove('active'), 300);
             playNote(parseInt(btn.dataset.s), parseInt(btn.dataset.f), null);
+
+            // Ders Aktivite Kontrolü
+            if (currentLessonState && currentLessonState.active) {
+                const currentStep = currentLessonState.data[currentLessonState.step];
+                if (!currentStep) return; // Liste bitti veya hata
+
+                const playedString = parseInt(btn.dataset.s);
+                const playedFret = parseInt(btn.dataset.f);
+
+                if (playedString === currentStep.s && playedFret === currentStep.f) {
+                    currentLessonState.step++;
+                    updateHudStep();
+                }
+            }
         }
 
         function playNote(stringNum, fret, elem) {

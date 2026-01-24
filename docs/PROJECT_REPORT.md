@@ -27,7 +27,13 @@
 **Melovia**, bilgisayar klavyesi kullanarak gitar çalmayı öğreten interaktif bir web tabanlı müzik eğitim platformudur.
 
 ### Temel Özellikler:
-- **6 Telli Gitar Simülasyonu** - Klasik, Elektro ve Bas gitar desteği
+- **6 Telli Gitar Simülasyonu** - Klasik, Elektro ve Bas- **HUD (Heads-Up Display) Geliştirmesi:**
+  - "Dersi Başlat" özelliği ile gitar sekmesinde açılan interaktif ders arayüzü.
+  - **Kompakt Tasarım:** Şarkı bilgisi, aktif nota detayları ve kontroller tek bir yatay şeritte toplandı.
+  - **Auto-Focus Timeline:** Gelecek notaların kayan bir şerit üzerinde gösterildiği ve aktif notanın her zaman merkezde olduğu dinamik akış.
+  - **Ders Verisi Doğrulaması:** "Arkadaşım Eşek" dersi için notalar, gitarın S6-S1 (Kalın-İnce) tel yapısına ve doğru perdelere göre yeniden düzenlendi. Özellikle Outro kısmı kalın tonlara (4. ve 5. teller) taşındı.
+  - **Tamamlama Mantığı:** Şarkı bittiğinde başarı mesajı ve dersi sonlandırma akışı eklendi.
+- **Tasarım İyileştirmeleri:** Ders kartları simetrik hale getirildi, butonlar ve ikonlar hizalandı.
 - **Klavye Entegrasyonu** - QWERTY klavye ile nota çalma
 - **Zone Sistemi** - 6 bölgeli tuş haritalaması
 - **Pair Sistemi** - Perde gruplarını yönetme
