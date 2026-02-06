@@ -1,8 +1,8 @@
 # Melovia - Dijital Gitar Simülatörü
-## Proje Raporu v4.0
+## Proje Raporu v1.0
 
 **Tarih:** 6 Şubat 2026  
-**Versiyon:** 0.4  
+**Versiyon:** 0.1  
 **GitHub:** https://github.com/frzerxz/Melovia
 
 ---
@@ -49,7 +49,7 @@
 
 ---
 
-## 🆕 Son Güncelleme Özeti (v0.4)
+## 🆕 Son Güncelleme Özeti
 
 ### ✅ Eklenen Özellikler:
 
@@ -81,7 +81,7 @@
 - Tel titreşim animasyonu geliştirildi
 - Chord highlight stili eklendi
 - Nota press animasyonu eklendi
-- Versiyon numarası v0.4'e güncellendi
+- Görsel animasyonlar geliştirildi
 
 #### Dokümantasyon:
 - `DOCUMENTATION.md` oluşturuldu - Tüm kavramların detaylı açıklaması
@@ -433,4 +433,4 @@ Detaylı bilgi için: [UNREAL_INTEGRATION.md](./UNREAL_INTEGRATION.md)
 
 ---
 
-*Son güncelleme: 6 Şubat 2026 - v0.4*
+*Son güncelleme: 6 Şubat 2026 - v0.1*

@@ -103,4 +103,4 @@ Melovia/
 ```
 
 ---
-*Developed by Melovia Team - v0.4*
+*Developed by Melovia Team - v0.1*
