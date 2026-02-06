@@ -1987,6 +1987,256 @@
                 transform: scale(0.8);
             }
         }
+
+        /* === CHORD & STRUM PANEL === */
+        .chord-strum-panel {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .chord-strum-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .chord-strum-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .chord-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chord-btn {
+            padding: 10px 16px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .chord-btn:hover {
+            background: rgba(139, 92, 246, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .chord-btn:active {
+            transform: scale(0.95);
+            background: var(--accent);
+        }
+
+        .chord-btn.minor {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .chord-btn.minor:hover {
+            background: rgba(6, 182, 212, 0.3);
+        }
+
+        .strum-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .strum-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .strum-btn:hover {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(6, 182, 212, 0.4));
+        }
+
+        /* === RECORDING PANEL === */
+        .recording-panel {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .recording-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .recording-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .recording-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .rec-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .rec-btn.record {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .rec-btn.record.recording {
+            animation: recPulse 1s ease infinite;
+        }
+
+        .rec-btn.play {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        .rec-btn.stop {
+            background: rgba(100, 100, 120, 0.3);
+            color: var(--text);
+        }
+
+        .rec-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .rec-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes recPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+        }
+
+        .recording-time {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: var(--cyan);
+            min-width: 60px;
+        }
+
+        .recording-list {
+            margin-top: 12px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .recording-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(100, 100, 120, 0.1);
+            border-radius: 8px;
+            margin-bottom: 6px;
+        }
+
+        .recording-item-name {
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .recording-item-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .recording-item-btn {
+            padding: 4px 8px;
+            background: rgba(100, 100, 120, 0.2);
+            border: none;
+            border-radius: 4px;
+            color: var(--dim);
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .recording-item-btn:hover {
+            background: rgba(139, 92, 246, 0.3);
+            color: var(--text);
+        }
+
+        /* === SCALE OVERLAY === */
+        .scale-overlay-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .scale-select {
+            padding: 6px 12px;
+            background: rgba(100, 100, 120, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .string-cell.scale-note::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(34, 197, 94, 0.4);
+            border: 2px solid rgba(34, 197, 94, 0.6);
+            pointer-events: none;
+        }
+
+        .string-cell.scale-root::after {
+            background: rgba(239, 68, 68, 0.5);
+            border-color: rgba(239, 68, 68, 0.8);
+        }
     </style>
 </head>
 
@@ -2132,6 +2382,59 @@
                         <span class="zone-type">🎹 Vertical Cluster</span>
                     </div>
                     <div class="key-grid" id="zone2Grid"></div>
+                </div>
+            </div>
+
+            <!-- Chord & Strum Panel -->
+            <div class="chord-strum-panel">
+                <div class="chord-strum-header">
+                    <span class="chord-strum-title">🎸 Hızlı Akorlar</span>
+                    <div class="scale-overlay-controls">
+                        <select class="scale-select" id="scaleSelect" onchange="toggleScaleOverlay(this.value)">
+                            <option value="">Skala Göster</option>
+                            <option value="pentatonic-minor">Am Pentatonik</option>
+                            <option value="pentatonic-major">C Pentatonik Major</option>
+                            <option value="major">C Major</option>
+                            <option value="minor">A Minor</option>
+                            <option value="blues">A Blues</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="chord-buttons">
+                    <!-- Major Chords -->
+                    <button class="chord-btn" onclick="playChord('C')">C</button>
+                    <button class="chord-btn" onclick="playChord('D')">D</button>
+                    <button class="chord-btn" onclick="playChord('E')">E</button>
+                    <button class="chord-btn" onclick="playChord('F')">F</button>
+                    <button class="chord-btn" onclick="playChord('G')">G</button>
+                    <button class="chord-btn" onclick="playChord('A')">A</button>
+                    <!-- Minor Chords -->
+                    <button class="chord-btn minor" onclick="playChord('Am')">Am</button>
+                    <button class="chord-btn minor" onclick="playChord('Dm')">Dm</button>
+                    <button class="chord-btn minor" onclick="playChord('Em')">Em</button>
+                </div>
+                <div class="strum-controls">
+                    <button class="strum-btn" onclick="strumDown()" title="Aşağı Strum">⬇️ Strum</button>
+                    <button class="strum-btn" onclick="strumUp()" title="Yukarı Strum">⬆️ Strum</button>
+                    <span style="color: var(--dim); font-size: 12px; margin-left: 8px;">Son akor: <span
+                            id="lastChord">-</span></span>
+                </div>
+            </div>
+
+            <!-- Recording Panel -->
+            <div class="recording-panel">
+                <div class="recording-header">
+                    <span class="recording-title">🎙️ Kayıt & Playback</span>
+                    <span class="recording-time" id="recordingTime">00:00</span>
+                </div>
+                <div class="recording-controls">
+                    <button class="rec-btn record" id="recBtn" onclick="toggleRecording()" title="Kayıt">⏺</button>
+                    <button class="rec-btn play" id="playBtn" onclick="playRecording()" title="Oynat"
+                        disabled>▶</button>
+                    <button class="rec-btn stop" id="stopBtn" onclick="stopPlayback()" title="Durdur">⏹</button>
+                </div>
+                <div class="recording-list" id="recordingList">
+                    <!-- Recordings will be listed here -->
                 </div>
             </div>
         </section>
@@ -3298,6 +3601,255 @@
                 panel.classList.remove('active');
             }
         });
+
+        // === CHORD & STRUM FUNCTIONS ===
+        let lastPlayedChord = null;
+
+        async function playChord(chordName) {
+            await ensureAudio();
+            lastPlayedChord = chordName;
+            document.getElementById('lastChord').textContent = chordName;
+
+            if (typeof GuitarModule !== 'undefined' && GuitarModule.playChord) {
+                GuitarModule.playChord(chordName, 'down');
+            } else if (typeof audioEngine !== 'undefined') {
+                // Fallback: play chord notes directly
+                const chordNotes = getChordNotes(chordName);
+                chordNotes.forEach((note, i) => {
+                    setTimeout(() => {
+                        audioEngine.playNoteName(note, 2.5, 'guitar');
+                    }, i * 30);
+                });
+            }
+        }
+
+        function getChordNotes(chordName) {
+            const chords = {
+                'C': ['C3', 'E3', 'G3', 'C4', 'E4'],
+                'D': ['D3', 'A3', 'D4', 'F#4'],
+                'E': ['E2', 'B2', 'E3', 'G#3', 'B3', 'E4'],
+                'F': ['F2', 'C3', 'F3', 'A3', 'C4', 'F4'],
+                'G': ['G2', 'B2', 'D3', 'G3', 'B3', 'G4'],
+                'A': ['A2', 'E3', 'A3', 'C#4', 'E4'],
+                'Am': ['A2', 'E3', 'A3', 'C4', 'E4'],
+                'Dm': ['D3', 'A3', 'D4', 'F4'],
+                'Em': ['E2', 'B2', 'E3', 'G3', 'B3', 'E4']
+            };
+            return chords[chordName] || ['C3', 'E3', 'G3'];
+        }
+
+        function strumDown() {
+            if (lastPlayedChord) {
+                playChord(lastPlayedChord);
+            }
+        }
+
+        function strumUp() {
+            if (lastPlayedChord && typeof GuitarModule !== 'undefined') {
+                GuitarModule.playChord(lastPlayedChord, 'up');
+            } else if (lastPlayedChord) {
+                const notes = getChordNotes(lastPlayedChord).reverse();
+                notes.forEach((note, i) => {
+                    setTimeout(() => {
+                        audioEngine.playNoteName(note, 2.5, 'guitar');
+                    }, i * 30);
+                });
+            }
+        }
+
+        // === RECORDING FUNCTIONS ===
+        let isRecording = false;
+        let recordingStartTime = null;
+        let recordedNotes = [];
+        let recordings = [];
+        let recordingTimer = null;
+        let isPlaying = false;
+
+        function toggleRecording() {
+            const btn = document.getElementById('recBtn');
+
+            if (!isRecording) {
+                // Start recording
+                isRecording = true;
+                recordingStartTime = Date.now();
+                recordedNotes = [];
+                btn.classList.add('recording');
+                btn.textContent = '⏸';
+
+                recordingTimer = setInterval(updateRecordingTime, 100);
+                console.log('🎙️ Recording started');
+            } else {
+                // Stop recording
+                isRecording = false;
+                btn.classList.remove('recording');
+                btn.textContent = '⏺';
+
+                clearInterval(recordingTimer);
+
+                if (recordedNotes.length > 0) {
+                    const duration = Date.now() - recordingStartTime;
+                    const recording = {
+                        id: Date.now(),
+                        name: `Kayıt ${recordings.length + 1}`,
+                        duration: duration,
+                        notes: [...recordedNotes]
+                    };
+                    recordings.push(recording);
+                    updateRecordingsList();
+                    document.getElementById('playBtn').disabled = false;
+                    console.log('🎙️ Recording saved:', recording);
+                }
+            }
+        }
+
+        function updateRecordingTime() {
+            if (!recordingStartTime) return;
+            const elapsed = Date.now() - recordingStartTime;
+            const seconds = Math.floor(elapsed / 1000);
+            const ms = Math.floor((elapsed % 1000) / 10);
+            document.getElementById('recordingTime').textContent =
+                `${String(seconds).padStart(2, '0')}:${String(ms).padStart(2, '0')}`;
+        }
+
+        // Hook into note playing to record
+        const originalPlayKeyBtn = window.playKeyBtn;
+        window.playKeyBtn = async function (btn) {
+            if (isRecording && recordingStartTime) {
+                const note = {
+                    time: Date.now() - recordingStartTime,
+                    string: parseInt(btn.dataset.s),
+                    fret: parseInt(btn.dataset.f),
+                    note: btn.dataset.note
+                };
+                recordedNotes.push(note);
+            }
+            return originalPlayKeyBtn(btn);
+        };
+
+        async function playRecording() {
+            if (recordings.length === 0 || isPlaying) return;
+
+            const recording = recordings[recordings.length - 1];
+            isPlaying = true;
+            document.getElementById('playBtn').disabled = true;
+
+            await ensureAudio();
+
+            for (const note of recording.notes) {
+                setTimeout(() => {
+                    if (typeof audioEngine !== 'undefined') {
+                        audioEngine.playGuitarString(note.string, note.fret);
+                    }
+                    // Visual feedback
+                    const cell = document.querySelector(
+                        `.string-cell[data-string="${note.string}"][data-fret="${note.fret}"]`
+                    );
+                    if (cell) {
+                        cell.classList.add('active');
+                        setTimeout(() => cell.classList.remove('active'), 300);
+                    }
+                }, note.time);
+            }
+
+            // Reset after playback
+            setTimeout(() => {
+                isPlaying = false;
+                document.getElementById('playBtn').disabled = false;
+            }, recording.duration + 500);
+        }
+
+        function stopPlayback() {
+            isPlaying = false;
+            if (typeof audioEngine !== 'undefined') audioEngine.stopAll();
+        }
+
+        function updateRecordingsList() {
+            const list = document.getElementById('recordingList');
+            list.innerHTML = recordings.map(rec => `
+                <div class="recording-item">
+                    <span class="recording-item-name">${rec.name} (${Math.round(rec.duration / 1000)}s)</span>
+                    <div class="recording-item-actions">
+                        <button class="recording-item-btn" onclick="playSpecificRecording(${rec.id})">▶</button>
+                        <button class="recording-item-btn" onclick="deleteRecording(${rec.id})">🗑</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function playSpecificRecording(id) {
+            const idx = recordings.findIndex(r => r.id === id);
+            if (idx >= 0) {
+                const temp = recordings[recordings.length - 1];
+                recordings[recordings.length - 1] = recordings[idx];
+                playRecording();
+                recordings[recordings.length - 1] = temp;
+            }
+        }
+
+        function deleteRecording(id) {
+            recordings = recordings.filter(r => r.id !== id);
+            updateRecordingsList();
+            if (recordings.length === 0) {
+                document.getElementById('playBtn').disabled = true;
+            }
+        }
+
+        // === SCALE OVERLAY FUNCTIONS ===
+        const scales = {
+            'pentatonic-minor': {
+                name: 'Am Pentatonik',
+                root: 'A',
+                intervals: [0, 3, 5, 7, 10] // A, C, D, E, G
+            },
+            'pentatonic-major': {
+                name: 'C Pentatonik Major',
+                root: 'C',
+                intervals: [0, 2, 4, 7, 9] // C, D, E, G, A
+            },
+            'major': {
+                name: 'C Major',
+                root: 'C',
+                intervals: [0, 2, 4, 5, 7, 9, 11]
+            },
+            'minor': {
+                name: 'A Minor',
+                root: 'A',
+                intervals: [0, 2, 3, 5, 7, 8, 10]
+            },
+            'blues': {
+                name: 'A Blues',
+                root: 'A',
+                intervals: [0, 3, 5, 6, 7, 10]
+            }
+        };
+
+        function toggleScaleOverlay(scaleKey) {
+            // Clear existing overlay
+            document.querySelectorAll('.string-cell.scale-note, .string-cell.scale-root').forEach(el => {
+                el.classList.remove('scale-note', 'scale-root');
+            });
+
+            if (!scaleKey || !scales[scaleKey]) return;
+
+            const scale = scales[scaleKey];
+            const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const rootIndex = noteNames.indexOf(scale.root);
+
+            // Get scale notes
+            const scaleNotes = scale.intervals.map(i => noteNames[(rootIndex + i) % 12]);
+
+            // Highlight fretboard cells
+            document.querySelectorAll('.string-cell').forEach(cell => {
+                const noteAttr = cell.querySelector('.note-dot')?.textContent || '';
+                const noteName = noteAttr.replace(/[0-9]/g, ''); // Remove octave
+
+                if (noteName === scale.root) {
+                    cell.classList.add('scale-root');
+                } else if (scaleNotes.includes(noteName)) {
+                    cell.classList.add('scale-note');
+                }
+            });
+        }
 
         // INIT
         buildFretboard();
