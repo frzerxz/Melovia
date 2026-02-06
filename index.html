@@ -2237,6 +2237,248 @@
             background: rgba(239, 68, 68, 0.5);
             border-color: rgba(239, 68, 68, 0.8);
         }
+
+        /* === BACKING TRACK PLAYER === */
+        .backing-track-panel {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .backing-track-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .backing-track-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .track-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            background: rgba(100, 100, 120, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .track-item:hover {
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        .track-item.active {
+            background: rgba(139, 92, 246, 0.25);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+        }
+
+        .track-item-icon {
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .track-item-info {
+            flex: 1;
+        }
+
+        .track-item-name {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .track-item-details {
+            color: var(--dim);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .track-player-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(100, 100, 120, 0.1);
+            border-radius: 12px;
+        }
+
+        .track-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .track-btn.play {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        .track-btn.pause {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .track-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .track-progress {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .track-progress-bar {
+            height: 6px;
+            background: rgba(100, 100, 120, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .track-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--cyan));
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .track-time {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--dim);
+        }
+
+        .track-volume {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .track-volume-icon {
+            font-size: 16px;
+        }
+
+        .track-volume-slider {
+            width: 80px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(100, 100, 120, 0.3);
+            border-radius: 2px;
+        }
+
+        .track-volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--cyan);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* === TABLATURE VIEWER === */
+        .tablature-panel {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .tablature-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .tablature-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .tablature-display {
+            background: #0a0a0f;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .tab-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        .tab-string-label {
+            width: 24px;
+            color: var(--dim);
+            font-weight: bold;
+        }
+
+        .tab-notes {
+            color: var(--cyan);
+            letter-spacing: 2px;
+        }
+
+        .tab-notes .highlight {
+            color: var(--accent);
+            background: rgba(139, 92, 246, 0.2);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .tablature-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .tab-control-btn {
+            padding: 8px 14px;
+            background: rgba(100, 100, 120, 0.15);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-control-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .tab-control-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
     </style>
 </head>
 
@@ -2435,6 +2677,85 @@
                 </div>
                 <div class="recording-list" id="recordingList">
                     <!-- Recordings will be listed here -->
+                </div>
+            </div>
+
+            <!-- Backing Track Player -->
+            <div class="backing-track-panel">
+                <div class="backing-track-header">
+                    <span class="backing-track-title">🎵 Backing Track Player</span>
+                </div>
+                <div class="track-list" id="trackList">
+                    <div class="track-item" onclick="selectTrack(0)">
+                        <span class="track-item-icon">🎸</span>
+                        <div class="track-item-info">
+                            <div class="track-item-name">Blues in A - Jam Track</div>
+                            <div class="track-item-details">Key: A • 100 BPM • 12-Bar Blues</div>
+                        </div>
+                    </div>
+                    <div class="track-item" onclick="selectTrack(1)">
+                        <span class="track-item-icon">🎤</span>
+                        <div class="track-item-info">
+                            <div class="track-item-name">Pop Rock - D Major</div>
+                            <div class="track-item-details">Key: D • 120 BPM • Pop</div>
+                        </div>
+                    </div>
+                    <div class="track-item" onclick="selectTrack(2)">
+                        <span class="track-item-icon">🔥</span>
+                        <div class="track-item-info">
+                            <div class="track-item-name">Metal Riff - E Minor</div>
+                            <div class="track-item-details">Key: Em • 140 BPM • Metal</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="track-player-controls">
+                    <button class="track-btn play" id="trackPlayBtn" onclick="toggleTrackPlay()">▶</button>
+                    <div class="track-progress">
+                        <div class="track-progress-bar" onclick="seekTrack(event)">
+                            <div class="track-progress-fill" id="trackProgressFill"></div>
+                        </div>
+                        <div class="track-time">
+                            <span id="trackCurrentTime">0:00</span>
+                            <span id="trackDuration">0:00</span>
+                        </div>
+                    </div>
+                    <div class="track-volume">
+                        <span class="track-volume-icon">🔊</span>
+                        <input type="range" class="track-volume-slider" min="0" max="100" value="70"
+                            onchange="setTrackVolume(this.value)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tablature Viewer -->
+            <div class="tablature-panel">
+                <div class="tablature-header">
+                    <span class="tablature-title">📜 Tablature</span>
+                    <select class="scale-select" onchange="loadTablature(this.value)">
+                        <option value="smoke">Smoke on the Water Riff</option>
+                        <option value="seven-nation">Seven Nation Army</option>
+                        <option value="come-as">Come As You Are</option>
+                        <option value="custom">Çaldığın Notalar</option>
+                    </select>
+                </div>
+                <div class="tablature-display" id="tablatureDisplay">
+                    <div class="tab-line"><span class="tab-string-label">e|</span><span
+                            class="tab-notes">----------------------------------</span></div>
+                    <div class="tab-line"><span class="tab-string-label">B|</span><span
+                            class="tab-notes">----------------------------------</span></div>
+                    <div class="tab-line"><span class="tab-string-label">G|</span><span
+                            class="tab-notes">--0--3--5----0--3--6--5-----------</span></div>
+                    <div class="tab-line"><span class="tab-string-label">D|</span><span
+                            class="tab-notes">--0--3--5----0--3--6--5-----------</span></div>
+                    <div class="tab-line"><span class="tab-string-label">A|</span><span
+                            class="tab-notes">----------------------------------</span></div>
+                    <div class="tab-line"><span class="tab-string-label">E|</span><span
+                            class="tab-notes">----------------------------------</span></div>
+                </div>
+                <div class="tablature-controls">
+                    <button class="tab-control-btn" onclick="playTablature()">▶ Çal</button>
+                    <button class="tab-control-btn" onclick="showTablatureFromRecording()">📝 Son Kaydı Göster</button>
+                    <button class="tab-control-btn" onclick="clearTablature()">🗑️ Temizle</button>
                 </div>
             </div>
         </section>
@@ -3849,6 +4170,272 @@
                     cell.classList.add('scale-note');
                 }
             });
+        }
+
+        // === BACKING TRACK PLAYER ===
+        const backingTracks = [
+            { name: 'Blues in A', key: 'A', bpm: 100, duration: 60 },
+            { name: 'Pop Rock - D Major', key: 'D', bpm: 120, duration: 45 },
+            { name: 'Metal Riff - E Minor', key: 'Em', bpm: 140, duration: 30 }
+        ];
+
+        let currentTrack = null;
+        let trackAudioContext = null;
+        let trackPlaying = false;
+        let trackStartTime = 0;
+        let trackProgressInterval = null;
+
+        function selectTrack(index) {
+            document.querySelectorAll('.track-item').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+            currentTrack = backingTracks[index];
+            document.getElementById('trackDuration').textContent = formatTime(currentTrack.duration);
+            document.getElementById('trackCurrentTime').textContent = '0:00';
+            document.getElementById('trackProgressFill').style.width = '0%';
+        }
+
+        function toggleTrackPlay() {
+            const btn = document.getElementById('trackPlayBtn');
+
+            if (!currentTrack) {
+                selectTrack(0);
+            }
+
+            if (!trackPlaying) {
+                // Start playing (simulated backing track with generated audio)
+                trackPlaying = true;
+                btn.textContent = '⏸';
+                btn.classList.remove('play');
+                btn.classList.add('pause');
+                trackStartTime = Date.now();
+
+                // Generate simple backing track
+                playBackingTrackAudio(currentTrack);
+
+                trackProgressInterval = setInterval(() => {
+                    const elapsed = (Date.now() - trackStartTime) / 1000;
+                    const progress = (elapsed / currentTrack.duration) * 100;
+
+                    document.getElementById('trackProgressFill').style.width = Math.min(progress, 100) + '%';
+                    document.getElementById('trackCurrentTime').textContent = formatTime(elapsed);
+
+                    if (elapsed >= currentTrack.duration) {
+                        stopTrack();
+                    }
+                }, 100);
+            } else {
+                stopTrack();
+            }
+        }
+
+        function stopTrack() {
+            trackPlaying = false;
+            const btn = document.getElementById('trackPlayBtn');
+            btn.textContent = '▶';
+            btn.classList.remove('pause');
+            btn.classList.add('play');
+
+            clearInterval(trackProgressInterval);
+
+            if (trackAudioContext) {
+                trackAudioContext.close();
+                trackAudioContext = null;
+            }
+        }
+
+        async function playBackingTrackAudio(track) {
+            trackAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const bpm = track.bpm;
+            const beatDuration = 60 / bpm;
+            const key = track.key;
+
+            // Simple chord progression based on key
+            const chordMap = {
+                'A': ['A2', 'D3', 'E3', 'A2'],
+                'D': ['D3', 'G3', 'A3', 'D3'],
+                'Em': ['E2', 'A2', 'B2', 'E2']
+            };
+            const chords = chordMap[key] || chordMap['A'];
+
+            // Play simple rhythm
+            let beat = 0;
+            const playBeat = () => {
+                if (!trackPlaying) return;
+
+                const chordIndex = Math.floor(beat / 4) % chords.length;
+                const note = chords[chordIndex];
+                const freq = noteToFreq(note);
+
+                // Create bass drum + bass note
+                const osc = trackAudioContext.createOscillator();
+                const gain = trackAudioContext.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.15, trackAudioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, trackAudioContext.currentTime + beatDuration * 0.8);
+
+                osc.connect(gain);
+                gain.connect(trackAudioContext.destination);
+                osc.start();
+                osc.stop(trackAudioContext.currentTime + beatDuration);
+
+                beat++;
+                if (trackPlaying && beat < track.duration / beatDuration) {
+                    setTimeout(playBeat, beatDuration * 1000);
+                }
+            };
+
+            playBeat();
+        }
+
+        function noteToFreq(note) {
+            const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const match = note.match(/([A-G]#?)(\d)/);
+            if (!match) return 440;
+            const n = notes.indexOf(match[1]);
+            const octave = parseInt(match[2]);
+            return 440 * Math.pow(2, (n - 9) / 12 + (octave - 4));
+        }
+
+        function seekTrack(event) {
+            if (!currentTrack) return;
+            const bar = event.currentTarget;
+            const rect = bar.getBoundingClientRect();
+            const percent = (event.clientX - rect.left) / rect.width;
+            trackStartTime = Date.now() - (percent * currentTrack.duration * 1000);
+        }
+
+        function setTrackVolume(value) {
+            // Volume control (would need proper implementation with gain node)
+            console.log('Track volume:', value);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${String(secs).padStart(2, '0')}`;
+        }
+
+        // === TABLATURE VIEWER ===
+        const tablatures = {
+            'smoke': {
+                name: 'Smoke on the Water',
+                strings: [
+                    '----------------------------------',
+                    '----------------------------------',
+                    '--0--3--5----0--3--6--5-----------',
+                    '--0--3--5----0--3--6--5-----------',
+                    '----------------------------------',
+                    '----------------------------------'
+                ],
+                notes: [
+                    { s: 3, f: 0 }, { s: 3, f: 3 }, { s: 3, f: 5 },
+                    { s: 3, f: 0 }, { s: 3, f: 3 }, { s: 3, f: 6 }, { s: 3, f: 5 }
+                ]
+            },
+            'seven-nation': {
+                name: 'Seven Nation Army',
+                strings: [
+                    '----------------------------------',
+                    '----------------------------------',
+                    '----------------------------------',
+                    '----------------------------------',
+                    '--7--7--10--7--5--3--2------------',
+                    '----------------------------------'
+                ],
+                notes: [
+                    { s: 5, f: 7 }, { s: 5, f: 7 }, { s: 5, f: 10 },
+                    { s: 5, f: 7 }, { s: 5, f: 5 }, { s: 5, f: 3 }, { s: 5, f: 2 }
+                ]
+            },
+            'come-as': {
+                name: 'Come As You Are',
+                strings: [
+                    '-----0--1--2--2--1--0-------------',
+                    '--2-----------2-------------------',
+                    '----------------------------------',
+                    '----------------------------------',
+                    '----------------------------------',
+                    '----------------------------------'
+                ],
+                notes: [
+                    { s: 2, f: 2 }, { s: 1, f: 0 }, { s: 1, f: 1 }, { s: 1, f: 2 },
+                    { s: 2, f: 2 }, { s: 1, f: 2 }, { s: 1, f: 1 }, { s: 1, f: 0 }
+                ]
+            },
+            'custom': {
+                name: 'Custom',
+                strings: Array(6).fill('----------------------------------'),
+                notes: []
+            }
+        };
+
+        let currentTab = 'smoke';
+
+        function loadTablature(tabKey) {
+            currentTab = tabKey;
+            const tab = tablatures[tabKey];
+            if (!tab) return;
+
+            const display = document.getElementById('tablatureDisplay');
+            const stringLabels = ['e', 'B', 'G', 'D', 'A', 'E'];
+
+            display.innerHTML = tab.strings.map((line, i) => `
+                <div class="tab-line">
+                    <span class="tab-string-label">${stringLabels[i]}|</span>
+                    <span class="tab-notes">${line}</span>
+                </div>
+            `).join('');
+        }
+
+        async function playTablature() {
+            const tab = tablatures[currentTab];
+            if (!tab || !tab.notes.length) return;
+
+            await ensureAudio();
+
+            tab.notes.forEach((note, i) => {
+                setTimeout(() => {
+                    if (typeof audioEngine !== 'undefined') {
+                        audioEngine.playGuitarString(note.s, note.f);
+                    }
+                }, i * 300);
+            });
+        }
+
+        function showTablatureFromRecording() {
+            if (recordings.length === 0) {
+                alert('Henüz kayıt yok!');
+                return;
+            }
+
+            const recording = recordings[recordings.length - 1];
+            const stringLabels = ['e', 'B', 'G', 'D', 'A', 'E'];
+            const strings = Array(6).fill('');
+
+            // Convert recording to tab
+            recording.notes.forEach((note, i) => {
+                const strIdx = 6 - note.string; // Convert string number to array index
+                strings[strIdx] += note.fret.toString().padStart(2, '-') + '-';
+            });
+
+            // Pad strings to same length
+            const maxLen = Math.max(...strings.map(s => s.length), 34);
+            strings.forEach((s, i) => {
+                strings[i] = s.padEnd(maxLen, '-');
+            });
+
+            tablatures['custom'].strings = strings;
+            tablatures['custom'].notes = recording.notes.map(n => ({ s: n.string, f: n.fret }));
+            loadTablature('custom');
+        }
+
+        function clearTablature() {
+            tablatures['custom'].strings = Array(6).fill('----------------------------------');
+            tablatures['custom'].notes = [];
+            loadTablature('custom');
         }
 
         // INIT
