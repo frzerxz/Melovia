@@ -1,11 +1,61 @@
 /**
- * Melovia - Guitar Module v3
- * Referans görsele uygun fretboard
+ * Melovia - Guitar Module v4
+ * Advanced features: Chords, Alternate Tunings, Capo, Strum Mode
  */
 
 const GuitarModule = {
     tuning: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'],
     tuningLabels: ['E', 'B', 'G', 'D', 'A', 'E'],
+
+    // Alternate tunings
+    tunings: {
+        standard: { notes: ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'], labels: ['E', 'B', 'G', 'D', 'A', 'E'] },
+        dropD: { notes: ['E4', 'B3', 'G3', 'D3', 'A2', 'D2'], labels: ['E', 'B', 'G', 'D', 'A', 'D'] },
+        openG: { notes: ['D4', 'B3', 'G3', 'D3', 'G2', 'D2'], labels: ['D', 'B', 'G', 'D', 'G', 'D'] },
+        openD: { notes: ['D4', 'A3', 'F#3', 'D3', 'A2', 'D2'], labels: ['D', 'A', 'F#', 'D', 'A', 'D'] },
+        dadgad: { notes: ['D4', 'A3', 'G3', 'D3', 'A2', 'D2'], labels: ['D', 'A', 'G', 'D', 'A', 'D'] },
+        halfStepDown: { notes: ['D#4', 'A#3', 'F#3', 'C#3', 'G#2', 'D#2'], labels: ['Eb', 'Bb', 'Gb', 'Db', 'Ab', 'Eb'] }
+    },
+    currentTuning: 'standard',
+
+    // Capo position (0 = no capo)
+    capoPosition: 0,
+
+    // Chord library - [string6, string5, string4, string3, string2, string1] (-1 = mute, 0 = open)
+    chords: {
+        // Major chords
+        'C': { frets: [-1, 3, 2, 0, 1, 0], fingers: [0, 3, 2, 0, 1, 0], name: 'C Major' },
+        'D': { frets: [-1, -1, 0, 2, 3, 2], fingers: [0, 0, 0, 1, 3, 2], name: 'D Major' },
+        'E': { frets: [0, 2, 2, 1, 0, 0], fingers: [0, 2, 3, 1, 0, 0], name: 'E Major' },
+        'F': { frets: [1, 3, 3, 2, 1, 1], fingers: [1, 3, 4, 2, 1, 1], name: 'F Major', barre: 1 },
+        'G': { frets: [3, 2, 0, 0, 0, 3], fingers: [2, 1, 0, 0, 0, 3], name: 'G Major' },
+        'A': { frets: [-1, 0, 2, 2, 2, 0], fingers: [0, 0, 1, 2, 3, 0], name: 'A Major' },
+        'B': { frets: [-1, 2, 4, 4, 4, 2], fingers: [0, 1, 2, 3, 4, 1], name: 'B Major', barre: 2 },
+
+        // Minor chords
+        'Am': { frets: [-1, 0, 2, 2, 1, 0], fingers: [0, 0, 2, 3, 1, 0], name: 'A Minor' },
+        'Bm': { frets: [-1, 2, 4, 4, 3, 2], fingers: [0, 1, 3, 4, 2, 1], name: 'B Minor', barre: 2 },
+        'Cm': { frets: [-1, 3, 5, 5, 4, 3], fingers: [0, 1, 3, 4, 2, 1], name: 'C Minor', barre: 3 },
+        'Dm': { frets: [-1, -1, 0, 2, 3, 1], fingers: [0, 0, 0, 2, 3, 1], name: 'D Minor' },
+        'Em': { frets: [0, 2, 2, 0, 0, 0], fingers: [0, 2, 3, 0, 0, 0], name: 'E Minor' },
+        'Fm': { frets: [1, 3, 3, 1, 1, 1], fingers: [1, 3, 4, 1, 1, 1], name: 'F Minor', barre: 1 },
+        'Gm': { frets: [3, 5, 5, 3, 3, 3], fingers: [1, 3, 4, 1, 1, 1], name: 'G Minor', barre: 3 },
+
+        // 7th chords
+        'A7': { frets: [-1, 0, 2, 0, 2, 0], fingers: [0, 0, 1, 0, 2, 0], name: 'A7' },
+        'B7': { frets: [-1, 2, 1, 2, 0, 2], fingers: [0, 2, 1, 3, 0, 4], name: 'B7' },
+        'C7': { frets: [-1, 3, 2, 3, 1, 0], fingers: [0, 3, 2, 4, 1, 0], name: 'C7' },
+        'D7': { frets: [-1, -1, 0, 2, 1, 2], fingers: [0, 0, 0, 2, 1, 3], name: 'D7' },
+        'E7': { frets: [0, 2, 0, 1, 0, 0], fingers: [0, 2, 0, 1, 0, 0], name: 'E7' },
+        'G7': { frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 0, 0, 0, 1], name: 'G7' },
+
+        // Major 7th
+        'Amaj7': { frets: [-1, 0, 2, 1, 2, 0], fingers: [0, 0, 2, 1, 3, 0], name: 'Amaj7' },
+        'Cmaj7': { frets: [-1, 3, 2, 0, 0, 0], fingers: [0, 3, 2, 0, 0, 0], name: 'Cmaj7' },
+        'Dmaj7': { frets: [-1, -1, 0, 2, 2, 2], fingers: [0, 0, 0, 1, 1, 1], name: 'Dmaj7' },
+        'Fmaj7': { frets: [-1, -1, 3, 2, 1, 0], fingers: [0, 0, 3, 2, 1, 0], name: 'Fmaj7' },
+        'Gmaj7': { frets: [3, 2, 0, 0, 0, 2], fingers: [2, 1, 0, 0, 0, 3], name: 'Gmaj7' }
+    },
 
     guitarTypes: {
         'classical': { frets: 19 },
@@ -42,7 +92,118 @@ const GuitarModule = {
         this.buildKeyMappings();
         this.generateFretboard();
         this.updateFretRange();
-        console.log('🎸 Guitar Module v3 initialized');
+        console.log('🎸 Guitar Module v4 initialized (Chords + Tunings + Capo)');
+    },
+
+    // === TUNING METHODS ===
+    setTuning(tuningName) {
+        const tuning = this.tunings[tuningName];
+        if (tuning) {
+            this.currentTuning = tuningName;
+            this.tuning = tuning.notes;
+            this.tuningLabels = tuning.labels;
+            this.generateFretboard();
+            console.log(`🎵 Tuning changed to: ${tuningName}`);
+        }
+    },
+
+    // === CAPO METHODS ===
+    setCapo(fret) {
+        this.capoPosition = Math.max(0, Math.min(fret, 12));
+        this.generateFretboard();
+        console.log(`🔧 Capo set to fret: ${this.capoPosition}`);
+    },
+
+    // === CHORD METHODS ===
+    getChord(chordName) {
+        return this.chords[chordName] || null;
+    },
+
+    playChord(chordName, strumDirection = 'down') {
+        const chord = this.chords[chordName];
+        if (!chord || typeof audioEngine === 'undefined') return;
+
+        const notes = [];
+        chord.frets.forEach((fret, i) => {
+            if (fret >= 0) {
+                const stringNum = 6 - i;
+                const actualFret = fret + this.capoPosition;
+                notes.push({ string: stringNum, fret: actualFret });
+            }
+        });
+
+        audioEngine.playStrum(notes, strumDirection, 35);
+        this.highlightChord(chord);
+    },
+
+    highlightChord(chord) {
+        // Clear previous highlights
+        document.querySelectorAll('.string-cell.chord-highlight').forEach(el => {
+            el.classList.remove('chord-highlight');
+        });
+
+        // Highlight chord positions
+        chord.frets.forEach((fret, i) => {
+            if (fret >= 0) {
+                const stringNum = 6 - i;
+                const actualFret = fret + this.capoPosition;
+                const cell = document.querySelector(`.string-cell[data-string="${stringNum}"][data-fret="${actualFret}"]`);
+                if (cell) {
+                    cell.classList.add('chord-highlight', 'active');
+                    setTimeout(() => {
+                        cell.classList.remove('active');
+                    }, 500);
+                }
+            }
+        });
+    },
+
+    getChordDiagramSVG(chordName, size = 100) {
+        const chord = this.chords[chordName];
+        if (!chord) return '';
+
+        const padding = 10;
+        const fretWidth = (size - padding * 2) / 5;
+        const stringSpacing = (size - padding * 2) / 5;
+
+        let svg = `<svg width="${size}" height="${size + 20}" viewBox="0 0 ${size} ${size + 20}">`;
+
+        // Background
+        svg += `<rect x="0" y="0" width="${size}" height="${size + 20}" fill="#1a1a24" rx="8"/>`;
+
+        // Chord name
+        svg += `<text x="${size / 2}" y="15" fill="#fff" font-size="12" text-anchor="middle" font-weight="bold">${chordName}</text>`;
+
+        // Fret lines (horizontal)
+        for (let f = 0; f <= 4; f++) {
+            const y = 25 + f * fretWidth;
+            svg += `<line x1="${padding}" y1="${y}" x2="${size - padding}" y2="${y}" stroke="#666" stroke-width="1"/>`;
+        }
+
+        // String lines (vertical)
+        for (let s = 0; s < 6; s++) {
+            const x = padding + s * stringSpacing;
+            svg += `<line x1="${x}" y1="25" x2="${x}" y2="${25 + 4 * fretWidth}" stroke="#888" stroke-width="${1 + (5 - s) * 0.3}"/>`;
+        }
+
+        // Finger positions
+        chord.frets.forEach((fret, i) => {
+            const x = padding + i * stringSpacing;
+            if (fret === -1) {
+                // Muted string (X)
+                svg += `<text x="${x}" y="22" fill="#f44" font-size="10" text-anchor="middle">✕</text>`;
+            } else if (fret === 0) {
+                // Open string (O)
+                svg += `<circle cx="${x}" cy="22" r="3" fill="none" stroke="#4f4" stroke-width="1.5"/>`;
+            } else {
+                // Fretted note
+                const y = 25 + (fret - 0.5) * fretWidth;
+                svg += `<circle cx="${x}" cy="${y}" r="5" fill="#8b5cf6"/>`;
+            }
+        });
+
+        svg += '</svg>';
+        return svg;
     },
 
     buildKeyMappings() {

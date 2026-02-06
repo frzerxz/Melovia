@@ -1,8 +1,8 @@
 # Melovia - Dijital Gitar Simülatörü
-## Proje Raporu v1.0
+## Proje Raporu v4.0
 
-**Tarih:** 22 Ocak 2026  
-**Versiyon:** 0.1  
+**Tarih:** 6 Şubat 2026  
+**Versiyon:** 0.4  
 **GitHub:** https://github.com/frzerxz/Melovia
 
 ---
@@ -10,15 +10,17 @@
 ## 📋 İçindekiler
 
 1. [Proje Genel Bakış](#proje-genel-bakış)
-2. [Teknoloji Stack](#teknoloji-stack)
-3. [Dosya Yapısı](#dosya-yapısı)
-4. [UI/UX Tasarım Sistemi](#uiux-tasarım-sistemi)
-5. [Renk Paleti](#renk-paleti)
-6. [Bileşenler](#bileşenler)
-7. [Klavye Entegrasyonu](#klavye-entegrasyonu)
-8. [Ses Motoru](#ses-motoru)
-9. [Unreal Engine Entegrasyonu](#unreal-engine-entegrasyonu)
-10. [Gelecek Planları](#gelecek-planları)
+2. [Son Güncelleme Özeti](#son-güncelleme-özeti)
+3. [Teknoloji Stack](#teknoloji-stack)
+4. [Dosya Yapısı](#dosya-yapısı)
+5. [Ses Motoru v3](#ses-motoru-v3)
+6. [Efekt Kontrol Paneli](#efekt-kontrol-paneli)
+7. [Gitar Modülü v4](#gitar-modülü-v4)
+8. [UI/UX Tasarım Sistemi](#uiux-tasarım-sistemi)
+9. [Klavye Entegrasyonu](#klavye-entegrasyonu)
+10. [Ders Sistemi](#ders-sistemi)
+11. [Unreal Engine Entegrasyonu](#unreal-engine-entegrasyonu)
+12. [Gelecek Planları](#gelecek-planları)
 
 ---
 
@@ -27,25 +29,63 @@
 **Melovia**, bilgisayar klavyesi kullanarak gitar çalmayı öğreten interaktif bir web tabanlı müzik eğitim platformudur.
 
 ### Temel Özellikler:
-- **6 Telli Gitar Simülasyonu** - Klasik, Elektro ve Bas- **HUD (Heads-Up Display) Geliştirmesi:**
-  - "Dersi Başlat" özelliği ile gitar sekmesinde açılan interaktif ders arayüzü.
-  - **Kompakt Tasarım:** Şarkı bilgisi, aktif nota detayları ve kontroller tek bir yatay şeritte toplandı.
-  - **Auto-Focus Timeline:** Gelecek notaların kayan bir şerit üzerinde gösterildiği ve aktif notanın her zaman merkezde olduğu dinamik akış.
-  - **Ders Verisi Doğrulaması:** "Arkadaşım Eşek" dersi için notalar, gitarın S6-S1 (Kalın-İnce) tel yapısına ve doğru perdelere göre yeniden düzenlendi. Özellikle Outro kısmı kalın tonlara (4. ve 5. teller) taşındı.
-  - **Tamamlama Mantığı:** Şarkı bittiğinde başarı mesajı ve dersi sonlandırma akışı eklendi.
-- **Tasarım İyileştirmeleri:** Ders kartları simetrik hale getirildi, butonlar ve ikonlar hizalandı.
+- **6 Telli Gitar Simülasyonu** - Klasik, Elektro ve Bas gitar modları
+- **Gelişmiş Ses Motoru** - Karplus-Strong algoritması ile gerçekçi gitar sesi
+- **20+ Akor Kütüphanesi** - Major, Minor, 7th, Maj7 akorları
+- **6 Amplifikatör Preset** - Clean, Crunch, High Gain, Acoustic, Jazz, Metal
+- **Efekt Kontrol Paneli** - Chorus, Delay, EQ, Metronom
+- **Alternatif Akortlar** - Drop D, Open G, DADGAD ve daha fazlası
+- **Sanal Capo Desteği** - 1-12 perde arası
+- **İnteraktif Ders Sistemi** - HUD ve Timeline ile şarkı öğrenme
 - **Klavye Entegrasyonu** - QWERTY klavye ile nota çalma
 - **Zone Sistemi** - 6 bölgeli tuş haritalaması
-- **Pair Sistemi** - Perde gruplarını yönetme
-- **Görsel Fretboard** - İnteraktif perde görselleştirmesi
 - **Piyano Modu** - Alternatif enstrüman desteği
-- **Ders Modülü** - Şarkı öğrenme sistemi
 
 ### Hedef Kitle:
 - Müzik öğrencileri
 - Hobi müzisyenler
 - Gitar öğrenmek isteyenler
 - Oyun geliştiricileri (Unreal Engine entegrasyonu)
+
+---
+
+## 🆕 Son Güncelleme Özeti (v0.4)
+
+### ✅ Eklenen Özellikler:
+
+#### Ses Motoru Geliştirmeleri:
+- **6 Amplifikatör Preset:** Clean, Crunch, High Gain, Acoustic, Jazz, Metal
+- **Metronom:** 40-220 BPM arası ayarlanabilir tempo
+- **Distortion/Reverb kontrolleri** her preset için optimize edildi
+
+#### Gitar Modülü v4:
+- **20+ Akor Kütüphanesi:**
+  - Major: C, D, E, F, G, A, B
+  - Minor: Am, Bm, Cm, Dm, Em, Fm, Gm
+  - 7th: A7, B7, C7, D7, E7, G7
+  - Maj7: Amaj7, Cmaj7, Dmaj7, Fmaj7, Gmaj7
+- **Alternatif Akortlar:** Standard, Drop D, Open G, Open D, DADGAD, Half Step Down
+- **Sanal Capo:** 1-12 perde arası destek
+- **SVG Akor Diyagramları:** Görsel akor gösterimi
+
+#### Efekt Kontrol Paneli (UI):
+- Sağdan kayarak açılan floating panel
+- Amp preset butonları
+- Master Volume ve Reverb slider'ları
+- Chorus efekti (Rate, Depth, Mix kontrolleri)
+- Delay efekti (Time, Feedback, Mix kontrolleri)
+- 3-Band EQ (Low, Mid, High slider'ları)
+- Metronom (Play/Pause + BPM ayarı)
+
+#### Görsel İyileştirmeler:
+- Tel titreşim animasyonu geliştirildi
+- Chord highlight stili eklendi
+- Nota press animasyonu eklendi
+- Versiyon numarası v0.4'e güncellendi
+
+#### Dokümantasyon:
+- `DOCUMENTATION.md` oluşturuldu - Tüm kavramların detaylı açıklaması
+- `README.md` güncellendi
 
 ---
 
@@ -57,18 +97,23 @@
 | HTML5 | - | Yapısal içerik |
 | CSS3 | - | Stil ve animasyonlar |
 | JavaScript (ES6+) | - | İnteraktivite ve mantık |
-| Web Audio API | - | Ses sentezleme |
+| Web Audio API | - | Gerçek zamanlı ses sentezleme |
+
+### Ses Teknolojileri
+| Özellik | Açıklama |
+|---------|----------|
+| Karplus-Strong | Fiziksel modelleme ile gitar sesi |
+| ADSR Envelope | Attack-Decay-Sustain-Release zarfı |
+| Waveshaper | Distortion efekti için |
+| Convolver | Reverb (impulse response) |
+| BiquadFilter | EQ ve frekans filtreleme |
 
 ### Geliştirme Araçları
 | Araç | Kullanım Amacı |
 |------|----------------|
 | http-server | Yerel geliştirme sunucusu |
-| Git | Versiyon kontrolü |
+| Git/GitHub | Versiyon kontrolü |
 | VS Code | Kod editörü |
-
-### Harici Bağımlılıklar
-- **Google Fonts (Inter)** - Tipografi
-- Başka harici bağımlılık yok (vanilla JS)
 
 ---
 
@@ -76,85 +121,195 @@
 
 ```
 Melovia/
-├── index.html          # Ana uygulama dosyası (tüm CSS ve JS dahil)
-├── docs/
-│   ├── PROJECT_REPORT.md    # Bu dosya
-│   └── UNREAL_INTEGRATION.md # Unreal Engine rehberi
-├── unreal/
-│   ├── MeloviaAPI.js        # Unreal için API wrapper
-│   └── WebBrowserWidget.md  # Widget kurulum rehberi
-├── css/
-│   ├── guitar.css      # Gitar bileşen stilleri (gelecek)
-│   ├── lessons.css     # Ders modülü stilleri (gelecek)
-│   ├── piano.css       # Piyano stilleri (gelecek)
-│   └── styles.css      # Genel stiller (gelecek)
+├── index.html              # Ana uygulama (HTML + inline CSS + JS)
+├── README.md               # Proje açıklaması
+├── DOCUMENTATION.md        # Kapsamlı teknik dokümantasyon
+│
 ├── js/
-│   ├── app.js          # Ana uygulama mantığı (gelecek)
-│   ├── audioEngine.js  # Ses motoru
-│   ├── guitarModule.js # Gitar modülü (gelecek)
-│   ├── lessonModule.js # Ders modülü (gelecek)
-│   └── pianoModule.js  # Piyano modülü
-└── assets/
-    └── sounds/         # Ses dosyaları (gelecek)
+│   ├── audioEngine.js      # Ses motoru v3 (Karplus-Strong + Efektler)
+│   ├── guitarModule.js     # Gitar modülü v4 (Akorlar + Akortlar + Capo)
+│   ├── noteMapping.js      # Nota-frekans dönüşümü
+│   ├── lessonsModule.js    # Ders sistemi
+│   └── pianoModule.js      # Piyano modülü
+│
+├── css/
+│   ├── styles.css          # Genel stiller
+│   ├── guitar.css          # Gitar bileşen stilleri
+│   ├── lessons.css         # Ders modülü stilleri
+│   └── piano.css           # Piyano stilleri
+│
+├── docs/
+│   ├── PROJECT_REPORT.md   # Bu dosya
+│   └── UNREAL_INTEGRATION.md # Unreal Engine rehberi
+│
+└── unreal/
+    ├── MeloviaAPI.js       # Unreal için API wrapper
+    └── WebBrowserWidget.md # Widget kurulum rehberi
+```
+
+---
+
+## 🔊 Ses Motoru v3
+
+### Mimari Genel Bakış
+
+```
+Kaynak → Distortion → Compressor → [Dry + Reverb] → Master → Hoparlör
+```
+
+### Karplus-Strong Algoritması
+
+Gerçekçi gitar sesi üretimi için fiziksel modelleme:
+
+1. **Excitation (Uyarım):** Rastgele gürültü + harmonikler
+2. **Delay Line:** Periyodik tekrar (tel uzunluğu simülasyonu)
+3. **Low-pass Filter:** Her tekrarda yumuşatma (enerji kaybı)
+4. **Decay Envelope:** Üstel sönümleme
+
+```javascript
+// Karplus-Strong döngüsü
+for (let i = 0; i < totalSamples; i++) {
+    if (i < periodSamples) {
+        data[i] = noiseBuffer[i];
+    } else {
+        const prev = data[i - periodSamples];
+        const next = data[i - periodSamples + 1] || prev;
+        data[i] = decay * (blend * prev + (1 - blend) * next);
+    }
+}
+```
+
+### Tel Parametreleri
+
+| Tel | Decay | Blend | Brightness | Attack | Bass Boost |
+|-----|-------|-------|------------|--------|------------|
+| 1 (E4) | 0.998 | 0.5 | 1.0 | 0.8 | 0 dB |
+| 2 (B3) | 0.997 | 0.5 | 0.9 | 0.7 | 0 dB |
+| 3 (G3) | 0.996 | 0.48 | 0.8 | 0.6 | +2 dB |
+| 4 (D3) | 0.994 | 0.45 | 0.6 | 0.5 | +4 dB |
+| 5 (A2) | 0.992 | 0.42 | 0.4 | 0.4 | +6 dB |
+| 6 (E2) | 0.990 | 0.40 | 0.3 | 0.35 | +8 dB |
+
+### Amplifikatör Presets
+
+| Preset | Distortion | Reverb | Karakter |
+|--------|------------|--------|----------|
+| Clean | 0% | 20% | Saf, temiz |
+| Crunch | 30% | 15% | Hafif kırık, sıcak |
+| High Gain | 70% | 10% | Ağır distortion |
+| Acoustic | 0% | 25% | Sıcak, ahşap tını |
+| Jazz | 5% | 30% | Yumuşak, yuvarlak |
+| Metal | 85% | 5% | Maksimum sertlik |
+
+---
+
+## 🎛️ Efekt Kontrol Paneli
+
+### Panel Yapısı
+
+```
+┌─────────────────────────────────────┐
+│ ⚙️ Efekt Kontrolleri           [X] │
+├─────────────────────────────────────┤
+│ 🎸 AMPLİFİKATÖR                     │
+│ [Clean][Crunch][High Gain]          │
+│ [Acoustic][Jazz][Metal]             │
+├─────────────────────────────────────┤
+│ 🔊 MASTER                           │
+│ Volume: ═══════════●═══ 75%        │
+│ Reverb: ═══●═════════════ 20%      │
+├─────────────────────────────────────┤
+│ 💫 CHORUS                    [OFF]  │
+│ Rate:  ═══●════════════════        │
+│ Depth: ═══●════════════════        │
+│ Mix:   ═══●════════════════        │
+├─────────────────────────────────────┤
+│ 🔁 DELAY                     [OFF]  │
+│ Time:     ═══●═════════════        │
+│ Feedback: ═══●═════════════        │
+│ Mix:      ═══●═════════════        │
+├─────────────────────────────────────┤
+│ 📊 EQUALIZER                        │
+│   Low    Mid    High                │
+│    │      │      │                  │
+│    ●      ●      ●                  │
+│    │      │      │                  │
+├─────────────────────────────────────┤
+│ 🥁 METRONOM                         │
+│ [▶ Başlat]     120 BPM             │
+│ ════════════●══════════════        │
+└─────────────────────────────────────┘
+```
+
+### Efekt Parametreleri
+
+#### Chorus
+- **Rate:** 0.1 - 5 Hz (LFO hızı)
+- **Depth:** 0 - 10 ms (frekans sapması)
+- **Mix:** 0 - 100% (efekt oranı)
+
+#### Delay
+- **Time:** 50 - 1000 ms (gecikme süresi)
+- **Feedback:** 0 - 90% (tekrar sayısı)
+- **Mix:** 0 - 100% (echo oranı)
+
+#### 3-Band EQ
+- **Low:** -12 ile +12 dB (320 Hz altı)
+- **Mid:** -12 ile +12 dB (1000 Hz civarı)
+- **High:** -12 ile +12 dB (3200 Hz üstü)
+
+#### Metronom
+- **BPM:** 40 - 220 (dakikada vuruş)
+- **Time Signature:** 4/4 (varsayılan)
+
+---
+
+## 🎸 Gitar Modülü v4
+
+### Akor Kütüphanesi
+
+#### Major Akorlar
+| Akor | Perde Pozisyonları | Parmaklar |
+|------|-------------------|-----------|
+| C | x-3-2-0-1-0 | x-3-2-0-1-0 |
+| D | x-x-0-2-3-2 | x-x-0-1-3-2 |
+| E | 0-2-2-1-0-0 | 0-2-3-1-0-0 |
+| F | 1-3-3-2-1-1 | Barre |
+| G | 3-2-0-0-0-3 | 2-1-0-0-0-3 |
+| A | x-0-2-2-2-0 | x-0-1-2-3-0 |
+| B | x-2-4-4-4-2 | Barre |
+
+#### Minor Akorlar
+| Akor | Perde Pozisyonları |
+|------|-------------------|
+| Am | x-0-2-2-1-0 |
+| Dm | x-x-0-2-3-1 |
+| Em | 0-2-2-0-0-0 |
+
+### Alternatif Akortlar
+
+| Akort | Teller (6→1) | Kullanım Alanı |
+|-------|--------------|----------------|
+| Standard | E-A-D-G-B-E | Genel kullanım |
+| Drop D | D-A-D-G-B-E | Metal, power chord |
+| Open G | D-G-D-G-B-D | Blues, slide |
+| Open D | D-A-D-F#-A-D | Folk, slide |
+| DADGAD | D-A-D-G-A-D | Celtic, akustik |
+| Half Step Down | Eb-Ab-Db-Gb-Bb-Eb | Daha koyu ton |
+
+### Capo Desteği
+
+```javascript
+// Capo ile frekans hesaplama
+const actualFret = userFret + capoPosition;
+const frequency = baseFreq * Math.pow(2, actualFret / 12);
 ```
 
 ---
 
 ## 🎨 UI/UX Tasarım Sistemi
 
-### Tasarım İlkeleri
-
-1. **Koyu Tema** - Göz yorgunluğunu azaltmak için
-2. **Soft Renkler** - Göz yormayan pastel tonlar
-3. **Oval Köşeler** - Modern ve yumuşak görünüm
-4. **Gradient Geçişler** - Mavi → Mor renk akışı
-5. **Tutarlılık** - Tüm bileşenlerde aynı stil dili
-
-### Grid Sistemi
-
-```
-┌─────────────────────────────────────────────────────────┐
-│ HEADER (border-radius: 0 0 16px 16px)                   │
-├─────────────────────────────────────────────────────────┤
-│ FRETBOARD TOOLBAR                                       │
-│ [Dropdown] [Spacer] [Label] [◀] [Range] [▶]            │
-├─────────────────────────────────────────────────────────┤
-│ FRETBOARD (19-24 perde)                                 │
-│ ┌─────────────────────────────────────────────────────┐ │
-│ │ E ─────●─────────────────●─────────────────────     │ │
-│ │ A ───────────────────────────────────────────────   │ │
-│ │ D ─────────────●─────────────────●─────────────     │ │
-│ │ G ───────────────────────────────────────────────   │ │
-│ │ B ───────────────────────────────────────────────   │ │
-│ │ E ─────────────────────────────────────────────●    │ │
-│ └─────────────────────────────────────────────────────┘ │
-├─────────────────────────────────────────────────────────┤
-│ NOTE BAR (Nota | Pozisyon)                              │
-├─────────────────────────────────────────────────────────┤
-│ PAIR ROW                                                │
-│ ┌────────┐ ┌────────┐ ┌────────┐ ┌──────────┐          │
-│ │ Pair 1 │ │ Pair 2 │ │ Pair 3 │ │Kontroller│          │
-│ │ [1][2] │ │ [3][4] │ │ [5][6] │ │ [+][-]   │          │
-│ └────────┘ └────────┘ └────────┘ └──────────┘          │
-├─────────────────────────────────────────────────────────┤
-│ ZONES                                                   │
-│ ┌─────────────────────┐ ┌─────────────────────┐        │
-│ │ Zone 1 (0-3)        │ │ Zone 2 (4-7)        │        │
-│ │ Primary Grid        │ │ Vertical Cluster    │        │
-│ │ ┌─┬─┬─┬─┬─┬─┐      │ │ ┌─┬─┬─┬─┬─┬─┐      │        │
-│ │ │1│2│3│4│5│6│      │ │ │7│8│9│0│-│=│      │        │
-│ │ ├─┼─┼─┼─┼─┼─┤      │ │ ├─┼─┼─┼─┼─┼─┤      │        │
-│ │ │Q│W│E│R│T│Y│      │ │ │U│I│O│P│Ğ│Ü│      │        │
-│ │ └─┴─┴─┴─┴─┴─┘      │ │ └─┴─┴─┴─┴─┴─┘      │        │
-│ └─────────────────────┘ └─────────────────────┘        │
-└─────────────────────────────────────────────────────────┘
-```
-
----
-
-## 🎨 Renk Paleti
-
-### CSS Değişkenleri
+### Renk Paleti
 
 ```css
 :root {
@@ -162,273 +317,77 @@ Melovia/
     --panel: #13131a;        /* Panel arka planı */
     --card: #1a1a24;         /* Kart arka planı */
     --accent: #8b5cf6;       /* Vurgu rengi (mor) */
-    --accent-dim: rgba(139, 92, 246, 0.3);
     --cyan: #06b6d4;         /* Turkuaz */
     --pink: #ec4899;         /* Pembe */
     --text: #e0e0e8;         /* Ana metin */
     --dim: #707080;          /* Soluk metin */
-    --muted: #404050;        /* Çok soluk metin */
-    --border: rgba(255, 255, 255, 0.06);
 }
 ```
 
-### Tel Renkleri (Zone 1 - Soğuk Tonlar)
+### Animasyonlar
 
-| Tel | Renk | Hex | Kullanım |
-|-----|------|-----|----------|
-| E1 (ince) | Pembe | #f472b6 | String 1 |
-| B | Turuncu | #fb923c | String 2 |
-| G | Sarı | #facc15 | String 3 |
-| D | Yeşil | #4ade80 | String 4 |
-| A | Cyan | #22d3ee | String 5 |
-| E6 (kalın) | Mor | #a78bfa | String 6 |
-
-### Tel Renkleri (Zone 2 - Sıcak Tonlar)
-
-| Tel | Renk | Hex | Kullanım |
-|-----|------|-----|----------|
-| E1 | Kırmızı | #fca5a5 | String 1 |
-| B | Amber | #fcd34d | String 2 |
-| G | Lime | #bef264 | String 3 |
-| D | Teal | #5eead4 | String 4 |
-| A | İndigo | #a5b4fc | String 5 |
-| E6 | Pembe | #f472b6 | String 6 |
-
-### Zone Renkleri
-
-| Zone | Ana Renk | Kullanım |
-|------|----------|----------|
-| Zone 1 | Yeşil (#4ade80) | Primary Grid |
-| Zone 2 | Pembe (#f472b6) | Vertical Cluster |
-
-### Gradient Kullanımları
-
+#### Tel Titreşimi
 ```css
-/* Navigasyon okları - Mavi → Mor geçişi */
-.fb-btn:first-of-type  { /* Mavi */ }
-.fb-range              { /* Mavi → Mor gradient */ }
-.fb-btn.accent         { /* Mor */ }
-
-/* Dropdown seçim */
-background: linear-gradient(90deg, 
-    rgba(59, 130, 246, 0.3),   /* Mavi */
-    rgba(168, 85, 247, 0.35)   /* Mor */
-);
-
-/* Fretboard tel renkleri - Bronz ve Gümüş */
-E6, A, D: Bronz tonları (kalın teller)
-G, B, E1: Gümüş tonları (ince teller)
+@keyframes vibrate {
+    0%, 100% { transform: translateY(-50%) }
+    10% { transform: translateY(calc(-50% + 2px)) }
+    25% { transform: translateY(calc(-50% - 2px)) }
+    /* ... sönümlenme devam eder */
+}
 ```
 
----
-
-## 🧩 Bileşenler
-
-### 1. Header
-
-```html
-<header class="header">
-    <div class="logo">🎵 Melovia v0.1</div>
-    <nav class="nav">...</nav>
-    <div class="header-right">...</div>
-</header>
+#### Nota Basım
+```css
+@keyframes notePress {
+    0% { transform: translate(-50%, -50%) scale(0.9) }
+    50% { transform: translate(-50%, -50%) scale(1.05) }
+    100% { transform: translate(-50%, -50%) scale(1) }
+}
 ```
-
-**Özellikler:**
-- Alt köşeler oval: `border-radius: 0 0 16px 16px`
-- Logo gradient: Lila → Turkuaz
-- Versiyon badge: Soft turkuaz
-
-### 2. Guitar Dropdown (Custom)
-
-```html
-<div class="guitar-dropdown">
-    <button class="guitar-dropdown-btn">
-        <span>🎸 Klasik Gitar</span>
-    </button>
-    <div class="guitar-dropdown-menu">
-        <button class="guitar-dropdown-item active">🎸 Klasik Gitar</button>
-        <button class="guitar-dropdown-item">⚡ Elektro Gitar</button>
-        <button class="guitar-dropdown-item">🎸 Bas Gitar</button>
-    </div>
-</div>
-```
-
-**Özellikler:**
-- Oval köşeler: `border-radius: 20px` (buton), `12px` (menü)
-- Gri arka plan: `rgba(100, 100, 120, 0.12)`
-- Hover/Active: Mavi-mor gradient
-- Blur efekti: `backdrop-filter: blur(10px)`
-
-### 3. Fretboard
-
-```html
-<div class="fretboard-container">
-    <div class="string-labels">E, A, D, G, B, E</div>
-    <div class="fretboard-nut"></div>
-    <div class="fretboard">
-        <div class="fret-col">
-            <div class="string-cell">...</div>
-            <div class="inlay single"></div>
-        </div>
-    </div>
-</div>
-```
-
-**Özellikler:**
-- 19-24 perde (gitar tipine göre)
-- Inlay işaretleri: 3, 5, 7, 9, 12, 15, 17, 19
-- Çift inlay: 12. perde
-- Tel kalınlıkları: 1.5px - 3.5px
-
-### 4. Pair Cards
-
-```html
-<div class="pair-card active" data-pair="1">
-    <div class="pair-title">Pair 1</div>
-    <div class="pair-frets">0 - 7. Perde</div>
-    <div class="pair-nums">
-        <span>1</span>  <!-- Yeşil -->
-        <span>2</span>  <!-- Pembe -->
-    </div>
-</div>
-```
-
-**Özellikler:**
-- Arka plan: `rgba(100, 100, 120, 0.08)`
-- Border: Cyan `rgba(6, 182, 212, 0.4)`
-- Pair numaraları: Yeşil (tek) + Pembe (çift)
-
-### 5. Zone Panels
-
-```html
-<div class="zone-panel">
-    <div class="zone-head">
-        <span class="zone-tag z1">Zone 1 (0-3)</span>
-        <span class="zone-type">🎸 Primary Grid</span>
-    </div>
-    <div class="key-grid">...</div>
-</div>
-```
-
-**Özellikler:**
-- Sol kenarlık: Zone 1 = Yeşil, Zone 2 = Pembe
-- Arka plan: `rgba(100, 100, 120, 0.08)`
-- Grid gap: `8px 10px`
-
-### 6. Key Buttons
-
-```html
-<button class="key-btn s1" data-s="1" data-f="0">1</button>
-```
-
-**Özellikler:**
-- Boyut: 36x36px
-- Soft renkler: `0.12` background, `0.35` border
-- Active state: Daha parlak renkler
 
 ---
 
 ## ⌨️ Klavye Entegrasyonu
 
 ### Zone 1 - Primary Grid (Perde 0-3)
-
 ```
-Açık Tel: 1 2 3 4 5 6
+Açık Tel: 1 2 3 4 5 6   → Tel 6,5,4,3,2,1 - Perde 0
 Perde 1:  Q W E R T Y
 Perde 2:  A S D F G H
-Perde 3:  < Z X C V B
+Perde 3:  Z X C V B N
 ```
 
 ### Zone 2 - Vertical Cluster (Perde 4-7)
-
 ```
 Perde 4: 7 8 9 0 * -
 Perde 5: U I O P Ğ Ü
 Perde 6: J K L Ş İ ,
-Perde 7: N M Ö Ç . "
+Perde 7: M Ö Ç . - "
 ```
 
-### Tuş Haritalaması
-
-```javascript
-const oddZoneKeys = [
-    ['1', '2', '3', '4', '5', '6'],
-    ['Q', 'W', 'E', 'R', 'T', 'Y'],
-    ['A', 'S', 'D', 'F', 'G', 'H'],
-    ['<', 'Z', 'X', 'C', 'V', 'B']
-];
-
-const evenZoneKeys = [
-    ['7', '8', '9', '0', '*', '-'],
-    ['U', 'I', 'O', 'P', 'Ğ', 'Ü'],
-    ['J', 'K', 'L', 'Ş', 'İ', ','],
-    ['N', 'M', 'Ö', 'Ç', '.', '"']
-];
-```
-
-### Türkçe Karakter Dönüşümü
-
-```javascript
-const turkishKeyMap = {
-    'ı': 'I', 'i': 'İ',
-    'ğ': 'Ğ', 'ü': 'Ü',
-    'ş': 'Ş', 'ö': 'Ö', 'ç': 'Ç'
-};
-```
+### Özel Tuşlar
+- **Space:** Tüm sesleri durdur
+- **+/-:** Zone değiştir
+- **←/→:** Perde görünümünü kaydır
 
 ---
 
-## 🔊 Ses Motoru
+## 📚 Ders Sistemi
 
-### Web Audio API Kullanımı
+### Ders Yapısı
+- **Başlık ve Sanatçı**
+- **Kullanılan Akorlar**
+- **Adım Adım Notalar**
+- **İpuçları**
 
-```javascript
-const audioEngine = {
-    ctx: null,
-    
-    async init() {
-        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    },
-    
-    playNote(frequency, duration = 0.5) {
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        
-        osc.type = 'triangle';
-        osc.frequency.value = frequency;
-        
-        // ADSR envelope
-        gain.gain.setValueAtTime(0, this.ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.3, this.ctx.currentTime + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
-        
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start();
-        osc.stop(this.ctx.currentTime + duration);
-    }
-};
-```
+### HUD Bileşenleri
+- İlerleme çubuğu
+- Aktif nota göstergesi
+- Basılacak tuş
+- Timeline (kayan nota şeridi)
 
-### Gitar Akort Frekansları
-
-| Tel | Nota | Frekans (Hz) |
-|-----|------|--------------|
-| E6 | Mi (E2) | 82.41 |
-| A | La (A2) | 110.00 |
-| D | Re (D3) | 146.83 |
-| G | Sol (G3) | 196.00 |
-| B | Si (B3) | 246.94 |
-| E1 | Mi (E4) | 329.63 |
-
-### Fret Frekans Hesaplama
-
-```javascript
-function getFrequency(baseFreq, fret) {
-    return baseFreq * Math.pow(2, fret / 12);
-}
-```
+### Mevcut Dersler
+1. **Arkadaşım Eşek** - 40 adım, başlangıç seviyesi
 
 ---
 
@@ -436,56 +395,34 @@ function getFrequency(baseFreq, fret) {
 
 Detaylı bilgi için: [UNREAL_INTEGRATION.md](./UNREAL_INTEGRATION.md)
 
-### Genel Bakış
-
-Melovia, Unreal Engine 5'e **Web Browser Widget** kullanılarak entegre edilebilir.
-
 ### Entegrasyon Yöntemleri
-
 1. **Web Browser Widget** - HTML/CSS/JS direkt gösterimi
 2. **JavaScript ↔ Blueprint** - İki yönlü iletişim
 3. **WebSocket** - Gerçek zamanlı veri aktarımı
-
-### API Fonksiyonları
-
-```javascript
-// Unreal'a mesaj gönder
-window.ue?.interface?.broadcast('NotePressed', {
-    string: 1,
-    fret: 5,
-    frequency: 440
-});
-
-// Unreal'dan mesaj al
-window.receiveFromUnreal = function(data) {
-    console.log('Unreal:', data);
-};
-```
 
 ---
 
 ## 🚀 Gelecek Planları
 
-### v0.2 - Ders Modülü
-- [ ] Şarkı listesi
-- [ ] Tab gösterimi
-- [ ] İlerleme takibi
-- [ ] Ritim modu
-
-### v0.3 - Ses Geliştirmeleri
-- [ ] Gerçek gitar örnekleri
-- [ ] Efektler (reverb, delay)
+### v0.5 - Ses Geliştirmeleri
+- [ ] Gerçek Chorus/Delay ses efektleri
+- [ ] Palm Mute ve Hammer-on teknikleri
 - [ ] MIDI desteği
 
-### v0.4 - Unreal Entegrasyonu
-- [ ] Blueprint API
-- [ ] 3D gitar modeli senkronizasyonu
-- [ ] Oyun modu
+### v0.6 - Ders İçerikleri
+- [ ] Yeni şarkılar ekleme
+- [ ] Zorluk seviyeleri
+- [ ] Skor sistemi
+
+### v0.7 - Sosyal Özellikler
+- [ ] Kullanıcı hesapları
+- [ ] İlerleme kaydetme
+- [ ] Topluluk şarkıları
 
 ### v1.0 - Tam Sürüm
-- [ ] Kullanıcı hesapları
+- [ ] Mobil uyumluluk
 - [ ] Bulut senkronizasyonu
-- [ ] Topluluk şarkıları
+- [ ] Çoklu dil desteği
 
 ---
 
@@ -496,4 +433,4 @@ window.receiveFromUnreal = function(data) {
 
 ---
 
-*Bu belge otomatik olarak oluşturulmuştur. Son güncelleme: 22 Ocak 2026*
+*Son güncelleme: 6 Şubat 2026 - v0.4*

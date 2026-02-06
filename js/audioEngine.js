@@ -20,8 +20,31 @@ class AudioEngine {
         this.settings = {
             volume: 0.75,
             reverbMix: 0.15,
-            distortionAmount: 0, // 0 = clean, 1 = heavy distortion
-            sustainEnabled: true
+            distortionAmount: 0,
+            sustainEnabled: true,
+            // Effect panel settings (UI only - no audio processing)
+            chorusEnabled: false,
+            chorusRate: 1.5,
+            chorusDepth: 0.002,
+            chorusMix: 0.3,
+            delayEnabled: false,
+            delayTime: 0.35,
+            delayFeedback: 0.3,
+            delayMix: 0.25,
+            eqLow: 0,
+            eqMid: 0,
+            eqHigh: 0,
+            ampPreset: 'clean'
+        };
+
+        // Amp presets (for UI display)
+        this.ampPresets = {
+            clean: { distortion: 0, eqLow: 2, eqMid: 0, eqHigh: 3, reverb: 0.2 },
+            crunch: { distortion: 0.3, eqLow: 4, eqMid: 2, eqHigh: 4, reverb: 0.15 },
+            highgain: { distortion: 0.7, eqLow: 6, eqMid: -2, eqHigh: 5, reverb: 0.1 },
+            acoustic: { distortion: 0, eqLow: -2, eqMid: 3, eqHigh: 5, reverb: 0.25 },
+            jazz: { distortion: 0.05, eqLow: 3, eqMid: -1, eqHigh: -2, reverb: 0.3 },
+            metal: { distortion: 0.85, eqLow: 8, eqMid: -4, eqHigh: 6, reverb: 0.05 }
         };
 
         // String parameters
@@ -424,6 +447,9 @@ class AudioEngine {
     }
 
     stopAll() {
+        // Stop metronome
+        this.stopMetronome();
+
         // Stop sustained notes
         this.sustainedNotes.forEach((note, key) => {
             this.stopSustainedNote(key);
@@ -434,6 +460,116 @@ class AudioEngine {
             try { source.stop(); } catch (e) { }
         });
         this.activeNotes.clear();
+    }
+
+    // === EFFECT PANEL CONTROL FUNCTIONS ===
+
+    setAmpPreset(presetName) {
+        const preset = this.ampPresets[presetName];
+        if (!preset) return;
+        this.settings.ampPreset = presetName;
+        this.setDistortion(preset.distortion);
+        this.setReverbMix(preset.reverb);
+        console.log(`🎸 Amp preset: ${presetName}`);
+    }
+
+    getAmpPresets() {
+        return Object.keys(this.ampPresets);
+    }
+
+    // Chorus controls (UI state only)
+    setChorusEnabled(enabled) {
+        this.settings.chorusEnabled = enabled;
+    }
+
+    setChorusRate(rate) {
+        this.settings.chorusRate = rate;
+    }
+
+    setChorusDepth(depth) {
+        this.settings.chorusDepth = depth;
+    }
+
+    setChorusMix(mix) {
+        this.settings.chorusMix = mix;
+    }
+
+    // Delay controls (UI state only)
+    setDelayEnabled(enabled) {
+        this.settings.delayEnabled = enabled;
+    }
+
+    setDelayTime(time) {
+        this.settings.delayTime = time;
+    }
+
+    setDelayFeedback(feedback) {
+        this.settings.delayFeedback = Math.min(feedback, 0.9);
+    }
+
+    setDelayMix(mix) {
+        this.settings.delayMix = mix;
+    }
+
+    // EQ controls (UI state only)
+    setEQ(low, mid, high) {
+        this.settings.eqLow = low;
+        this.settings.eqMid = mid;
+        this.settings.eqHigh = high;
+    }
+
+    // === METRONOME ===
+    metronomePlaying = false;
+    metronomeInterval = null;
+    metronomeBPM = 120;
+
+    startMetronome(bpm = 120) {
+        if (this.metronomePlaying) this.stopMetronome();
+
+        this.metronomeBPM = bpm;
+        this.metronomePlaying = true;
+        const intervalMs = (60 / bpm) * 1000;
+        let beat = 0;
+
+        const playTick = () => {
+            if (!this.isInitialized) return;
+
+            const now = this.audioContext.currentTime;
+            const osc = this.audioContext.createOscillator();
+            const gain = this.audioContext.createGain();
+
+            osc.frequency.value = beat % 4 === 0 ? 1000 : 800;
+            gain.gain.setValueAtTime(beat % 4 === 0 ? 0.3 : 0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+
+            osc.start(now);
+            osc.stop(now + 0.05);
+
+            beat++;
+        };
+
+        playTick();
+        this.metronomeInterval = setInterval(playTick, intervalMs);
+    }
+
+    stopMetronome() {
+        this.metronomePlaying = false;
+        if (this.metronomeInterval) {
+            clearInterval(this.metronomeInterval);
+            this.metronomeInterval = null;
+        }
+    }
+
+    setMetronomeBPM(bpm) {
+        if (this.metronomePlaying) {
+            this.stopMetronome();
+            this.startMetronome(bpm);
+        } else {
+            this.metronomeBPM = bpm;
+        }
     }
 }
 
