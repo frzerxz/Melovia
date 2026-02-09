@@ -2993,6 +2993,12 @@
                 </div>
             </div>
             <div class="lessons-grid">
+                <!-- Temel Dersler Bölüm Başlığı -->
+                <div style="grid-column: 1 / -1;">
+                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 4px;">📚 Temel Dersler</h3>
+                    <p style="color: var(--dim); font-size: 12px;">Gitar çalmayı adım adım öğren</p>
+                </div>
+
                 <!-- Ders 1: Başlangıç - Çok Kolay -->
                 <div class="lesson-card">
                     <div class="lesson-header">
@@ -3013,7 +3019,8 @@
                         <span class="chord-btn">Am</span>
                     </div>
                     <div class="lesson-btns">
-                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn primary" onclick="currentLessonId=1; startLesson()">▶ Dersi
+                            Başlat</button>
                         <button class="lesson-btn secondary" onclick="showLessonDetail(1)">📄 Detay</button>
                     </div>
                 </div>
@@ -3039,7 +3046,8 @@
                         <span class="chord-btn">Dm</span>
                     </div>
                     <div class="lesson-btns">
-                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn primary" onclick="currentLessonId=2; startLesson()">▶ Dersi
+                            Başlat</button>
                         <button class="lesson-btn secondary" onclick="showLessonDetail(2)">📄 Detay</button>
                     </div>
                 </div>
@@ -3065,7 +3073,8 @@
                         <span class="chord-btn">D5</span>
                     </div>
                     <div class="lesson-btns">
-                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn primary" onclick="currentLessonId=3; startLesson()">▶ Dersi
+                            Başlat</button>
                         <button class="lesson-btn secondary" onclick="showLessonDetail(3)">📄 Detay</button>
                     </div>
                 </div>
@@ -3091,7 +3100,8 @@
                         <span class="chord-btn">E</span>
                     </div>
                     <div class="lesson-btns">
-                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn primary" onclick="currentLessonId=4; startLesson()">▶ Dersi
+                            Başlat</button>
                         <button class="lesson-btn secondary" onclick="showLessonDetail(4)">📄 Detay</button>
                     </div>
                 </div>
@@ -3118,7 +3128,8 @@
                         <span class="chord-btn">E</span>
                     </div>
                     <div class="lesson-btns">
-                        <button class="lesson-btn primary" onclick="startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn primary" onclick="currentLessonId=5; startLesson()">▶ Dersi
+                            Başlat</button>
                         <button class="lesson-btn secondary" onclick="showLessonDetail(5)">📄 Detay</button>
                     </div>
                 </div>
@@ -3732,6 +3743,11 @@
             document.getElementById('hudArtist').textContent = artistParts[1] ? artistParts[1].trim() : '';
 
             updateHudStep();
+
+            // Sayfanın en üstüne scroll - fretboard ve HUD'u göster
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
         }
 
         function updateHudStep() {
