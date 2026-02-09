@@ -3744,10 +3744,10 @@
 
             updateHudStep();
 
-            // Sayfanın en üstüne scroll - fretboard ve HUD'u göster
+            // Sayfanın en üstüne scroll - HUD'u göster
             setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 100);
+                document.getElementById('lessonHud').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 150);
         }
 
         function updateHudStep() {
