@@ -2504,6 +2504,171 @@
             background: var(--accent);
             border-color: var(--accent);
         }
+
+        /* === PRACTICE MODE === */
+        .practice-mode-bar {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.15));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            display: none;
+        }
+
+        .practice-mode-bar.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .practice-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .practice-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .practice-title .song-name {
+            color: var(--cyan);
+        }
+
+        .practice-close-btn {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 6px;
+            color: #ef4444;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .practice-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .practice-progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(100, 100, 120, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .practice-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .practice-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--dim);
+        }
+
+        .practice-stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .practice-stats .current-note {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Target note indicator on fretboard */
+        .string-cell.practice-target {
+            position: relative;
+        }
+
+        .string-cell.practice-target::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, rgba(139, 92, 246, 0) 70%);
+            animation: targetPulse 1s ease infinite;
+            z-index: 5;
+        }
+
+        .string-cell.practice-target .note-dot {
+            background: var(--accent) !important;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.8);
+            transform: translate(-50%, -50%) scale(1.3);
+            z-index: 10;
+        }
+
+        @keyframes targetPulse {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.4);
+                opacity: 0.5;
+            }
+        }
+
+        .string-cell.practice-success {
+            animation: successFlash 0.4s ease;
+        }
+
+        @keyframes successFlash {
+            0% {
+                background: rgba(34, 197, 94, 0.4);
+            }
+
+            100% {
+                background: transparent;
+            }
+        }
+
+        .string-cell.practice-next {
+            opacity: 0.5;
+        }
+
+        .string-cell.practice-next::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border: 2px dashed rgba(6, 182, 212, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 
@@ -2525,6 +2690,26 @@
         <section class="section active" id="guitar">
             <!-- Fretboard FIRST (EN ÜSTTE) -->
             <div class="fretboard-wrap">
+                <!-- Practice Mode Bar -->
+                <div class="practice-mode-bar" id="practiceBar">
+                    <div class="practice-header">
+                        <div class="practice-title">
+                            🎯 Practice Mode: <span class="song-name" id="practiceSongName">Smoke on the Water</span>
+                        </div>
+                        <button class="practice-close-btn" onclick="stopPractice()">✕ Kapat</button>
+                    </div>
+                    <div class="practice-progress">
+                        <div class="practice-progress-bar">
+                            <div class="practice-progress-fill" id="practiceProgressFill" style="width: 0%"></div>
+                        </div>
+                        <div class="practice-stats">
+                            <span>📍 <span class="current-note" id="practiceCurrentNote">1/7</span></span>
+                            <span>✅ Doğru: <span id="practiceCorrect">0</span></span>
+                            <span>⏱️ <span id="practiceTime">0:00</span></span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="fretboard-toolbar">
                     <div class="guitar-dropdown" id="guitarDropdown">
                         <button class="guitar-dropdown-btn" onclick="toggleGuitarDropdown()">
@@ -2777,6 +2962,9 @@
                             class="tab-notes">----------------------------------</span></div>
                 </div>
                 <div class="tablature-controls">
+                    <button class="tab-control-btn" onclick="startPractice(currentTab)"
+                        style="background: rgba(139, 92, 246, 0.25); border-color: rgba(139, 92, 246, 0.5);">🎯 Practice
+                        Mode</button>
                     <button class="tab-control-btn" onclick="playTablature()">▶ Çal</button>
                     <button class="tab-control-btn" onclick="showTablatureFromRecording()">📝 Son Kaydı Göster</button>
                     <button class="tab-control-btn" onclick="clearTablature()">🗑️ Temizle</button>
@@ -4461,6 +4649,190 @@
             tablatures['custom'].notes = [];
             loadTablature('custom');
         }
+
+        // === PRACTICE MODE ===
+        let practiceActive = false;
+        let practiceNotes = [];
+        let practiceCurrentIndex = 0;
+        let practiceCorrectCount = 0;
+        let practiceStartTime = null;
+        let practiceTimer = null;
+
+        function startPractice(tabKey) {
+            const tab = tablatures[tabKey];
+            if (!tab || !tab.notes || tab.notes.length === 0) {
+                alert('Bu tablature için nota bulunamadı!');
+                return;
+            }
+
+            // Activate practice mode
+            practiceActive = true;
+            practiceNotes = [...tab.notes];
+            practiceCurrentIndex = 0;
+            practiceCorrectCount = 0;
+            practiceStartTime = Date.now();
+
+            // Show practice bar
+            document.getElementById('practiceBar').classList.add('active');
+            document.getElementById('practiceSongName').textContent = tab.name || tabKey;
+
+            // Scroll to fretboard
+            document.querySelector('.fretboard-wrap').scrollIntoView({ behavior: 'smooth' });
+
+            // Start timer
+            practiceTimer = setInterval(updatePracticeTime, 1000);
+
+            // Show first target
+            showPracticeTarget();
+
+            console.log('🎯 Practice Mode started:', tab.name, practiceNotes.length, 'notes');
+        }
+
+        function stopPractice() {
+            practiceActive = false;
+            clearInterval(practiceTimer);
+
+            // Hide practice bar
+            document.getElementById('practiceBar').classList.remove('active');
+
+            // Clear all practice indicators from fretboard
+            document.querySelectorAll('.practice-target, .practice-next').forEach(el => {
+                el.classList.remove('practice-target', 'practice-next');
+            });
+
+            practiceNotes = [];
+            practiceCurrentIndex = 0;
+        }
+
+        function showPracticeTarget() {
+            if (!practiceActive || practiceCurrentIndex >= practiceNotes.length) {
+                if (practiceActive) {
+                    completePractice();
+                }
+                return;
+            }
+
+            // Clear previous targets
+            document.querySelectorAll('.practice-target, .practice-next').forEach(el => {
+                el.classList.remove('practice-target', 'practice-next');
+            });
+
+            // Current target note
+            const currentNote = practiceNotes[practiceCurrentIndex];
+            const targetCell = findFretboardCell(currentNote.s, currentNote.f);
+
+            if (targetCell) {
+                targetCell.classList.add('practice-target');
+            }
+
+            // Show next 2 notes as preview
+            for (let i = 1; i <= 2; i++) {
+                const nextIdx = practiceCurrentIndex + i;
+                if (nextIdx < practiceNotes.length) {
+                    const nextNote = practiceNotes[nextIdx];
+                    const nextCell = findFretboardCell(nextNote.s, nextNote.f);
+                    if (nextCell) {
+                        nextCell.classList.add('practice-next');
+                    }
+                }
+            }
+
+            // Update UI
+            updatePracticeUI();
+        }
+
+        function findFretboardCell(stringNum, fretNum) {
+            return document.querySelector(
+                `.string-cell[data-string="${stringNum}"][data-fret="${fretNum}"]`
+            );
+        }
+
+        function checkPracticeNote(stringNum, fretNum) {
+            if (!practiceActive || practiceCurrentIndex >= practiceNotes.length) return false;
+
+            const target = practiceNotes[practiceCurrentIndex];
+
+            if (target.s === stringNum && target.f === fretNum) {
+                // Correct note!
+                practiceCorrectCount++;
+
+                // Success animation
+                const cell = findFretboardCell(stringNum, fretNum);
+                if (cell) {
+                    cell.classList.remove('practice-target');
+                    cell.classList.add('practice-success');
+                    setTimeout(() => cell.classList.remove('practice-success'), 400);
+                }
+
+                // Move to next
+                practiceCurrentIndex++;
+                showPracticeTarget();
+                return true;
+            }
+
+            return false;
+        }
+
+        function updatePracticeUI() {
+            const total = practiceNotes.length;
+            const current = practiceCurrentIndex + 1;
+            const progress = (practiceCurrentIndex / total) * 100;
+
+            document.getElementById('practiceCurrentNote').textContent = `${current}/${total}`;
+            document.getElementById('practiceCorrect').textContent = practiceCorrectCount;
+            document.getElementById('practiceProgressFill').style.width = progress + '%';
+        }
+
+        function updatePracticeTime() {
+            if (!practiceStartTime) return;
+            const elapsed = Math.floor((Date.now() - practiceStartTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+            document.getElementById('practiceTime').textContent =
+                `${mins}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function completePractice() {
+            clearInterval(practiceTimer);
+            const elapsed = Math.floor((Date.now() - practiceStartTime) / 1000);
+            const total = practiceNotes.length;
+
+            // Clear targets
+            document.querySelectorAll('.practice-target, .practice-next').forEach(el => {
+                el.classList.remove('practice-target', 'practice-next');
+            });
+
+            // Update progress to 100%
+            document.getElementById('practiceProgressFill').style.width = '100%';
+            document.getElementById('practiceCurrentNote').textContent = `✅ Tamamlandı!`;
+
+            // Show completion message
+            const bar = document.getElementById('practiceBar');
+            const songName = document.getElementById('practiceSongName').textContent;
+
+            setTimeout(() => {
+                alert(
+                    `🎉 Tebrikler!\n\n` +
+                    `Şarkı: ${songName}\n` +
+                    `Doğru: ${practiceCorrectCount}/${total}\n` +
+                    `Süre: ${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}\n` +
+                    `Başarı: ${Math.round((practiceCorrectCount / total) * 100)}%`
+                );
+                stopPractice();
+            }, 500);
+        }
+
+        // Hook into fretboard note playing for practice mode
+        const _origPlayKeyBtn = window.playKeyBtn;
+        window.playKeyBtn = async function (btn) {
+            // Check practice mode
+            if (practiceActive) {
+                const s = parseInt(btn.dataset.s);
+                const f = parseInt(btn.dataset.f);
+                checkPracticeNote(s, f);
+            }
+            return _origPlayKeyBtn(btn);
+        };
 
         // INIT
         buildFretboard();
