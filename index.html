@@ -3689,6 +3689,9 @@
                 btn.classList.remove('active');
                 if (btn.dataset.target === id) btn.classList.add('active');
             });
+
+            // Her section geçişinde sayfa başına scroll
+            window.scrollTo(0, 0);
         }
 
         let currentLessonState = { active: false, step: 0, total: 0, data: null };
@@ -3744,10 +3747,11 @@
 
             updateHudStep();
 
-            // Sayfanın tam başına scroll - header + HUD + fretboard
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 200);
+            // Sayfanın tam başına scroll - header + toolbar + HUD + fretboard görünsün
+            window.scrollTo(0, 0);
+            setTimeout(() => { window.scrollTo(0, 0); }, 50);
+            setTimeout(() => { window.scrollTo(0, 0); }, 200);
+            setTimeout(() => { window.scrollTo(0, 0); }, 400);
         }
 
         function updateHudStep() {
