@@ -2670,6 +2670,12 @@
             transform: translate(-50%, -50%);
         }
     </style>
+    <script>
+        // HEAD: Browser scroll restore'u body yüklenmeden önce engelle
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+    </script>
 </head>
 
 <body>
@@ -3424,6 +3430,14 @@
     <script src="js/noteMapping.js"></script>
     <script src="js/audioEngine.js"></script>
     <script>
+        // EN BAŞTA: Browser scroll hafızasını engelle
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+
         let currentPair = 1;
         let currentMode = 'guitar';
         let fretStart = 1;
@@ -5034,18 +5048,17 @@
         buildPiano();
         buildLessons();
 
-        // Browser scroll hafızasını engelle (F5 sonrası aynı yerde kalmasın)
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-
         // Sayfa yüklendiğinde sıfırla
         window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
 
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
         });
 
+        // Sayfa kapanmadan scroll sıfırla
         window.addEventListener('beforeunload', () => {
             window.scrollTo(0, 0);
         });
