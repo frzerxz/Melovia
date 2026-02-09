@@ -2785,10 +2785,10 @@
             <!-- Note Bar -->
             <div class="note-bar">
                 <span class="note-label">Nota:</span>
-                <span class="note-value" id="noteDisplay">Mi (E2) - 82.4 Hz</span>
+                <span class="note-value" id="noteDisplay">--</span>
                 <span class="note-divider">|</span>
                 <span class="note-label">Pozisyon:</span>
-                <span class="note-value" id="posDisplay">Tel 6, Perde 0</span>
+                <span class="note-value" id="posDisplay">--</span>
             </div>
 
             <!-- Pair Row SECOND -->
@@ -5034,15 +5034,18 @@
         buildPiano();
         buildLessons();
 
-        // Sayfa yüklendiğinde her şeyi sıfırla
-        window.scrollTo(0, 0);
-        document.getElementById('noteDisplay').textContent = 'Mİ (E2) - 82.4 Hz';
-        document.getElementById('posDisplay').textContent = 'Tel 6, Perde 0';
-
         // Browser scroll hafızasını engelle (F5 sonrası aynı yerde kalmasın)
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
+
+        // Sayfa yüklendiğinde sıfırla
+        window.scrollTo(0, 0);
+
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+
         window.addEventListener('beforeunload', () => {
             window.scrollTo(0, 0);
         });
