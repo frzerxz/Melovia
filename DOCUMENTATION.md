@@ -13,9 +13,11 @@ Bu doküman, Melovia projesindeki tüm kavramları, teknolojileri ve yapıları 
 5. [Gitar Modülü](#gitar-modülü)
 6. [Piyano Modülü](#piyano-modülü)
 7. [Ders Sistemi](#ders-sistemi)
-8. [Kullanıcı Arayüzü (UI)](#kullanıcı-arayüzü-ui)
-9. [Klavye Haritalama](#klavye-haritalama)
-10. [Dosya Yapısı](#dosya-yapısı)
+8. [Practice Mode (Şarkı Pratikleri)](#practice-mode-şarkı-pratikleri)
+9. [Sayfa Davranışları](#sayfa-davranışları)
+10. [Kullanıcı Arayüzü (UI)](#kullanıcı-arayüzü-ui)
+11. [Klavye Haritalama](#klavye-haritalama)
+12. [Dosya Yapısı](#dosya-yapısı)
 
 ---
 
@@ -25,11 +27,14 @@ Bu doküman, Melovia projesindeki tüm kavramları, teknolojileri ve yapıları 
 
 ### Ne Yapar?
 - Klavye tuşlarına bastığınızda gerçekçi gitar/piyano sesi çıkarır
-- İnteraktif derslerle müzik çalmayı öğretir
-- Çeşitli ses efektleri uygulayabilirsiniz
+- **8 interaktif dersle** müzik çalmayı öğretir (5 temel ders + 3 şarkı pratiği)
+- Çeşitli ses efektleri uygulayabilirsiniz (distortion, reverb, chorus, delay, EQ)
+- Fretboard (perde tahtası) üzerinde notaları görsel olarak takip edebilirsiniz
+- Tablature (nota yazısı) ile şarkıları okuyabilirsiniz
+- Backing track eşliğinde pratik yapabilirsiniz
 
 ### Nasıl Çalışır?
-Tarayıcınızda açarsınız, hiçbir şey yüklemenize gerek yok. Tuşlara basarsınız, ses çıkar.
+Tarayıcınızda açarsınız, hiçbir şey yüklemenize gerek yok. Tuşlara basarsınız, ses çıkar. Dersler bölümünden bir ders seçersiniz, ekranda hangi tuşa basmanız gerektiği gösterilir.
 
 ---
 
@@ -79,6 +84,20 @@ Tel 6 (en kalın): E2 - Mi
 Birden fazla notanın aynı anda çalınması.
 - **C Major (Do Majör):** Do-Mi-Sol notaları birlikte
 - **Am (La minör):** La-Do-Mi notaları birlikte
+
+### Power Chord
+Sadece kök nota ve 5. derece kullanılarak oluşturulan akor. Rock ve metal müzikte çok yaygın.
+- **E5:** E + B (6. tel açık + 5. tel 2. perde)
+- **A5:** A + E (5. tel açık + 4. tel 2. perde)
+
+### Barre (Bareli) Akor
+İşaret parmağının tüm telleri tek bir perdede kapatarak oluşturduğu akor şekli. F akoru en bilinen barre akordur.
+
+### Arpej
+Bir akorun notalarını aynı anda değil, sırayla tek tek çalma tekniği. Klasik gitar müziğinde çok kullanılır.
+
+### Palm Mute
+Sağ elin avuç içi kenarının köprü (bridge) üzerine yerleştirilerek tellerin titreşiminin kısılması tekniği. Rock müzikte "chug" sesi elde etmek için kullanılır.
 
 ---
 
@@ -203,18 +222,8 @@ Sesin kopyasını alıp hafifçe frekansını değiştirerek karıştırır.
 
 **LFO (Low Frequency Oscillator):** Çok yavaş salınan dalga. Chorus efektinin "hareket"ini sağlar.
 
-**Parametreler:**
-- **Rate:** LFO hızı (Hz)
-- **Depth:** Frekans kaymasının miktarı
-- **Mix:** Efektli sesin oranı
-
 ### Delay (Gecikme/Eko)
 Sesi belirli bir süre sonra tekrar çalar.
-
-**Parametreler:**
-- **Time:** Tekrarlar arası süre (ms veya saniye)
-- **Feedback:** Tekrarların kendini beslemesi (dikkat: %100 = sonsuz eko!)
-- **Mix:** Ekolu sesin seviyesi
 
 ### EQ (Equalizer)
 Farklı frekans bölgelerini ayrı ayrı ayarlama.
@@ -223,8 +232,6 @@ Farklı frekans bölgelerini ayrı ayrı ayarlama.
 - **Low (Bass):** 320 Hz altı - Kalın sesler
 - **Mid:** 1000 Hz civarı - Vokal, gitar gövdesi
 - **High (Treble):** 3200 Hz üstü - Parlaklık
-
-**dB (Desibel):** Ses seviyesi birimi. Her 3 dB = 2 kat güç.
 
 ---
 
@@ -275,11 +282,6 @@ Gitarın sapına takılan kelepçe. Tüm telleri aynı perdede bastırarak tonu 
 Yeni Frekans = Açık Tel Frekansı × 2^(perde/12)
 ```
 
-Örnek: A2 teli (110 Hz), 5. perde:
-```
-110 × 2^(5/12) = 110 × 1.335 = 146.83 Hz = D3
-```
-
 ### Inlay (Perde İşaretleri)
 Gitarın sapındaki konum göstergeleri.
 - Tek nokta: 3, 5, 7, 9, 15, 17, 19. perdeler
@@ -299,7 +301,6 @@ Bir nota çaldığınızda sadece o frekans değil, katları da duyulur:
 - Temel frekans (1x) = En güçlü
 - 2. harmonik (2x) = Yarı güçte
 - 3. harmonik (3x) = Çeyrek güçte
-- ...devam eder
 
 **Neden Önemli?** Her enstrümanın karakterini verir.
 
@@ -319,28 +320,123 @@ Her harmonik için ayrı sinüs dalgası oluşturulup karıştırılır.
 
 ## 📚 Ders Sistemi
 
+Melovia'nın ders sistemi, kullanıcıları sıfırdan gitar çalmayı öğretmek için tasarlanmıştır. İki ana bölümden oluşur: **Temel Dersler** ve **Şarkı Pratikleri**.
+
 ### Ders Yapısı
-Her ders şunları içerir:
-- **Başlık:** Dersin adı
-- **Sanatçı:** Örnek şarkı/parça
-- **Akorlar:** Gerekli akorlar
-- **Adımlar:** Sırayla basılacak notalar
-- **İpuçları:** Yardımcı bilgiler
+Her ders bir `lessonsData` nesnesi içinde tanımlanır ve şunları içerir:
+- **title:** Dersin adı (örn: "Ders 1: İlk Melodim")
+- **artist:** Örnek şarkı ve sanatçı bilgisi
+- **desc:** Dersin kapsamlı açıklaması (şarkının tarihi, tonu, kullanılan teller, teknik bilgi)
+- **chords:** Gerekli akorlar ve parmak pozisyonları
+- **tips:** Pratik ipuçları ve BPM önerileri
+- **songData:** İnteraktif nota dizisi (her nota için tel, perde, tuş ve nota adı bilgisi)
+
+### songData Yapısı
+`songData`, dersin interaktif kısmını oluşturan nota dizisidir. Her eleman şunları içerir:
+```javascript
+{
+    note: 'LA (A2)',  // Ekranda gösterilen nota adı
+    s: 5,             // Tel numarası (1=en ince, 6=en kalın)
+    f: 0,             // Perde numarası (0=açık tel)
+    key: '5'          // Klavyede basılması gereken tuş
+}
+```
+
+### Temel Dersler (1-5)
+
+| Ders | Şarkı/Konu | Nota Sayısı | Zorluk | Ne Öğretir? |
+|------|-----------|-------------|--------|-------------|
+| **Ders 1** | Arkadaşım Eşek - Barış Manço (1975) | 40 nota | ★☆☆ | Tek parmak melodi, Em tonu, 4. ve 3. tel |
+| **Ders 2** | Hayat Bayram Olsa - Şenay (1972) | 18 nota | ★★☆ | Am-E-Dm akor geçişleri, 4/4 ritim kalıbı |
+| **Ders 3** | Palm Mute Tekniği | 20 nota | ★★☆ | E5-A5-D5 power chord, avuç susturma tekniği |
+| **Ders 4** | Caddelerde Rüzgar - Nilüfer (1978) | 22 nota | ★★★ | P-I-M-A parmak arpej tekniği |
+| **Ders 5** | Akdeniz Akşamları - Haluk Levent (1998) | 28 nota | ★★★ | Am-G-F-E akor döngüsü, F barre akoru |
 
 ### HUD (Heads-Up Display)
-Ders sırasında ekranda görünen bilgi paneli:
-- İlerleme çubuğu
-- Aktif nota
-- Basılacak tuş
-- Şarkı bilgisi
+Ders sırasında ekranın üst kısmında görünen bilgi paneli:
+- **Şarkı bilgisi:** Başlık ve sanatçı
+- **Aktif nota:** Şu anda basılması gereken nota ve tuşu (büyük, renkli gösterim)
+- **Önizleme notaları:** Sonraki 6 nota (küçük, soluk gösterim)
+- **İlerleme:** "3 / 40" gibi mevcut adım ve toplam
+- **Geri sayım:** 5 saniyelik başlama geri sayımı
+- **Kapatma (X):** Dersi sonlandırma butonu
 
-### Timeline (Zaman Çizelgesi)
-Notaların sırayla kaydığı görsel şerit. Hedef çizgiye gelince basmanız gerekir.
+### Ders Başlatma Akışı
+1. Kullanıcı "▶ Dersi Başlat" butonuna tıklar
+2. `currentLessonId` set edilir
+3. `startLesson()` fonksiyonu çağrılır
+4. Sayfa "Gitar" bölümüne geçiş yapar (`showSection('guitar')`)
+5. `lessonHud` görünür hale gelir ve ders bilgileri yüklenir
+6. Sayfa otomatik olarak **en üste scroll** edilir
+7. Fretboard üzerinde hedef nota **vurgulanır** (yeşil nokta)
+8. Kullanıcı doğru tuşa basınca sonraki nota aktif olur
+9. Tüm notalar tamamlanınca ders biter
 
-### Skor Sistemi
-- Doğru nota = Puan kazanma
-- Yanlış nota = Puan kaybı
-- Combo: Arka arkaya doğru basışlar bonus verir
+### Doğru/Yanlış Nota Kontrolü
+- Kullanıcı bir tuşa bastığında, basılan tuş hedef nota ile karşılaştırılır
+- **Doğru:** Yeşil animasyon, ilerleme +1, sonraki nota aktif
+- **Yanlış:** Kırmızı yanıp sönme, ilerleme değişmez
+
+---
+
+## 🎵 Practice Mode (Şarkı Pratikleri)
+
+Practice mode, ders sisteminin ikinci bölümüdür. Ünlü rock riff'lerini adım adım çalmayı öğretir.
+
+### Şarkı Pratikleri (6-8)
+
+| Pratik | Şarkı | Nota Sayısı | Ne Öğretir? |
+|--------|-------|-------------|-------------|
+| **Pratik 6** | Smoke on the Water - Deep Purple | 12 nota | G telinde 0-3-5 perde kombinasyonu |
+| **Pratik 7** | Seven Nation Army - The White Stripes | 13 nota | 5. tel üzerinde tek tel riff |
+| **Pratik 8** | Come As You Are - Nirvana | 13 nota | 5. ve 4. tel geçişleri, grunge riff |
+
+### Pratik Kartları
+Hem temel dersler hem de şarkı pratikleri "Dersler" sekmesinde kartlar halinde listelenir:
+- **📚 Temel Dersler** bölümü: Ders 1-5
+- **🎵 Şarkı Pratikleri** bölümü: Pratik 6-8
+
+Her kart şunları gösterir:
+- İkon ve başlık
+- Sanatçı bilgisi
+- Zorluk yıldızları (★☆☆, ★★☆, ★★★)
+- Kategori etiketi (Melodi, Ritim, Teknik, Parmak Çalışması, Klasik Türk Şarkısı)
+- Kısa açıklama
+- Kullanılan akorlar
+- "▶ Dersi Başlat" ve "📄 Detay" butonları
+
+---
+
+## 🔄 Sayfa Davranışları
+
+### Scroll Sıfırlama (Page Load Reset)
+Sayfa yenilendiğinde (F5 / Ctrl+R) her şey sıfırlanır:
+
+1. **`<head>` script'i:** Browser body'i parse etmeden önce `history.scrollRestoration = 'manual'` çalışır. Bu, browser'ın eski scroll pozisyonunu hatırlamasını engeller.
+2. **Ana script başlangıcı:** Değişkenler tanımlanırken hemen `window.scrollTo(0, 0)` ve `scrollTop = 0` çalışır.
+3. **`load` event'i:** Sayfa tamamen yüklendikten sonra son kez `window.scrollTo(0, 0)` çağrılır.
+4. **`beforeunload` event'i:** Sayfa kapanmadan/yenilenmeden önce scroll sıfırlanır.
+
+### Nota ve Pozisyon Göstergesi Sıfırlama
+Sayfa yüklendiğinde:
+- Nota göstergesi: `--` (boş, henüz nota çalınmadı)
+- Pozisyon göstergesi: `--` (boş, henüz bir perde seçilmedi)
+
+Kullanıcı bir tuşa bastığında göstergeler güncellenir:
+- Nota: `LA (A2) - 110.0 Hz`
+- Pozisyon: `Tel 5, Perde 0`
+
+### Section Geçişleri
+Gitar, Piyano, Dersler gibi bölümler arasında geçiş yapıldığında:
+- İlgili section gösterilir, diğerleri gizlenir
+- Navigasyon butonu aktif olarak işaretlenir
+- Sayfa otomatik olarak **en üste scroll** edilir
+
+### Ders Başlatma Scroll'u
+Bir ders veya pratik başlatıldığında:
+- Otomatik olarak "Gitar" bölümüne geçilir
+- Sayfa başına scroll edilir (4 kademeli: hemen, 50ms, 200ms, 400ms)
+- HUD ve fretboard tam görünür olarak ekranda belirir
 
 ---
 
@@ -388,28 +484,42 @@ Ekran boyutuna göre değişen düzen.
 ## ⌨️ Klavye Haritalama
 
 ### Zone Sistemi
-Klavye 6x4 matris olarak düşünülür (6 tel × 4 perde).
+Klavye 6×4 matris olarak düşünülür (6 tel × 4 perde). Toplam 6 zone bulunur (Zone 1-6), her biri 4 perdeyi kapsar.
 
-**Zone 1 (Perde 0-3):**
+**Zone 1 (Perde 0-3) - Primary Grid:**
 ```
-1  2  3  4  5  6   → Tel 6, 5, 4, 3, 2, 1 - Perde 0
-Q  W  E  R  T  Y   → Perde 1
-A  S  D  F  G  H   → Perde 2
-Z  X  C  V  B  N   → Perde 3
+Açık Tel: 1  2  3  4  5  6   → e1(en ince), B, G, D, A, E6(en kalın) - Perde 0
+Perde 1:  Q  W  E  R  T  Y
+Perde 2:  A  S  D  F  G  H
+Perde 3:  <  Z  X  C  V  B
 ```
 
-**Zone 2 (Perde 4-7):**
+**Zone 2 (Perde 4-7) - Vertical Cluster:**
 ```
-7  8  9  0  *  -   → Perde 4
-U  I  O  P  Ğ  Ü   → Perde 5
-J  K  L  Ş  İ  ,   → Perde 6
-M  Ö  Ç  .  -  "   → Perde 7
+Perde 4: 7  8  9  0  *  -
+Perde 5: U  I  O  P  Ğ  Ü
+Perde 6: J  K  L  Ş  İ  ,
+Perde 7: N  M  Ö  Ç  .  "
 ```
+
+### Pair Sistemi
+6 tel, 3 çifte (pair) ayrılır:
+- **Pair 1:** Tel 1-2 (ince teller, perde 0-3)
+- **Pair 2:** Tel 3-4 (orta teller, perde 6-13)
+- **Pair 3:** Tel 5-6 (kalın teller, perde 14-19)
 
 ### Özel Tuşlar
 - **Space:** Tüm sesleri durdur
-- **+/-:** Zone değiştir
+- **+/-:** Zone değiştir (aktif perde bölgesi)
 - **←/→:** Perde görünümünü kaydır
+
+### Tuş → Nota Eşleşme Örneği
+Ders sisteminde her notanın hangi tuşa karşılık geldiği `songData` içinde `key` alanıyla belirtilir:
+- `key: '5'` → 5 tuşu → 5. tel açık (LA / A2)
+- `key: 'F'` → F tuşu → 4. tel 2. perde (Mİ / E3)
+- `key: 'D'` → D tuşu → 3. tel 2. perde (LA / A3)
+- `key: 'W'` → W tuşu → 2. tel 1. perde (DO / C4)
+- `key: '1'` → 1 tuşu → 1. tel açık (Mİ / E4)
 
 ---
 
@@ -417,25 +527,29 @@ M  Ö  Ç  .  -  "   → Perde 7
 
 ```
 Melovia/
-├── index.html          # Ana sayfa (HTML + inline CSS + JS)
-├── README.md           # Proje açıklaması
-├── DOCUMENTATION.md    # Bu dosya
+├── index.html              # Ana sayfa (HTML + inline CSS + JS)
+│                            # ~5000+ satır: tüm UI, stiller ve mantık
 │
 ├── js/
-│   ├── audioEngine.js  # Ses motoru
-│   ├── guitarModule.js # Gitar mantığı
-│   ├── noteMapping.js  # Nota-frekans dönüşümü
-│   ├── lessonsModule.js# Ders sistemi
-│   └── pianoModule.js  # Piyano mantığı
+│   ├── audioEngine.js      # Ses motoru (Karplus-Strong, efektler)
+│   └── noteMapping.js      # Nota-frekans dönüşüm tablosu
 │
-├── css/
-│   ├── styles.css      # Genel stiller
-│   ├── guitar.css      # Gitar UI stilleri
-│   └── lessons.css     # Ders UI stilleri
+├── docs/
+│   └── PROJECT_REPORT.md   # Proje raporu
 │
-└── docs/
-    └── ...             # Ek dokümanlar
+├── README.md               # Proje genel açıklaması
+├── DOCUMENTATION.md        # Bu dosya (kapsamlı teknik dokümantasyon)
+└── .gitignore              # Git dışı tutulacak dosyalar
 ```
+
+### index.html İç Yapısı
+Tek dosyada tüm uygulama bulunur:
+
+| Bölüm | Satır Aralığı (yaklaşık) | İçerik |
+|-------|--------------------------|--------|
+| CSS Stilleri | 1-2670 | Tüm UI stilleri, animasyonlar, responsive kurallar |
+| HTML Yapısı | 2670-3430 | Header, fretboard, zone grid, dersler, akorlar, kayıt, efekt paneli |
+| JavaScript | 3430-5068 | lessonsData, ses mantığı, ders başlatma, zone grid oluşturma, init |
 
 ---
 
@@ -444,17 +558,27 @@ Melovia/
 | Terim | Açıklama |
 |-------|----------|
 | **API** | Application Programming Interface - Yazılımların birbirleriyle konuşmasını sağlayan arayüz |
+| **Arpej** | Bir akorun notalarını sırayla çalma tekniği |
+| **Barre** | İşaret parmağının tüm telleri tek perdede kapatması |
+| **BPM** | Beats Per Minute - Dakikada vuruş sayısı (tempo birimi) |
 | **Buffer** | Verilerin geçici olarak tutulduğu hafıza alanı |
 | **Callback** | Bir işlem bitince çağrılacak fonksiyon |
 | **DOM** | Document Object Model - HTML'i JavaScript'ten kontrol etme yöntemi |
 | **Event** | Kullanıcı etkileşimi (tıklama, tuşa basma vb.) |
 | **Frequency** | Ses dalgasının saniyedeki titreşim sayısı (Hz) |
 | **Gain** | Ses seviyesi çarpanı |
+| **HUD** | Heads-Up Display - Ders sırasında gösterilen bilgi paneli |
 | **Latency** | Gecikme süresi (tuşa basma → ses çıkması arası) |
 | **Node** | Web Audio API'de ses işleme birimi |
 | **Oscillator** | Ses dalgası üreten kaynak |
+| **P-I-M-A** | Pulgar-Indice-Medio-Anular: Klasik gitar sağ el parmak tekniği |
+| **Palm Mute** | Avuç susturma tekniği (rock/metal müzikte "chug" sesi) |
+| **Power Chord** | Kök nota + 5. derece ile oluşturulan basit akor |
 | **Sample Rate** | Saniyede alınan ses örnekleri (genelde 44100 Hz) |
-| **Synthesis** | Sesın matematiksel olarak üretilmesi |
+| **scrollRestoration** | Browser'ın sayfa yenilendikten sonra eski scroll konumuna dönme davranışı |
+| **songData** | Bir dersin interaktif nota dizisini tutan JavaScript dizisi |
+| **Synthesis** | Sesin matematiksel olarak üretilmesi |
+| **Zone** | Klavye haritalama bölgesi (6 zone × 4 perde = 24 perde kaplama) |
 
 ---
 
@@ -475,4 +599,4 @@ Melovia/
 
 ---
 
-*Bu doküman Melovia projesi için hazırlanmıştır. Herhangi bir sorunuz varsa kodu inceleyebilirsiniz.*
+*Bu doküman Melovia projesi için hazırlanmıştır. Son güncelleme: 10 Şubat 2026*

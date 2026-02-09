@@ -1,26 +1,28 @@
 # Melovia - Dijital Gitar Simülatörü
-## Proje Raporu v1.0
+## Proje Raporu v0.2
 
-**Tarih:** 6 Şubat 2026  
-**Versiyon:** 0.1  
-**GitHub:** https://github.com/frzerxz/Melovia
+**Tarih:** 10 Şubat 2026  
+**Versiyon:** 0.2  
+**GitHub:** https://github.com/frzerxz/Melovia  
+**Canlı Demo:** https://frzerxz.github.io/Melovia/
 
 ---
 
 ## 📋 İçindekiler
 
 1. [Proje Genel Bakış](#proje-genel-bakış)
-2. [Son Güncelleme Özeti](#son-güncelleme-özeti)
+2. [Son Güncelleme Özeti (v0.2)](#son-güncelleme-özeti-v02)
 3. [Teknoloji Stack](#teknoloji-stack)
 4. [Dosya Yapısı](#dosya-yapısı)
 5. [Ses Motoru v3](#ses-motoru-v3)
 6. [Efekt Kontrol Paneli](#efekt-kontrol-paneli)
 7. [Gitar Modülü v4](#gitar-modülü-v4)
-8. [UI/UX Tasarım Sistemi](#uiux-tasarım-sistemi)
-9. [Klavye Entegrasyonu](#klavye-entegrasyonu)
-10. [Ders Sistemi](#ders-sistemi)
-11. [Unreal Engine Entegrasyonu](#unreal-engine-entegrasyonu)
-12. [Gelecek Planları](#gelecek-planları)
+8. [Ders Sistemi v2](#ders-sistemi-v2)
+9. [Practice Mode (Şarkı Pratikleri)](#practice-mode-şarkı-pratikleri)
+10. [Sayfa Davranışları](#sayfa-davranışları)
+11. [UI/UX Tasarım Sistemi](#uiux-tasarım-sistemi)
+12. [Klavye Entegrasyonu](#klavye-entegrasyonu)
+13. [Gelecek Planları](#gelecek-planları)
 
 ---
 
@@ -36,22 +38,55 @@
 - **Efekt Kontrol Paneli** - Chorus, Delay, EQ, Metronom
 - **Alternatif Akortlar** - Drop D, Open G, DADGAD ve daha fazlası
 - **Sanal Capo Desteği** - 1-12 perde arası
-- **İnteraktif Ders Sistemi** - HUD ve Timeline ile şarkı öğrenme
+- **8 İnteraktif Ders** - 5 temel ders + 3 ünlü şarkı pratiği
+- **Practice Mode** - Smoke on the Water, Seven Nation Army, Come As You Are
+- **HUD ve Timeline** ile interaktif nota takibi
 - **Klavye Entegrasyonu** - QWERTY klavye ile nota çalma
-- **Zone Sistemi** - 6 bölgeli tuş haritalaması
+- **6-Zone Sistemi** - 6 bölgeli tuş haritalaması (24 perde kaplama)
 - **Piyano Modu** - Alternatif enstrüman desteği
+- **Tablature Görüntüleyici** - Tab okuma ve takip
+- **Backing Track Player** - Blues, Pop Rock, Metal jam track'leri
+- **Kayıt & Playback** - Çalmalarınızı kaydedin ve dinleyin
 
 ### Hedef Kitle:
 - Müzik öğrencileri
 - Hobi müzisyenler
 - Gitar öğrenmek isteyenler
-- Oyun geliştiricileri (Unreal Engine entegrasyonu)
+- Müzik eğitmenleri
 
 ---
 
-## 🆕 Son Güncelleme Özeti
+## 🆕 Son Güncelleme Özeti (v0.2)
 
-### ✅ Eklenen Özellikler:
+### ✅ v0.2 ile Eklenen Özellikler (10 Şubat 2026):
+
+#### İnteraktif Ders İçerikleri:
+- **Ders 2: Temel Akorlar** - Hayat Bayram Olsa (Şenay, 1972) songData eklendi
+  - Am→E→Dm akor progresyonu, 18 nota, akor tonları aşağıdan yukarıya
+- **Ders 3: Palm Mute** - Kesme Ritim Tekniği songData eklendi
+  - E5→A5→D5 power chord root+5th pattern, 20 nota
+- **Ders 4: Arpej Tekniği** - Caddelerde Rüzgar (Nilüfer, 1978) songData eklendi
+  - P-I-M-A-M-I arpej kalıbı (Am→Dm→E), 22 nota
+- **Ders 5: Hızlı Geçişler** - Akdeniz Akşamları (Haluk Levent, 1998) songData eklendi
+  - Am→G→F→E akor tonları (F barre dahil), 28 nota
+
+#### Ders Açıklamaları Zenginleştirildi:
+- Her ders için **araştırmaya dayalı** kapsamlı açıklamalar yazıldı
+- Şarkı tarihleri, orijinal tonları, kullanılan teller ve perde aralıkları eklendi
+- Her ders için detaylı pratik ipuçları (BPM önerileri, parmak teknikleri) eklendi
+- HTML kartlarındaki kısa açıklamalar da güncellendi
+
+#### Sayfa Davranışları Düzeltildi:
+- **Scroll Sıfırlama:** Sayfa yenilendiğinde her zaman en üste scroll edilir
+  - `<head>` içinde erken `history.scrollRestoration = 'manual'`
+  - `document.documentElement.scrollTop = 0` fallback
+  - `load` ve `beforeunload` event listener'ları
+- **Ders/Practice Başlatma Scroll'u:** 4 kademeli scroll (hemen, 50ms, 200ms, 400ms)
+- **Section Geçiş Scroll'u:** `showSection()` içinde `scrollTo(0, 0)`
+- **Nota Göstergesi Sıfırlama:** Varsayılan "--" (belirli nota göstermez)
+- **Pozisyon Göstergesi Sıfırlama:** Varsayılan "--" (belirli tel/perde göstermez)
+
+### ✅ v0.1 ile Eklenen Özellikler (6 Şubat 2026):
 
 #### Ses Motoru Geliştirmeleri:
 - **6 Amplifikatör Preset:** Clean, Crunch, High Gain, Acoustic, Jazz, Metal
@@ -59,33 +94,23 @@
 - **Distortion/Reverb kontrolleri** her preset için optimize edildi
 
 #### Gitar Modülü v4:
-- **20+ Akor Kütüphanesi:**
-  - Major: C, D, E, F, G, A, B
-  - Minor: Am, Bm, Cm, Dm, Em, Fm, Gm
-  - 7th: A7, B7, C7, D7, E7, G7
-  - Maj7: Amaj7, Cmaj7, Dmaj7, Fmaj7, Gmaj7
+- **20+ Akor Kütüphanesi** (Major, Minor, 7th, Maj7)
 - **Alternatif Akortlar:** Standard, Drop D, Open G, Open D, DADGAD, Half Step Down
 - **Sanal Capo:** 1-12 perde arası destek
-- **SVG Akor Diyagramları:** Görsel akor gösterimi
 
 #### Efekt Kontrol Paneli (UI):
 - Sağdan kayarak açılan floating panel
-- Amp preset butonları
-- Master Volume ve Reverb slider'ları
-- Chorus efekti (Rate, Depth, Mix kontrolleri)
-- Delay efekti (Time, Feedback, Mix kontrolleri)
-- 3-Band EQ (Low, Mid, High slider'ları)
-- Metronom (Play/Pause + BPM ayarı)
+- Amp preset butonları, Master Volume, Reverb, Chorus, Delay, EQ, Metronom
+
+#### Ders Sistemi v1:
+- İlk interaktif ders: Arkadaşım Eşek (Barış Manço) - 40 nota
+- 3 şarkı pratiği: Smoke on the Water, Seven Nation Army, Come As You Are
+- Live Lesson HUD sistemi
 
 #### Görsel İyileştirmeler:
-- Tel titreşim animasyonu geliştirildi
-- Chord highlight stili eklendi
-- Nota press animasyonu eklendi
-- Görsel animasyonlar geliştirildi
-
-#### Dokümantasyon:
-- `DOCUMENTATION.md` oluşturuldu - Tüm kavramların detaylı açıklaması
-- `README.md` güncellendi
+- Tel titreşim animasyonu
+- Chord highlight stili
+- Nota press animasyonu
 
 ---
 
@@ -111,8 +136,8 @@
 ### Geliştirme Araçları
 | Araç | Kullanım Amacı |
 |------|----------------|
-| http-server | Yerel geliştirme sunucusu |
 | Git/GitHub | Versiyon kontrolü |
+| GitHub Pages | Canlı demo barındırma |
 | VS Code | Kod editörü |
 
 ---
@@ -121,30 +146,20 @@
 
 ```
 Melovia/
-├── index.html              # Ana uygulama (HTML + inline CSS + JS)
-├── README.md               # Proje açıklaması
-├── DOCUMENTATION.md        # Kapsamlı teknik dokümantasyon
+├── index.html              # Ana uygulama (~5068 satır)
+│                            # HTML + inline CSS + JavaScript
+│                            # Tüm UI, stiller, lessonsData ve mantık
 │
 ├── js/
 │   ├── audioEngine.js      # Ses motoru v3 (Karplus-Strong + Efektler)
-│   ├── guitarModule.js     # Gitar modülü v4 (Akorlar + Akortlar + Capo)
-│   ├── noteMapping.js      # Nota-frekans dönüşümü
-│   ├── lessonsModule.js    # Ders sistemi
-│   └── pianoModule.js      # Piyano modülü
-│
-├── css/
-│   ├── styles.css          # Genel stiller
-│   ├── guitar.css          # Gitar bileşen stilleri
-│   ├── lessons.css         # Ders modülü stilleri
-│   └── piano.css           # Piyano stilleri
+│   └── noteMapping.js      # Nota-frekans dönüşüm tablosu
 │
 ├── docs/
-│   ├── PROJECT_REPORT.md   # Bu dosya
-│   └── UNREAL_INTEGRATION.md # Unreal Engine rehberi
+│   └── PROJECT_REPORT.md   # Bu dosya
 │
-└── unreal/
-    ├── MeloviaAPI.js       # Unreal için API wrapper
-    └── WebBrowserWidget.md # Widget kurulum rehberi
+├── README.md               # Proje genel açıklaması
+├── DOCUMENTATION.md        # Kapsamlı teknik dokümantasyon
+└── .gitignore              # Git dışı tutulacak dosyalar
 ```
 
 ---
@@ -165,19 +180,6 @@ Gerçekçi gitar sesi üretimi için fiziksel modelleme:
 2. **Delay Line:** Periyodik tekrar (tel uzunluğu simülasyonu)
 3. **Low-pass Filter:** Her tekrarda yumuşatma (enerji kaybı)
 4. **Decay Envelope:** Üstel sönümleme
-
-```javascript
-// Karplus-Strong döngüsü
-for (let i = 0; i < totalSamples; i++) {
-    if (i < periodSamples) {
-        data[i] = noiseBuffer[i];
-    } else {
-        const prev = data[i - periodSamples];
-        const next = data[i - periodSamples + 1] || prev;
-        data[i] = decay * (blend * prev + (1 - blend) * next);
-    }
-}
-```
 
 ### Tel Parametreleri
 
@@ -220,47 +222,18 @@ for (let i = 0; i < totalSamples; i++) {
 │ Reverb: ═══●═════════════ 20%      │
 ├─────────────────────────────────────┤
 │ 💫 CHORUS                    [OFF]  │
-│ Rate:  ═══●════════════════        │
-│ Depth: ═══●════════════════        │
-│ Mix:   ═══●════════════════        │
+│ Rate / Depth / Mix                  │
 ├─────────────────────────────────────┤
 │ 🔁 DELAY                     [OFF]  │
-│ Time:     ═══●═════════════        │
-│ Feedback: ═══●═════════════        │
-│ Mix:      ═══●═════════════        │
+│ Time / Feedback / Mix               │
 ├─────────────────────────────────────┤
 │ 📊 EQUALIZER                        │
-│   Low    Mid    High                │
-│    │      │      │                  │
-│    ●      ●      ●                  │
-│    │      │      │                  │
+│ Low / Mid / High                    │
 ├─────────────────────────────────────┤
 │ 🥁 METRONOM                         │
 │ [▶ Başlat]     120 BPM             │
-│ ════════════●══════════════        │
 └─────────────────────────────────────┘
 ```
-
-### Efekt Parametreleri
-
-#### Chorus
-- **Rate:** 0.1 - 5 Hz (LFO hızı)
-- **Depth:** 0 - 10 ms (frekans sapması)
-- **Mix:** 0 - 100% (efekt oranı)
-
-#### Delay
-- **Time:** 50 - 1000 ms (gecikme süresi)
-- **Feedback:** 0 - 90% (tekrar sayısı)
-- **Mix:** 0 - 100% (echo oranı)
-
-#### 3-Band EQ
-- **Low:** -12 ile +12 dB (320 Hz altı)
-- **Mid:** -12 ile +12 dB (1000 Hz civarı)
-- **High:** -12 ile +12 dB (3200 Hz üstü)
-
-#### Metronom
-- **BPM:** 40 - 220 (dakikada vuruş)
-- **Time Signature:** 4/4 (varsayılan)
 
 ---
 
@@ -269,15 +242,14 @@ for (let i = 0; i < totalSamples; i++) {
 ### Akor Kütüphanesi
 
 #### Major Akorlar
-| Akor | Perde Pozisyonları | Parmaklar |
-|------|-------------------|-----------|
-| C | x-3-2-0-1-0 | x-3-2-0-1-0 |
-| D | x-x-0-2-3-2 | x-x-0-1-3-2 |
-| E | 0-2-2-1-0-0 | 0-2-3-1-0-0 |
-| F | 1-3-3-2-1-1 | Barre |
-| G | 3-2-0-0-0-3 | 2-1-0-0-0-3 |
-| A | x-0-2-2-2-0 | x-0-1-2-3-0 |
-| B | x-2-4-4-4-2 | Barre |
+| Akor | Perde Pozisyonları |
+|------|-------------------|
+| C | x-3-2-0-1-0 |
+| D | x-x-0-2-3-2 |
+| E | 0-2-2-1-0-0 |
+| F | 1-3-3-2-1-1 (Barre) |
+| G | 3-2-0-0-0-3 |
+| A | x-0-2-2-2-0 |
 
 #### Minor Akorlar
 | Akor | Perde Pozisyonları |
@@ -297,13 +269,98 @@ for (let i = 0; i < totalSamples; i++) {
 | DADGAD | D-A-D-G-A-D | Celtic, akustik |
 | Half Step Down | Eb-Ab-Db-Gb-Bb-Eb | Daha koyu ton |
 
-### Capo Desteği
+---
 
+## 📚 Ders Sistemi v2
+
+### Genel Bakış
+Melovia'nın ders sistemi 8 interaktif ders içerir: 5 temel ders ve 3 şarkı pratiği. Her ders araştırmaya dayalı, kapsamlı açıklamalar ve pratik ipuçları ile donatılmıştır.
+
+### Temel Dersler
+
+| # | Ders | Şarkı/Konu | Nota | Zorluk | Teknik |
+|---|------|-----------|------|--------|--------|
+| 1 | İlk Melodim | Arkadaşım Eşek - Barış Manço (1975) | 40 | ★☆☆ | Tek parmak melodi, Em tonu |
+| 2 | Temel Akorlar | Hayat Bayram Olsa - Şenay (1972) | 18 | ★★☆ | Am-E-Dm akor geçişleri |
+| 3 | Palm Mute | Kesme Ritim Tekniği | 20 | ★★☆ | E5-A5-D5 power chord |
+| 4 | Arpej Tekniği | Caddelerde Rüzgar - Nilüfer (1978) | 22 | ★★★ | P-I-M-A parmak arpej |
+| 5 | Hızlı Geçişler | Akdeniz Akşamları - Haluk Levent (1998) | 28 | ★★★ | Am-G-F-E, F barre |
+
+### Ders Detayları
+
+#### Ders 1: İlk Melodim - Arkadaşım Eşek
+- **Orijinal Ton:** Em (Mi minör)
+- **Kullanılan Teller:** 4. tel (D) ve 3. tel (G), perde 0-3 aralığı
+- **Teknik:** Tek parmak ile çalınabilen basit nota dizilişi
+- **İpuçları:** 50 BPM'de başlayın, RE-LA-Sİ geçişini pratik edin
+
+#### Ders 2: Temel Akorlar - Hayat Bayram Olsa
+- **Orijinal Ton:** Gm, gitarda Am'a transpose
+- **Akorlar:** Am → E → Dm üçlü progresyon
+- **Ritim:** 4/4, A-AY-Y-AY (Aşağı-Aşağı Yukarı-Yukarı-Aşağı Yukarı) vuruş
+- **İpuçları:** Am→E geçişinde parmak kaydırma, 10 dk/gün pratik
+
+#### Ders 3: Palm Mute - Kesme Ritim
+- **Teknik:** Sağ el avuç içi kenarını köprü üzerine yerleştirme
+- **Akorlar:** E5, A5, D5 power chord'lar
+- **Kalıp:** Root-root-5th-root (her power chord için)
+- **İpuçları:** Hafif temas yeterli, Green Day/Blink-182 örnekleri
+
+#### Ders 4: Arpej Tekniği - Caddelerde Rüzgar
+- **Teknik:** P-I-M-A klasik gitar parmak tekniği
+  - P (Pulgar): Başparmak → kalın teller (6-5-4)
+  - I (Indice): İşaret parmağı → 3. tel
+  - M (Medio): Orta parmak → 2. tel
+  - A (Anular): Yüzük parmağı → 1. tel
+- **Kalıp:** P-I-M-A-M-I (yükselen-alçalan)
+- **İpuçları:** Tenis topu tutuşu, 60 BPM başlangıç
+
+#### Ders 5: Hızlı Geçişler - Akdeniz Akşamları
+- **Ton:** La minör (Am→G→F→E) veya Em tonunda Em→D→C→B7
+- **F Barre:** İşaret parmağı 6 teli 1. perdede kapatır
+- **İpuçları:** Parmak kenar kemiği kullanımı, G→F en zor geçiş, 80 BPM başlangıç
+
+---
+
+## 🎵 Practice Mode (Şarkı Pratikleri)
+
+### Şarkı Pratikleri
+
+| # | Şarkı | Sanatçı | Nota | Teknik |
+|---|-------|---------|------|--------|
+| 6 | Smoke on the Water | Deep Purple | 12 | G telinde 0-3-5 perde, power chord temeli |
+| 7 | Seven Nation Army | The White Stripes | 13 | 5. tel (A) üzerinde tek tel riff |
+| 8 | Come As You Are | Nirvana | 13 | 5. ve 4. tel geçişleri, grunge riff |
+
+### songData Formatı
+Her nota için:
 ```javascript
-// Capo ile frekans hesaplama
-const actualFret = userFret + capoPosition;
-const frequency = baseFreq * Math.pow(2, actualFret / 12);
+{
+    note: 'SOL (G3)',    // Görüntülenen nota adı
+    s: 3,                // Tel numarası (1-6)
+    f: 0,                // Perde numarası (0-19)
+    key: '3'             // Basılacak klavye tuşu
+}
 ```
+
+---
+
+## 🔄 Sayfa Davranışları
+
+### Scroll Yönetimi
+
+| Olay | Davranış | Yöntem |
+|------|----------|--------|
+| Sayfa yüklenme | En üste scroll | `history.scrollRestoration='manual'` + `scrollTo(0,0)` |
+| Sayfa yenileme (F5) | En üste scroll | `<head>` script + `load` event |
+| Section geçişi | En üste scroll | `showSection()` içinde `scrollTo(0,0)` |
+| Ders başlatma | En üste scroll | 4 kademeli (0ms, 50ms, 200ms, 400ms) |
+| Nota/Pozisyon | Varsayılan: "--" | Tuşa basınca güncellenir |
+
+### 3 Katmanlı Scroll Engelleme
+1. **`<head>` script'i:** Browser body'i parse etmeden önce çalışır
+2. **Ana script başlangıcı:** `scrollTo(0,0)` + `scrollTop = 0`
+3. **`load` event:** Sayfa tamamen yüklendikten sonra final scroll
 
 ---
 
@@ -324,26 +381,15 @@ const frequency = baseFreq * Math.pow(2, actualFret / 12);
 }
 ```
 
-### Animasyonlar
-
-#### Tel Titreşimi
-```css
-@keyframes vibrate {
-    0%, 100% { transform: translateY(-50%) }
-    10% { transform: translateY(calc(-50% + 2px)) }
-    25% { transform: translateY(calc(-50% - 2px)) }
-    /* ... sönümlenme devam eder */
-}
-```
-
-#### Nota Basım
-```css
-@keyframes notePress {
-    0% { transform: translate(-50%, -50%) scale(0.9) }
-    50% { transform: translate(-50%, -50%) scale(1.05) }
-    100% { transform: translate(-50%, -50%) scale(1) }
-}
-```
+### Ders Kartı Kategorileri
+| Kategori | CSS Class | Renk |
+|----------|-----------|------|
+| Melodi Çalışması | `.melodi` | Mor |
+| Ritim Çalışması | `.ritim` | Turuncu |
+| Teknik Alıştırma | `.teknik` | Yeşil |
+| Parmak Çalışması | `.parmak` | Mavi |
+| Klasik Türk Şarkısı | `.sarki` | Pembe |
+| Rock Klasik | `.rock` | Kırmızı |
 
 ---
 
@@ -351,10 +397,10 @@ const frequency = baseFreq * Math.pow(2, actualFret / 12);
 
 ### Zone 1 - Primary Grid (Perde 0-3)
 ```
-Açık Tel: 1 2 3 4 5 6   → Tel 6,5,4,3,2,1 - Perde 0
+Açık Tel: 1 2 3 4 5 6   → e1,B,G,D,A,E6 - Perde 0
 Perde 1:  Q W E R T Y
 Perde 2:  A S D F G H
-Perde 3:  Z X C V B N
+Perde 3:  < Z X C V B
 ```
 
 ### Zone 2 - Vertical Cluster (Perde 4-7)
@@ -362,7 +408,7 @@ Perde 3:  Z X C V B N
 Perde 4: 7 8 9 0 * -
 Perde 5: U I O P Ğ Ü
 Perde 6: J K L Ş İ ,
-Perde 7: M Ö Ç . - "
+Perde 7: N M Ö Ç . "
 ```
 
 ### Özel Tuşlar
@@ -372,49 +418,20 @@ Perde 7: M Ö Ç . - "
 
 ---
 
-## 📚 Ders Sistemi
-
-### Ders Yapısı
-- **Başlık ve Sanatçı**
-- **Kullanılan Akorlar**
-- **Adım Adım Notalar**
-- **İpuçları**
-
-### HUD Bileşenleri
-- İlerleme çubuğu
-- Aktif nota göstergesi
-- Basılacak tuş
-- Timeline (kayan nota şeridi)
-
-### Mevcut Dersler
-1. **Arkadaşım Eşek** - 40 adım, başlangıç seviyesi
-
----
-
-## 🎮 Unreal Engine Entegrasyonu
-
-Detaylı bilgi için: [UNREAL_INTEGRATION.md](./UNREAL_INTEGRATION.md)
-
-### Entegrasyon Yöntemleri
-1. **Web Browser Widget** - HTML/CSS/JS direkt gösterimi
-2. **JavaScript ↔ Blueprint** - İki yönlü iletişim
-3. **WebSocket** - Gerçek zamanlı veri aktarımı
-
----
-
 ## 🚀 Gelecek Planları
 
-### v0.5 - Ses Geliştirmeleri
+### v0.3 - Ses Geliştirmeleri
 - [ ] Gerçek Chorus/Delay ses efektleri
 - [ ] Palm Mute ve Hammer-on teknikleri
 - [ ] MIDI desteği
 
-### v0.6 - Ders İçerikleri
-- [ ] Yeni şarkılar ekleme
-- [ ] Zorluk seviyeleri
-- [ ] Skor sistemi
+### v0.4 - Ders İçerikleri
+- [ ] Yeni Türkçe şarkılar ekleme
+- [ ] Zorluk seviyelerine göre sıralama
+- [ ] Ders tamamlama ve puan sistemi
+- [ ] Yıldız bazlı değerlendirme
 
-### v0.7 - Sosyal Özellikler
+### v0.5 - Sosyal Özellikler
 - [ ] Kullanıcı hesapları
 - [ ] İlerleme kaydetme
 - [ ] Topluluk şarkıları
@@ -429,8 +446,9 @@ Detaylı bilgi için: [UNREAL_INTEGRATION.md](./UNREAL_INTEGRATION.md)
 ## 📞 İletişim
 
 **GitHub:** https://github.com/frzerxz/Melovia  
+**Canlı Demo:** https://frzerxz.github.io/Melovia/  
 **Geliştirici:** frzerxz
 
 ---
 
-*Son güncelleme: 6 Şubat 2026 - v0.1*
+*Son güncelleme: 10 Şubat 2026 - v0.2*
