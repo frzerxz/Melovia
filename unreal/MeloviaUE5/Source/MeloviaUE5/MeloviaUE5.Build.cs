@@ -1,0 +1,31 @@
+// MeloviaUE5.Build.cs
+// Ana Oyun Modülü Build Configuration
+
+using UnrealBuildTool;
+
+public class MeloviaUE5 : ModuleRules
+{
+    public MeloviaUE5(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+        PublicDependencyModuleNames.AddRange(new string[]
+        {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "InputCore",
+            "UMG",
+            "WebBrowserWidget",
+            "MeloviaCore"       // Universal Note Core modülümüz
+        });
+
+        PrivateDependencyModuleNames.AddRange(new string[]
+        {
+            "Slate",
+            "SlateCore",
+            "AudioMixer",
+            "HeadMountedDisplay"    // VR desteği
+        });
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "FileVersion": 3,
+    "EngineAssociation": "5.7",
+    "Category": "Music",
+    "Description": "Melovia - Dijital Enstrüman Simülasyonu ve Müzik Öğrenme Platformu. TÜBİTAK 2209-A Projesi.",
+    "Modules": [
+        {
+            "Name": "MeloviaUE5",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "AdditionalDependencies": [
+                "Engine"
+            ]
+        },
+        {
+            "Name": "MeloviaCore",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "WebBrowserWidget",
+            "Enabled": true
+        },
+        {
+            "Name": "OculusVR",
+            "Enabled": false
+        },
+        {
+            "Name": "OpenXR",
+            "Enabled": true
+        },
+        {
+            "Name": "OpenXRHandTracking",
+            "Enabled": true
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+# UE5 Build artifacts
+Binaries/
+Intermediate/
+DerivedDataCache/
+Saved/
+Build/
+
+# IDE
+.vs/
+.vscode/
+*.sln
+*.suo
+*.vcxproj*
+
+# Compiled
+*.pdb
+*.obj
+*.lib
+*.dll
+*.exe
