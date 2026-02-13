@@ -130,4 +130,4 @@ Melovia/
 - [ ] Mobil uyumluluk
 
 ---
-*TÜBİTAK 2209-A Projesi - Melovia v0.3 | Geliştirici: Firuze Eroğlu | Balıkesir Üniversitesi*
+*TÜBİTAK 2209-A Projesi - Melovia v0.1 | Geliştirici: Firuze Eroğlu | Balıkesir Üniversitesi*

@@ -1,8 +1,8 @@
 # Melovia - Dijital Enstrüman Simülatörü
-## Proje Raporu v0.3
+## Proje Raporu v0.1
 
 **Tarih:** 13 Şubat 2026  
-**Versiyon:** 0.3  
+**Versiyon:** 0.1  
 **GitHub:** https://github.com/frzerxz/Melovia  
 **Canlı Demo:** https://frzerxz.github.io/Melovia/  
 **Proje:** TÜBİTAK 2209-A | Balıkesir Üniversitesi Mühendislik Fakültesi
@@ -12,7 +12,7 @@
 ## 📋 İçindekiler
 
 1. [Proje Genel Bakış](#proje-genel-bakış)
-2. [Son Güncelleme Özeti (v0.3)](#son-güncelleme-özeti-v03)
+2. [Son Güncelleme Özeti (v0.1)](#son-güncelleme-özeti-v01)
 3. [Unreal Engine 5 Entegrasyonu](#unreal-engine-5-entegrasyonu)
 4. [Teknoloji Stack](#teknoloji-stack)
 5. [Dosya Yapısı](#dosya-yapısı)
@@ -57,11 +57,11 @@
 
 ---
 
-## 🆕 Son Güncelleme Özeti (v0.3)
+## 🆕 Son Güncelleme Özeti (v0.1)
 
-### ✅ v0.3 ile Eklenen Özellikler (13 Şubat 2026):
+### ✅ v0.1 Güncellemeleri:
 
-#### Unreal Engine 5.7.1 Entegrasyonu:
+#### Unreal Engine 5.7.1 Entegrasyonu (13 Şubat 2026):
 - **C++ Universal Note Core** - 4 modül başarıyla derlendi ve UE5 Editör'de çalıştı
 - **UniversalNoteCore** - 12-TET eşit temperli akort sistemi, frekans hesaplama, MIDI dönüşüm, transpozisyon
 - **GuitarModule** - 6 telli gitar simülasyonu (6 akort tipi, capo 0-12, Karplus-Strong parametreleri)
@@ -70,7 +70,7 @@
 - **MeloviaGameMode** - Blueprint-erişilebilir ana oyun modu
 - **Proje Konfigürasyonu** - .uproject, Target.cs, Build.cs, DefaultEngine/Game/Editor.ini
 
-### ✅ v0.2 ile Eklenen Özellikler (10 Şubat 2026):
+#### İnteraktif Ders İçerikleri (10 Şubat 2026):
 
 #### İnteraktif Ders İçerikleri:
 - **Ders 2: Temel Akorlar** - Hayat Bayram Olsa (Şenay, 1972) songData eklendi
@@ -98,7 +98,7 @@
 - **Nota Göstergesi Sıfırlama:** Varsayılan "--" (belirli nota göstermez)
 - **Pozisyon Göstergesi Sıfırlama:** Varsayılan "--" (belirli tel/perde göstermez)
 
-### ✅ v0.1 ile Eklenen Özellikler (6 Şubat 2026):
+#### Ses Motoru ve UI Geliştirmeleri (6 Şubat 2026):
 
 #### Ses Motoru Geliştirmeleri:
 - **6 Amplifikatör Preset:** Clean, Crunch, High Gain, Acoustic, Jazz, Metal
@@ -487,18 +487,18 @@ Perde 7: N M Ö Ç . "
 
 ## 🚀 Gelecek Planları
 
-### v0.4 - 3D Görselleştirme (UE5)
+### v0.2 - 3D Görselleştirme (UE5)
 - [ ] 3D gitar modeli ve sahne düzeni
 - [ ] Kamera ve ışık sistemi
 - [ ] Tel titreşim animasyonları (3D)
 - [ ] Blueprint UI entegrasyonu
 
-### v0.5 - VR Entegrasyonu
+### v0.3 - VR Entegrasyonu
 - [ ] OpenXR ile VR desteği
 - [ ] El takibi (OpenXR Hand Tracking)
 - [ ] VR içinde gitar/piyano etkileşimi
 
-### v0.6 - AI Analiz Modülü
+### v0.4 - AI Analiz Modülü
 - [ ] Çalma performans analizi
 - [ ] Tempo ve ritim değerlendirme
 - [ ] Kişisel öğrenme önerileri
@@ -519,4 +519,4 @@ Perde 7: N M Ö Ç . "
 
 ---
 
-*Son güncelleme: 13 Şubat 2026 - v0.3*
+*Son güncelleme: 13 Şubat 2026 - v0.1*
