@@ -1263,6 +1263,160 @@
             }
         }
 
+        /* Completion Overlay */
+        .completion-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .completion-overlay.active {
+            display: flex;
+        }
+
+        .completion-card {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 40px 50px;
+            text-align: center;
+            max-width: 440px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.15);
+            animation: scaleIn 0.4s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .completion-confetti {
+            font-size: 56px;
+            margin-bottom: 12px;
+            animation: bounce 0.6s ease infinite alternate;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-10px);
+            }
+        }
+
+        .completion-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0 0 8px 0;
+        }
+
+        .completion-subtitle {
+            color: #a0a0b8;
+            font-size: 15px;
+            margin: 0 0 24px 0;
+        }
+
+        .completion-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .completion-stat {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            padding: 12px 18px;
+            min-width: 90px;
+        }
+
+        .completion-stat .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #8b5cf6;
+            display: block;
+        }
+
+        .completion-stat .stat-label {
+            font-size: 11px;
+            color: #707080;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .completion-btn {
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .completion-btn.replay {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+
+        .completion-btn.replay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .completion-btn.close {
+            background: rgba(255, 255, 255, 0.08);
+            color: #a0a0b8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .completion-btn.close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #e0e0e8;
+        }
+
         /* Lesson HUD (Heads-Up Display) */
         .lesson-hud {
             display: none;
@@ -2737,6 +2891,26 @@
                     <button class="fb-btn accent" onclick="shiftFrets(1)">▶</button>
                 </div>
 
+                <!-- Tamamlama Overlay -->
+                <div class="completion-overlay" id="completionOverlay">
+                    <div class="completion-card">
+                        <div class="completion-confetti">🎉</div>
+                        <h2 class="completion-title" id="completionTitle">TEBRİKLER!</h2>
+                        <p class="completion-subtitle" id="completionSubtitle">Şarkıyı başarıyla tamamladınız!</p>
+                        <div class="completion-stats" id="completionStats">
+                            <!-- Dinamik olarak doldurulacak -->
+                        </div>
+                        <div class="completion-actions">
+                            <button class="completion-btn replay" id="completionReplayBtn" onclick="completionReplay()">
+                                ↺ Tekrar Çal
+                            </button>
+                            <button class="completion-btn close" id="completionCloseBtn" onclick="completionClose()">
+                                ✕ Kapat
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Live Lesson HUD (Compact Design) -->
                 <div class="lesson-hud" id="lessonHud">
                     <div class="hud-progress-bar">
@@ -3896,10 +4070,20 @@
                 // Şarkı Bitti! Timeline'ı sonuna kaydır
                 updateTimelineScroll(stepIndex);
 
+                // Progress'i %100 yap
+                document.getElementById('hudProgress').style.width = '100%';
+                document.getElementById('hudCounter').textContent = `✅ ${total} / ${total}`;
+
+                const songTitle = document.getElementById('hudTitle').textContent;
+                const songArtist = document.getElementById('hudArtist').textContent;
+
                 setTimeout(() => {
-                    // Basit bir konfetinin veya modalın yerini alacak alert (şimdilik)
-                    alert('TEBRİKLER! ŞARKI TAMAMLANDI! 🎉\nDoğruluk: %100\nHarika bir performans!');
-                    stopLesson();
+                    showCompletionOverlay('lesson', {
+                        title: songTitle + (songArtist ? ' - ' + songArtist : ''),
+                        correct: total,
+                        total: total,
+                        percent: 100
+                    });
                 }, 300);
                 return;
             }
@@ -3942,6 +4126,58 @@
         function stopLesson() {
             currentLessonState.active = false;
             document.getElementById('lessonHud').classList.remove('active');
+            // Completion overlay'i de kapat
+            document.getElementById('completionOverlay').classList.remove('active');
+        }
+
+        // Tamamlama Overlay sistemi
+        let completionMode = null; // 'lesson' veya 'practice'
+
+        function showCompletionOverlay(mode, data) {
+            completionMode = mode;
+            const overlay = document.getElementById('completionOverlay');
+            const title = document.getElementById('completionTitle');
+            const subtitle = document.getElementById('completionSubtitle');
+            const stats = document.getElementById('completionStats');
+
+            title.textContent = 'TEBRİKLER!';
+            subtitle.textContent = data.title || 'Başarıyla tamamladınız!';
+
+            let statsHTML = '';
+            statsHTML += `<div class="completion-stat"><span class="stat-value">${data.correct}/${data.total}</span><span class="stat-label">Doğru</span></div>`;
+            statsHTML += `<div class="completion-stat"><span class="stat-value">%${data.percent}</span><span class="stat-label">Başarı</span></div>`;
+            if (data.time) {
+                statsHTML += `<div class="completion-stat"><span class="stat-value">${data.time}</span><span class="stat-label">Süre</span></div>`;
+            }
+            stats.innerHTML = statsHTML;
+
+            overlay.classList.add('active');
+        }
+
+        function completionReplay() {
+            document.getElementById('completionOverlay').classList.remove('active');
+            if (completionMode === 'lesson') {
+                startLesson();
+            } else if (completionMode === 'practice') {
+                // Practice'i aynı şarkıyla yeniden başlat
+                const songName = document.getElementById('practiceSongName')?.textContent;
+                stopPractice();
+                // Mevcut lesson'ı tekrar başlat
+                if (currentLessonId) {
+                    startLesson();
+                }
+            }
+            completionMode = null;
+        }
+
+        function completionClose() {
+            document.getElementById('completionOverlay').classList.remove('active');
+            if (completionMode === 'lesson') {
+                stopLesson();
+            } else if (completionMode === 'practice') {
+                stopPractice();
+            }
+            completionMode = null;
         }
 
         // Modal dışına tıklandığında kapat
@@ -5130,19 +5366,19 @@
             document.getElementById('practiceProgressFill').style.width = '100%';
             document.getElementById('practiceCurrentNote').textContent = `✅ Tamamlandı!`;
 
-            // Show completion message
-            const bar = document.getElementById('practiceBar');
+            // Show completion overlay
             const songName = document.getElementById('practiceSongName').textContent;
+            const mins = Math.floor(elapsed / 60);
+            const secs = String(elapsed % 60).padStart(2, '0');
 
             setTimeout(() => {
-                alert(
-                    `🎉 Tebrikler!\n\n` +
-                    `Şarkı: ${songName}\n` +
-                    `Doğru: ${practiceCorrectCount}/${total}\n` +
-                    `Süre: ${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}\n` +
-                    `Başarı: ${Math.round((practiceCorrectCount / total) * 100)}%`
-                );
-                stopPractice();
+                showCompletionOverlay('practice', {
+                    title: songName,
+                    correct: practiceCorrectCount,
+                    total: total,
+                    percent: Math.round((practiceCorrectCount / total) * 100),
+                    time: `${mins}:${secs}`
+                });
             }, 500);
         }
 
