@@ -15,14 +15,7 @@ public class MeloviaUE5 : ModuleRules
             "CoreUObject",
             "Engine",
             "InputCore",
-            "MeloviaCore"       // Universal Note Core modülümüz
-        });
-
-        PrivateDependencyModuleNames.AddRange(new string[]
-        {
-            "Slate",
-            "SlateCore",
-            "UMG"               // Unreal Motion Graphics (Widget)
+            "MeloviaCore"
         });
     }
 }
