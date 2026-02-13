@@ -32,14 +32,16 @@
 - Velocity (basma şiddeti) desteği
 - Sustain pedal fonksiyonu
 
-### 🎓 İnteraktif Dersler
-- **Ders 1: Arkadaşım Eşek:** 40 adımlık, senkronize, oyunlaştırılmış ders deneyimi
+### 🎓 İnteraktif Dersler & Şarkı Pratikleri
+- **5 Temel Ders + 3 Şarkı Pratiği:** Toplam 8 interaktif öğrenme modülü
 - **HUD (Heads-Up Display):** Kayan nota şeridi (Timeline) ve anlık geri bildirim
-- **İlerleme Takibi:** Ders tamamlama ve başarı sistemi
+- **Tamamlama Overlay:** Animasyonlu sonuç ekranı - istatistikler, Tekrar Çal / Kapat butonları
+- **İlerleme Takibi:** Doğru/Toplam, %Başarı, Süre gösterimi
 
 ### 🎨 Modern UI/UX
 - **Efekt Kontrol Paneli:** Sağdan kayarak açılan floating panel
 - **Görsel Geri Bildirim:** Nota çalındığında dalga efekti animasyonu
+- **Glassmorphism Tasarım:** Blur arka plan, gradient renkler, animasyonlar
 - **Responsive Tasarım:** Farklı ekran boyutlarına uyumlu
 - **Koyu Tema:** Göz yormayan karanlık arayüz
 

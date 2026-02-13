@@ -358,4 +358,4 @@ Sorularınız için:
 
 ---
 
-*Bu belge Melovia v0.1 için hazırlanmıştır. Son güncelleme: 22 Ocak 2026*
+*Bu belge Melovia v0.1 için hazırlanmıştır. Son güncelleme: 14 Şubat 2026*

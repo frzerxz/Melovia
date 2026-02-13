@@ -14,16 +14,18 @@ Bu doküman, Melovia projesindeki tüm kavramları, teknolojileri ve yapıları 
 6. [Piyano Modülü](#piyano-modülü)
 7. [Ders Sistemi](#ders-sistemi)
 8. [Practice Mode (Şarkı Pratikleri)](#practice-mode-şarkı-pratikleri)
-9. [Sayfa Davranışları](#sayfa-davranışları)
-10. [Kullanıcı Arayüzü (UI)](#kullanıcı-arayüzü-ui)
-11. [Klavye Haritalama](#klavye-haritalama)
-12. [Dosya Yapısı](#dosya-yapısı)
+9. [Tamamlama Overlay](#tamamlama-overlay)
+10. [Sayfa Davranışları](#sayfa-davranışları)
+11. [Kullanıcı Arayüzü (UI)](#kullanıcı-arayüzü-ui)
+12. [Klavye Haritalama](#klavye-haritalama)
+13. [Dosya Yapısı](#dosya-yapısı)
+14. [Unreal Engine 5 Entegrasyonu](#unreal-engine-5-entegrasyonu)
 
 ---
 
 ## 🎯 Proje Nedir?
 
-**Melovia**, bilgisayar klavyesi kullanarak sanal gitar ve piyano çalmayı öğreten bir web uygulamasıdır.
+**Melovia**, bilgisayar klavyesi kullanarak sanal gitar ve piyano çalmayı öğreten bir web uygulamasıdır. Ayrıca **Unreal Engine 5** C++ altyapısı ile 3D görselleştirme ve VR entegrasyonu için temel oluşturulmuştur.
 
 ### Ne Yapar?
 - Klavye tuşlarına bastığınızda gerçekçi gitar/piyano sesi çıkarır
@@ -599,4 +601,72 @@ Tek dosyada tüm uygulama bulunur:
 
 ---
 
-*Bu doküman Melovia projesi için hazırlanmıştır. Son güncelleme: 10 Şubat 2026*
+*Bu doküman Melovia projesi için hazırlanmıştır. Son güncelleme: 14 Şubat 2026 - v0.1*
+
+---
+
+## 🎮 Tamamlama Overlay
+
+Ders veya pratik tamamlandığında kullanıcıya gösterilen görsel sonuç ekranıdır.
+
+### Önceki Davranış (alert)
+Eski versiyonda `alert()` ile basit bir bildirim gösteriliyordu. Kullanıcı OK'a bastığında ders otomatik kapanıyordu.
+
+### Yeni Davranış (Completion Overlay)
+- **Animasyonlu modal:** Glassmorphism efektli, ar kapalı overlay
+- **İstatistikler:** Doğru/Toplam, %Başarı, Süre (pratikler için)
+- **Kullanıcı kontrollü:** Ekran otomatik kapanmaz
+  - **↺ Tekrar Çal:** Aynı dersi/pratiği baştan başlatır
+  - **✕ Kapat:** HUD'ı kapatır, gitar ekranına döner
+
+### Teknik Detaylar
+```javascript
+showCompletionOverlay(mode, {
+    title: 'Arkadaşım Eşek',  // Şarkı adı
+    correct: 40,              // Doğru sayısı
+    total: 40,                // Toplam nota
+    percent: 100,             // Başarı yüdesi
+    time: '2:35'              // Süre (opsiyonel)
+});
+```
+- `completionMode` değişkeni: `'lesson'` veya `'practice'` - hangi modun tamamlandığını takip eder
+- `completionReplay()`: Overlay'ı kapatıp aynı dersi yeniden başlatır
+- `completionClose()`: Overlay'ı kapatıp normal moda döner
+
+---
+
+## 🎮 Unreal Engine 5 Entegrasyonu
+
+Melovia'nın C++ altyapısı **Unreal Engine 5.7.1** üzerine inşa edilmiştir.
+
+### Neden UE5?
+- **3D Görselleştirme:** Gitar ve piyano modellerinin 3D ortamda görüntülenmesi
+- **VR Desteği:** OpenXR ile sanal gerçeklik entegrasyonu
+- **Yüksek Performans:** C++ ile optimize edilmiş müzik teori hesaplamaları
+
+### C++ Modülleri
+
+#### UniversalNoteCore
+12-TET (Eşit Temperli Akort) frekans hesaplama sistemi.
+- `GetFrequency(Note, Octave)` - Nota adı ve oktavdan frekans hesaplar
+- `GetFrequencyFromMidi(MidiNote)` - MIDI numarasından frekans
+- `TransposeFrequency(BaseFreq, Semitones)` - Yarım ton kaydırma
+- `GetTurkishNoteName(Note)` - Türkçe nota adı (DO, RE, Mİ...)
+
+#### GuitarModule
+6 telli gitar simülasyonu (6 akort tipi, capo 0-12 perde).
+
+#### PianoModule
+88 tuşlu piyano simülasyonu (A0-C8, velocity desteği, sustain pedal).
+
+#### ChordLibrary
+29 akor veritabanı (Major, Minor, 7th, Maj7, Power Chord).
+
+#### MeloviaGameMode
+Tüm modülleri başlatıp yöneten Blueprint-erişilebilir ana oyun modu.
+
+### Derleme Bilgileri
+- **Engine:** Unreal Engine 5.7.1
+- **BuildSettings:** V6  
+- **IncludeOrder:** Unreal5_7
+- **Başlatma Süresi:** 0.294 saniye (PIE)

@@ -1,6 +1,7 @@
 /**
  * Melovia - Advanced Audio Engine v3
- * Sustain/Release + Distortion + Gelişmiş Efektler
+ * Karplus-Strong + Sustain/Release + Distortion + Efektler
+ * Melovia v0.1 | Son güncelleme: 14 Şubat 2026
  */
 
 class AudioEngine {
