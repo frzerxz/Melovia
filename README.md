@@ -1,8 +1,9 @@
-# 🎸 Melovia - Digital Guitar Simulator
+# 🎸 Melovia - Dijital Enstrüman Simülatörü
 
-**Melovia**, bilgisayar klavyesi kullanarak gitar çalmayı öğreten interaktif, web tabanlı bir müzik eğitim platformudur. Gerçekçi gitar, piyano modları ve interaktif ders sistemi içerir.
+**Melovia**, bilgisayar klavyesi kullanarak gitar ve piyano çalmayı öğreten interaktif bir müzik eğitim platformudur. Web tabanlı arayüz ve **Unreal Engine 5** C++ altyapısı ile profesyonel düzeyde ses sentezi ve 3D görselleştirme sunar.
 
-🔗 **Canlı Demo (Live Demo):** [https://frzerxz.github.io/Melovia/](https://frzerxz.github.io/Melovia/)
+🔗 **Canlı Demo:** [https://frzerxz.github.io/Melovia/](https://frzerxz.github.io/Melovia/)  
+📋 **TÜBİTAK 2209-A Projesi** | Balıkesir Üniversitesi Mühendislik Fakültesi
 
 ## ✨ Özellikler
 
@@ -26,8 +27,10 @@
 - **Palm Mute:** Bastırılmış tel sesi
 
 ### 🎹 Piyano Modu
-- Temel piyano tuşları entegrasyonu
+- 88 tuşlu piyano simülasyonu
 - Klavye ile çalma desteği
+- Velocity (basma şiddeti) desteği
+- Sustain pedal fonksiyonu
 
 ### 🎓 İnteraktif Dersler
 - **Ders 1: Arkadaşım Eşek:** 40 adımlık, senkronize, oyunlaştırılmış ders deneyimi
@@ -78,29 +81,53 @@ Projeyi yerel makinenizde çalıştırmak için:
 
 ## 🛠️ Teknolojiler
 
+### Web (Frontend)
 - **HTML5 / CSS3 / Vanilla JavaScript**
 - **Web Audio API:** Gerçek zamanlı ses sentezi
 - **Karplus-Strong Algoritması:** Fiziksel modelleme ile gitar sesi
+
+### C++ / Unreal Engine 5.7.1
+- **Universal Note Core:** 12-TET frekans hesaplama sistemi
+- **GuitarModule:** 6 telli gitar simülasyonu (6 akort tipi, capo desteği)
+- **PianoModule:** 88 tuşlu piyano (velocity + sustain pedal)
+- **ChordLibrary:** 29 akor veritabanı (Major, Minor, 7th, Maj7, Power Chord)
+- **MeloviaGameMode:** Blueprint-erişilebilir oyun modu
 
 ## 📁 Proje Yapısı
 
 ```
 Melovia/
-├── index.html          # Ana sayfa
-├── css/
-│   ├── styles.css      # Ana stiller
-│   ├── guitar.css      # Gitar stilleri
-│   ├── lessons.css     # Ders stilleri
-│   └── piano.css       # Piyano stilleri
-├── js/
-│   ├── app.js          # Ana uygulama
-│   ├── audioEngine.js  # Ses motoru v4
-│   ├── guitarModule.js # Gitar modülü v4
-│   ├── lessonsModule.js # Ders sistemi
-│   ├── noteMapping.js  # Nota-frekans eşleştirmesi
-│   └── pianoModule.js  # Piyano modülü
-└── docs/               # Dokümantasyon
+├── index.html              # Ana web uygulaması
+├── css/                    # Web stilleri
+│   ├── styles.css, guitar.css, lessons.css, piano.css
+├── js/                     # Web JavaScript modülleri
+│   ├── app.js, audioEngine.js, guitarModule.js
+│   ├── lessonsModule.js, noteMapping.js, pianoModule.js
+├── docs/                   # Dokümantasyon
+│   └── PROJECT_REPORT.md
+├── unreal/MeloviaUE5/      # Unreal Engine 5 Projesi
+│   ├── MeloviaUE5.uproject
+│   ├── Source/
+│   │   ├── MeloviaCore/    # C++ Universal Note Core
+│   │   │   ├── Public/     # UniversalNoteCore.h, GuitarModule.h, PianoModule.h, ChordLibrary.h
+│   │   │   └── Private/    # .cpp implementasyonlar
+│   │   └── MeloviaUE5/     # Ana oyun modülü
+│   │       └── MeloviaGameMode.h/.cpp
+│   └── Config/             # UE5 konfigürasyonları
+├── DOCUMENTATION.md        # Kapsamlı teknik dokümantasyon
+└── README.md               # Bu dosya
 ```
 
+## 🗺️ Yol Haritası
+
+- [x] Web uygulaması (Gitar, Piyano, Dersler)
+- [x] Ses motoru v4 (Karplus-Strong + Efektler)
+- [x] C++ Universal Note Core (UE5)
+- [x] UE5 proje entegrasyonu ve derleme
+- [ ] 3D gitar/piyano görselleri (UE5)
+- [ ] VR desteği (OpenXR)
+- [ ] AI analiz modülü
+- [ ] Mobil uyumluluk
+
 ---
-*Developed by Melovia Team - v0.1*
+*TÜBİTAK 2209-A Projesi - Melovia v0.3 | Geliştirici: Firuze Eroğlu | Balıkesir Üniversitesi*

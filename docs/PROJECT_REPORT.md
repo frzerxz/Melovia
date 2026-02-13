@@ -1,26 +1,27 @@
-# Melovia - Dijital Gitar Simülatörü
-## Proje Raporu v0.2
+# Melovia - Dijital Enstrüman Simülatörü
+## Proje Raporu v0.3
 
-**Tarih:** 10 Şubat 2026  
-**Versiyon:** 0.2  
+**Tarih:** 13 Şubat 2026  
+**Versiyon:** 0.3  
 **GitHub:** https://github.com/frzerxz/Melovia  
-**Canlı Demo:** https://frzerxz.github.io/Melovia/
+**Canlı Demo:** https://frzerxz.github.io/Melovia/  
+**Proje:** TÜBİTAK 2209-A | Balıkesir Üniversitesi Mühendislik Fakültesi
 
 ---
 
 ## 📋 İçindekiler
 
 1. [Proje Genel Bakış](#proje-genel-bakış)
-2. [Son Güncelleme Özeti (v0.2)](#son-güncelleme-özeti-v02)
-3. [Teknoloji Stack](#teknoloji-stack)
-4. [Dosya Yapısı](#dosya-yapısı)
-5. [Ses Motoru v3](#ses-motoru-v3)
-6. [Efekt Kontrol Paneli](#efekt-kontrol-paneli)
-7. [Gitar Modülü v4](#gitar-modülü-v4)
-8. [Ders Sistemi v2](#ders-sistemi-v2)
-9. [Practice Mode (Şarkı Pratikleri)](#practice-mode-şarkı-pratikleri)
-10. [Sayfa Davranışları](#sayfa-davranışları)
-11. [UI/UX Tasarım Sistemi](#uiux-tasarım-sistemi)
+2. [Son Güncelleme Özeti (v0.3)](#son-güncelleme-özeti-v03)
+3. [Unreal Engine 5 Entegrasyonu](#unreal-engine-5-entegrasyonu)
+4. [Teknoloji Stack](#teknoloji-stack)
+5. [Dosya Yapısı](#dosya-yapısı)
+6. [Ses Motoru v3](#ses-motoru-v3)
+7. [Efekt Kontrol Paneli](#efekt-kontrol-paneli)
+8. [Gitar Modülü v4](#gitar-modülü-v4)
+9. [Ders Sistemi v2](#ders-sistemi-v2)
+10. [Practice Mode (Şarkı Pratikleri)](#practice-mode-şarkı-pratikleri)
+11. [Sayfa Davranışları](#sayfa-davranışları)
 12. [Klavye Entegrasyonu](#klavye-entegrasyonu)
 13. [Gelecek Planları](#gelecek-planları)
 
@@ -56,7 +57,18 @@
 
 ---
 
-## 🆕 Son Güncelleme Özeti (v0.2)
+## 🆕 Son Güncelleme Özeti (v0.3)
+
+### ✅ v0.3 ile Eklenen Özellikler (13 Şubat 2026):
+
+#### Unreal Engine 5.7.1 Entegrasyonu:
+- **C++ Universal Note Core** - 4 modül başarıyla derlendi ve UE5 Editör'de çalıştı
+- **UniversalNoteCore** - 12-TET eşit temperli akort sistemi, frekans hesaplama, MIDI dönüşüm, transpozisyon
+- **GuitarModule** - 6 telli gitar simülasyonu (6 akort tipi, capo 0-12, Karplus-Strong parametreleri)
+- **PianoModule** - 88 tuşlu piyano (A0-C8, velocity desteği, sustain pedal)
+- **ChordLibrary** - 29 akor veritabanı (Major, Minor, 7th, Maj7, Power Chord)
+- **MeloviaGameMode** - Blueprint-erişilebilir ana oyun modu
+- **Proje Konfigürasyonu** - .uproject, Target.cs, Build.cs, DefaultEngine/Game/Editor.ini
 
 ### ✅ v0.2 ile Eklenen Özellikler (10 Şubat 2026):
 
@@ -114,6 +126,60 @@
 
 ---
 
+## 🎮 Unreal Engine 5 Entegrasyonu
+
+### Genel Bakış
+
+Melovia'nın C++ altyapısı Unreal Engine 5.7.1 üzerine inşa edilmiştir. Web uygulamasındaki müzik teori mantığı (nota-frekans hesaplama, akor kütüphanesi, gitar/piyano simülasyonu) C++’a taşınarak hem performans hem de 3D/VR entegrasyonu için temel oluşturulmuştur.
+
+### C++ Modül Mimarisi
+
+```
+MeloviaCore (C++ Modül)
+├── UniversalNoteCore   → Temel nota/frekans sistemi (12-TET)
+├── GuitarModule        → 6 telli gitar simülasyonu
+├── PianoModule         → 88 tuşlu piyano simülasyonu
+└── ChordLibrary        → 29 akor veritabanı
+
+MeloviaUE5 (Oyun Modülü)
+└── MeloviaGameMode     → Tüm modülleri başlatıp yöneten ana sınıf
+```
+
+### UniversalNoteCore Sınıfı
+
+| Fonksiyon | Açıklama |
+|-----------|----------|
+| `GetFrequency(Note, Octave)` | Nota adı ve oktavdan frekans hesapla |
+| `GetFrequencyFromMidi(MidiNote)` | MIDI numarasından frekans |
+| `TransposeFrequency(BaseFreq, Semitones)` | Yarım ton kaydırma |
+| `GetNoteInfo(Note, Octave)` | Tam nota bilgisi (FNoteInfo) |
+| `FindClosestNote(Frequency)` | Frekansa en yakın nota |
+| `Transpose(Note, Octave, Semitones)` | Transpozisyon sonucu |
+| `GetTurkishNoteName(Note)` | Türkçe nota adı (DO, RE, Mİ...) |
+| `GetSemitoneDifference(F1, F2)` | İki frekans arası yarım ton farkı |
+
+### GuitarModule Akort Tipleri
+
+| Enum Değeri | Akort | Teller (6→1) |
+|------------|-------|-------------|
+| Standard | Standart | E-A-D-G-B-E |
+| DropD | Drop D | D-A-D-G-B-E |
+| OpenG | Open G | D-G-D-G-B-D |
+| OpenD | Open D | D-A-D-F#-A-D |
+| DADGAD | DADGAD | D-A-D-G-A-D |
+| HalfStepDown | Yarım Adım | Eb-Ab-Db-Gb-Bb-Eb |
+
+### Derleme Bilgileri
+
+- **Engine:** Unreal Engine 5.7.1
+- **BuildSettings:** V6
+- **IncludeOrder:** Unreal5_7
+- **Build Environment:** bOverrideBuildEnvironment (installed engine uyumu)
+- **Derleme Süresi:** ~2 dakika (i5-10300H)
+- **Başlatma Süresi:** 0.294 saniye (PIE)
+
+---
+
 ## 🛠️ Teknoloji Stack
 
 ### Frontend
@@ -138,7 +204,8 @@
 |------|----------------|
 | Git/GitHub | Versiyon kontrolü |
 | GitHub Pages | Canlı demo barındırma |
-| VS Code | Kod editörü |
+| VS Code | Web kod editörü |
+| Unreal Engine 5.7.1 | C++ / 3D / VR geliştirme |
 
 ---
 
@@ -420,26 +487,27 @@ Perde 7: N M Ö Ç . "
 
 ## 🚀 Gelecek Planları
 
-### v0.3 - Ses Geliştirmeleri
-- [ ] Gerçek Chorus/Delay ses efektleri
-- [ ] Palm Mute ve Hammer-on teknikleri
-- [ ] MIDI desteği
+### v0.4 - 3D Görselleştirme (UE5)
+- [ ] 3D gitar modeli ve sahne düzeni
+- [ ] Kamera ve ışık sistemi
+- [ ] Tel titreşim animasyonları (3D)
+- [ ] Blueprint UI entegrasyonu
 
-### v0.4 - Ders İçerikleri
-- [ ] Yeni Türkçe şarkılar ekleme
-- [ ] Zorluk seviyelerine göre sıralama
-- [ ] Ders tamamlama ve puan sistemi
-- [ ] Yıldız bazlı değerlendirme
+### v0.5 - VR Entegrasyonu
+- [ ] OpenXR ile VR desteği
+- [ ] El takibi (OpenXR Hand Tracking)
+- [ ] VR içinde gitar/piyano etkileşimi
 
-### v0.5 - Sosyal Özellikler
-- [ ] Kullanıcı hesapları
-- [ ] İlerleme kaydetme
-- [ ] Topluluk şarkıları
+### v0.6 - AI Analiz Modülü
+- [ ] Çalma performans analizi
+- [ ] Tempo ve ritim değerlendirme
+- [ ] Kişisel öğrenme önerileri
 
 ### v1.0 - Tam Sürüm
 - [ ] Mobil uyumluluk
 - [ ] Bulut senkronizasyonu
 - [ ] Çoklu dil desteği
+- [ ] Topluluk şarkıları ve paylaşım
 
 ---
 
@@ -451,4 +519,4 @@ Perde 7: N M Ö Ç . "
 
 ---
 
-*Son güncelleme: 10 Şubat 2026 - v0.2*
+*Son güncelleme: 13 Şubat 2026 - v0.3*
