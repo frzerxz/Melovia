@@ -11,7 +11,9 @@ public class MeloviaUE5EditorTarget : TargetRules
         Type = TargetType.Editor;
         DefaultBuildSettings = BuildSettingsVersion.V6;
         IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
-        BuildEnvironment = TargetBuildEnvironment.Unique;
+        
+        // Installed engine (Epic Launcher) ile uyumluluk
+        bOverrideBuildEnvironment = true;
 
         ExtraModuleNames.AddRange(new string[]
         {
