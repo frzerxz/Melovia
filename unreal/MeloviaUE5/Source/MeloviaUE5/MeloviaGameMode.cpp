@@ -5,33 +5,35 @@
 
 AMeloviaGameMode::AMeloviaGameMode()
 {
-    // Modül nesnelerini oluştur
-    GuitarModule = CreateDefaultSubobject<UGuitarModule>(TEXT("GuitarModule"));
-    PianoModule = CreateDefaultSubobject<UPianoModule>(TEXT("PianoModule"));
-    ChordLibrary = CreateDefaultSubobject<UChordLibrary>(TEXT("ChordLibrary"));
+    // UObject'ler constructor'da NewObject ile oluşturulmaz,
+    // BeginPlay'de oluşturulacak
+    GuitarModule = nullptr;
+    PianoModule = nullptr;
+    ChordLibrary = nullptr;
 }
 
 void AMeloviaGameMode::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Tüm modülleri başlat
+    // Modülleri oluştur ve başlat
+    GuitarModule = NewObject<UGuitarModule>(this, TEXT("GuitarModule"));
+    PianoModule = NewObject<UPianoModule>(this, TEXT("PianoModule"));
+    ChordLibrary = NewObject<UChordLibrary>(this, TEXT("ChordLibrary"));
+
     if (GuitarModule)
     {
         GuitarModule->Initialize(EGuitarType::Classic, ETuningType::Standard);
-        UE_LOG(LogTemp, Log, TEXT("Melovia: Gitar Modulu baslatildi."));
     }
 
     if (PianoModule)
     {
         PianoModule->Initialize();
-        UE_LOG(LogTemp, Log, TEXT("Melovia: Piyano Modulu baslatildi."));
     }
 
     if (ChordLibrary)
     {
         ChordLibrary->InitializeLibrary();
-        UE_LOG(LogTemp, Log, TEXT("Melovia: Akor Kutuphanesi yuklendi."));
     }
 
     UE_LOG(LogTemp, Log, TEXT("========================================"));
@@ -51,11 +53,8 @@ FPlayedNote AMeloviaGameMode::PlayGuitarNote(int32 StringNumber, int32 Fret)
 {
     if (GuitarModule)
     {
-        FPlayedNote Note = GuitarModule->GetNote(StringNumber, Fret);
-        UE_LOG(LogTemp, Verbose, TEXT("Melovia Gitar: %s"), *Note.DisplayString);
-        return Note;
+        return GuitarModule->GetNote(StringNumber, Fret);
     }
-
     return FPlayedNote();
 }
 
@@ -63,11 +62,8 @@ FPianoPlayedNote AMeloviaGameMode::PlayPianoNote(int32 KeyNumber, float Velocity
 {
     if (PianoModule)
     {
-        FPianoPlayedNote Note = PianoModule->GetNote(KeyNumber, Velocity);
-        UE_LOG(LogTemp, Verbose, TEXT("Melovia Piyano: %s"), *Note.DisplayString);
-        return Note;
+        return PianoModule->GetNote(KeyNumber, Velocity);
     }
-
     return FPianoPlayedNote();
 }
 
@@ -77,7 +73,6 @@ FChordDefinition AMeloviaGameMode::GetChordInfo(const FString& ChordName)
     {
         return ChordLibrary->GetChord(ChordName);
     }
-
     return FChordDefinition();
 }
 

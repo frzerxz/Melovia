@@ -15,8 +15,6 @@ public class MeloviaUE5 : ModuleRules
             "CoreUObject",
             "Engine",
             "InputCore",
-            "UMG",
-            "WebBrowserWidget",
             "MeloviaCore"       // Universal Note Core modülümüz
         });
 
@@ -24,8 +22,7 @@ public class MeloviaUE5 : ModuleRules
         {
             "Slate",
             "SlateCore",
-            "AudioMixer",
-            "HeadMountedDisplay"    // VR desteği
+            "UMG"               // Unreal Motion Graphics (Widget)
         });
     }
 }

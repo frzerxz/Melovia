@@ -15,11 +15,5 @@ public class MeloviaCore : ModuleRules
             "CoreUObject",
             "Engine"
         });
-
-        PrivateDependencyModuleNames.AddRange(new string[]
-        {
-            "AudioMixer",
-            "SignalProcessing"
-        });
     }
 }

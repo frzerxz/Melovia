@@ -16,7 +16,7 @@
 #include "MeloviaGameMode.generated.h"
 
 UCLASS()
-class MELOVIAUEO_API AMeloviaGameMode : public AGameModeBase
+class MELOVIAUE5_API AMeloviaGameMode : public AGameModeBase
 {
     GENERATED_BODY()
 

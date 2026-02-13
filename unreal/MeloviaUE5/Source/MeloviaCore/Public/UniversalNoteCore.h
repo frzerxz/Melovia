@@ -288,7 +288,6 @@ public:
      * A4 referans frekansı (varsayılan 440 Hz)
      * Bazı orkestralarda 442 Hz kullanılır
      */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Melovia|NoteCore")
     static float A4ReferenceFrequency;
 
 private:
