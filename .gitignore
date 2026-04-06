@@ -1,0 +1,18 @@
+# UE5 Generated Content (binary assets)
+unreal/MeloviaUE5/Content/*.umap
+unreal/MeloviaUE5/Content/*.uasset
+unreal/MeloviaUE5/Content/__ExternalActors__/
+unreal/MeloviaUE5/Content/__ExternalObjects__/
+unreal/MeloviaUE5/Content/Collections/
+unreal/MeloviaUE5/Content/Developers/
+
+# UE5 Build artifacts
+unreal/MeloviaUE5/Binaries/
+unreal/MeloviaUE5/Intermediate/
+unreal/MeloviaUE5/Saved/
+unreal/MeloviaUE5/DerivedDataCache/
+unreal/MeloviaUE5/.vs/
+
+# Temp files
+*.log
+git_log_temp.txt

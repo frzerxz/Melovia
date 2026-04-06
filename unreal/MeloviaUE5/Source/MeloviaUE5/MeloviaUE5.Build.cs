@@ -1,5 +1,6 @@
 // MeloviaUE5.Build.cs
 // Ana Oyun Modülü Build Configuration
+// v0.2: 3D Görselleştirme + UI
 
 using UnrealBuildTool;
 
@@ -15,6 +16,11 @@ public class MeloviaUE5 : ModuleRules
             "CoreUObject",
             "Engine",
             "InputCore",
+            "EnhancedInput",
+            "UMG",
+            "Slate",
+            "SlateCore",
+            "ProceduralMeshComponent",
             "MeloviaCore"
         });
     }
