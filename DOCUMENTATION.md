@@ -665,8 +665,37 @@ Melovia'nın C++ altyapısı **Unreal Engine 5.7.1** üzerine inşa edilmiştir.
 #### MeloviaGameMode
 Tüm modülleri başlatıp yöneten Blueprint-erişilebilir ana oyun modu.
 
+### v0.2 - 3D Görselleştirme Sınıfları
+
+#### GuitarActor (AActor)
+3D sahneye yerleştirilen gitar aktörü.
+- 6 procedural mesh tel (ProceduralMeshComponent)
+- Sinüs dalga titreşim animasyonu + eksponansiyel sönümlenme
+- `PlayString(StringNum, Fret)` → Tel titreşim tetikle
+- `PlayChord(Frets)` → Akor strum (30ms aralıklı tel tetikleme)
+- `HighlightFret(StringNum, Fret)` → Perde vurgulama
+- `OnNotePlayed` / `OnStringStopped` → Blueprint event delegate'leri
+
+#### MeloviaSceneManager (AActor)
+Kamera ve ışık sistemi yöneticisi.
+- 5 kamera preset: Önden, Yandan, Yakın Çekim, Üstten, Serbest
+- Spring Arm + smooth interpolasyon ile kamera geçişi
+- 3-Point Lighting: Key + Fill + Rim Light
+- 4 ortam modu: Stüdyo, Konser, Oda, Karanlık
+- `TriggerNotePulse()` → Nota çalındığında ışık parlaması efekti
+
+#### MeloviaPlayerController (APlayerController)
+Oyuncu girdi yönetimi.
+- 13 perde tuşu (Q-D): Açık tel + 12 perde
+- 6 tel seçim tuşu (1-6)
+- Tab: Kamera döngüsü
+- Escape: Tümünü durdur
+- Otomatik sahne aktör bulma (FindSceneActors)
+
 ### Derleme Bilgileri
 - **Engine:** Unreal Engine 5.7.1
 - **BuildSettings:** V6  
 - **IncludeOrder:** Unreal5_7
-- **Başlatma Süresi:** 0.294 saniye (PIE)
+- **Ek Modüller:** UMG, Slate, ProceduralMeshComponent, EnhancedInput
+
+*Bu doküman Melovia projesi için hazırlanmıştır. Son güncelleme: 13 Nisan 2026 - v0.2*

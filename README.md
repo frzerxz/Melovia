@@ -94,6 +94,9 @@ Projeyi yerel makinenizde çalıştırmak için:
 - **PianoModule:** 88 tuşlu piyano (velocity + sustain pedal)
 - **ChordLibrary:** 29 akor veritabanı (Major, Minor, 7th, Maj7, Power Chord)
 - **MeloviaGameMode:** Blueprint-erişilebilir oyun modu
+- **GuitarActor:** 3D gitar aktörü (6 procedural mesh tel, titreşim animasyonu)
+- **MeloviaSceneManager:** Kamera sistemi (5 preset) + 3-point ışıklandırma
+- **MeloviaPlayerController:** Klavye girdi yönetimi (13 perde + 6 tel)
 
 ## 📁 Proje Yapısı
 
@@ -114,7 +117,10 @@ Melovia/
 │   │   │   ├── Public/     # UniversalNoteCore.h, GuitarModule.h, PianoModule.h, ChordLibrary.h
 │   │   │   └── Private/    # .cpp implementasyonlar
 │   │   └── MeloviaUE5/     # Ana oyun modülü
-│   │       └── MeloviaGameMode.h/.cpp
+│   │       ├── MeloviaGameMode.h/.cpp
+│   │       ├── GuitarActor.h/.cpp          # 3D gitar aktörü
+│   │       ├── MeloviaSceneManager.h/.cpp  # Kamera + ışık
+│   │       └── MeloviaPlayerController.h/.cpp  # Girdi
 │   └── Config/             # UE5 konfigürasyonları
 ├── DOCUMENTATION.md        # Kapsamlı teknik dokümantasyon
 └── README.md               # Bu dosya
@@ -126,10 +132,12 @@ Melovia/
 - [x] Ses motoru v4 (Karplus-Strong + Efektler)
 - [x] C++ Universal Note Core (UE5)
 - [x] UE5 proje entegrasyonu ve derleme
-- [ ] 3D gitar/piyano görselleri (UE5)
+- [x] 3D gitar görselleri (GuitarActor + procedural mesh)
+- [x] Kamera ve ışık sistemi (SceneManager)
+- [x] Oyuncu girdi sistemi (PlayerController)
 - [ ] VR desteği (OpenXR)
 - [ ] AI analiz modülü
 - [ ] Mobil uyumluluk
 
 ---
-*TÜBİTAK 2209-A Projesi - Melovia v0.1 | Geliştirici: Firuze Eroğlu | Balıkesir Üniversitesi*
+*TÜBİTAK 2209-A Projesi - Melovia v0.2 | Geliştirici: Firuze Eroğlu | Balıkesir Üniversitesi*

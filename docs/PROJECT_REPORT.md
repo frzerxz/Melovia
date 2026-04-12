@@ -1,8 +1,8 @@
 # Melovia - Dijital Enstrüman Simülatörü
 ## Proje Raporu v0.1
 
-**Tarih:** 14 Şubat 2026  
-**Versiyon:** 0.1  
+**Tarih:** 13 Nisan 2026  
+**Versiyon:** 0.2  
 **GitHub:** https://github.com/frzerxz/Melovia  
 **Canlı Demo:** https://frzerxz.github.io/Melovia/  
 **Proje:** TÜBİTAK 2209-A | Balıkesir Üniversitesi Mühendislik Fakültesi
@@ -57,7 +57,18 @@
 
 ---
 
-## 🆕 Son Güncelleme Özeti (v0.1)
+## 🆕 Son Güncelleme Özeti (v0.2)
+
+### ✅ v0.2 Güncellemeleri:
+
+#### 3D Görselleştirme - UE5 (13 Nisan 2026):
+- **GuitarActor** - 3D gitar aktörü: 6 procedural mesh tel, sinüs dalga titreşim animasyonu, sönümlenme, akor strum gecikmesi
+- **MeloviaSceneManager** - Sahne yöneticisi: 5 kamera preset (On, Yan, Yakin, Ust, Serbest), smooth geçiş, 3-point ışıklandırma
+- **MeloviaPlayerController** - Girdi yönetimi: 13 perde tusu (Q-D), 6 tel seçimi (1-6), kamera dongusu (Tab)
+- **4 Ortam Modu** - Studyo, Konser, Oda, Karanlık (farklı ışık renk/yogınluk preset'leri)
+- **Nota Pulse Efekti** - Nota çalındıgında ışık parlamasi
+- **Input Mapping** - DefaultInput.ini ile klavye-gitar eslestirmesi
+- **.gitignore** - UE5 binary/content dosyaları hariç tutuldu
 
 ### ✅ v0.1 Güncellemeleri:
 
@@ -491,11 +502,12 @@ Perde 7: N M Ö Ç . "
 
 ## 🚀 Gelecek Planları
 
-### v0.2 - 3D Görselleştirme (UE5)
-- [ ] 3D gitar modeli ve sahne düzeni
-- [ ] Kamera ve ışık sistemi
-- [ ] Tel titreşim animasyonları (3D)
-- [ ] Blueprint UI entegrasyonu
+### v0.2 - 3D Görselleştirme (UE5) ✅ TAMAMLANDI
+- [x] 3D gitar modeli ve sahne düzeni (GuitarActor + procedural mesh teller)
+- [x] Kamera ve ışık sistemi (MeloviaSceneManager + 3-point lighting)
+- [x] Tel titreşim animasyonları (3D) (sinüs dalga + sönümlenme)
+- [x] Oyuncu girdi sistemi (MeloviaPlayerController + 13 perde + 6 tel)
+- [ ] Blueprint UI entegrasyonu (HUD widget)
 
 ### v0.3 - VR Entegrasyonu
 - [ ] OpenXR ile VR desteği
@@ -523,4 +535,4 @@ Perde 7: N M Ö Ç . "
 
 ---
 
-*Son güncelleme: 14 Şubat 2026 - v0.1*
+*Son güncelleme: 13 Nisan 2026 - v0.2*
