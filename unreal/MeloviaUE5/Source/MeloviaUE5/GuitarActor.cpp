@@ -14,26 +14,53 @@ AGuitarActor::AGuitarActor()
     USceneComponent* Root = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
     SetRootComponent(Root);
 
-    // Gitar gövdesi (placeholder - Blueprint'te veya editörde gerçek mesh atanabilir)
+    // Temel mesh referansı (UE5 built-in Cube)
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeMesh(
+        TEXT("/Engine/BasicShapes/Cube.Cube"));
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> CylinderMesh(
+        TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereMesh(
+        TEXT("/Engine/BasicShapes/Sphere.Sphere"));
+
+    // === GİTAR GÖVDESİ ===
     BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GuitarBody"));
     BodyMesh->SetupAttachment(Root);
-    BodyMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+    if (CubeMesh.Succeeded())
+    {
+        BodyMesh->SetStaticMesh(CubeMesh.Object);
+    }
+    BodyMesh->SetRelativeLocation(FVector(0.0f, -12.0f, 0.0f));
+    BodyMesh->SetRelativeScale3D(FVector(0.35f, 0.25f, 0.04f)); // Yassı geniş gövde
 
-    // Gitar sapı
+    // === GİTAR SAPI ===
     NeckMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GuitarNeck"));
     NeckMesh->SetupAttachment(Root);
-    NeckMesh->SetRelativeLocation(FVector(0.0f, 15.0f, 0.0f));
+    if (CubeMesh.Succeeded())
+    {
+        NeckMesh->SetStaticMesh(CubeMesh.Object);
+    }
+    NeckMesh->SetRelativeLocation(FVector(0.0f, 18.0f, 0.5f));
+    NeckMesh->SetRelativeScale3D(FVector(0.06f, 0.40f, 0.02f)); // Uzun ince sap
 
-    // Köprü
+    // === KÖPRÜ ===
     BridgeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GuitarBridge"));
     BridgeMesh->SetupAttachment(Root);
-    BridgeMesh->SetRelativeLocation(FVector(0.0f, -30.0f, 1.0f));
+    if (CubeMesh.Succeeded())
+    {
+        BridgeMesh->SetStaticMesh(CubeMesh.Object);
+    }
+    BridgeMesh->SetRelativeLocation(FVector(0.0f, -5.0f, 1.5f));
+    BridgeMesh->SetRelativeScale3D(FVector(0.20f, 0.02f, 0.015f)); // Küçük köprü
 
-    // Vurgulama göstergesi
+    // Vurgulama göstergesi (küre)
     HighlightIndicator = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HighlightIndicator"));
     HighlightIndicator->SetupAttachment(Root);
+    if (SphereMesh.Succeeded())
+    {
+        HighlightIndicator->SetStaticMesh(SphereMesh.Object);
+    }
     HighlightIndicator->SetVisibility(false);
-    HighlightIndicator->SetRelativeScale3D(FVector(0.5f, 0.5f, 0.1f));
+    HighlightIndicator->SetRelativeScale3D(FVector(0.02f, 0.02f, 0.02f));
 
     // 6 tel için procedural mesh bileşenleri oluştur
     for (int32 i = 0; i < 6; i++)
@@ -51,6 +78,7 @@ AGuitarActor::AGuitarActor()
         StringStates[i] = FStringVibrationState();
     }
 }
+
 
 void AGuitarActor::BeginPlay()
 {
@@ -90,8 +118,8 @@ void AGuitarActor::GenerateStringMesh(int32 StringIndex)
     UProceduralMeshComponent* Mesh = StringMeshes[StringIndex];
     if (!Mesh) return;
 
-    // Tel kalınlığı (1. tel en ince, 6. tel en kalın)
-    float Thickness = 0.03f + (StringIndex * 0.012f);
+    // Tel kalınlığı (1. tel en ince, 6. tel en kalın) - GÖRÜNÜR boyut
+    float Thickness = 0.15f + (StringIndex * 0.05f);
 
     // Tel Y pozisyonu (teller arası boşluk)
     float StringY = (StringIndex - 2.5f) * StringSpacing;
