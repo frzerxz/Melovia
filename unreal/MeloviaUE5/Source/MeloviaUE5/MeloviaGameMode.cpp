@@ -2,9 +2,19 @@
 // Melovia - Ana Oyun Modu Implementation
 
 #include "MeloviaGameMode.h"
+#include "MeloviaPlayerController.h"
+#include "UObject/ConstructorHelpers.h"
 
 AMeloviaGameMode::AMeloviaGameMode()
 {
+    // PlayerController'ı ayarla
+    static ConstructorHelpers::FClassFinder<APlayerController> PCClass(
+        TEXT("/Script/MeloviaUE5.MeloviaPlayerController"));
+    if (PCClass.Succeeded())
+    {
+        PlayerControllerClass = PCClass.Class;
+    }
+
     // UObject'ler constructor'da NewObject ile oluşturulmaz,
     // BeginPlay'de oluşturulacak
     GuitarModule = nullptr;
