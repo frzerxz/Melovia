@@ -2624,6 +2624,7 @@
         .tab-notes {
             color: var(--cyan);
             letter-spacing: 2px;
+            white-space: nowrap;
         }
 
         .tab-notes .highlight {
@@ -3968,7 +3969,7 @@
         let currentLessonId = null;
 
         // Ders verileri (araştırmaya dayalı)
-        const lessonsData = {
+        var lessonsData = {
             1: {
                 title: 'Ders 1: İlk Melodim',
                 artist: 'Arkadaşım Eşek - Barış Manço',
@@ -5817,7 +5818,7 @@
         }
 
         // === TABLATURE VIEWER - TAM ŞARKI VERİLERİ ===
-        const tablatures = {
+        var tablatures = {
             'smoke': {
                 name: 'Smoke on the Water',
                 artist: 'Deep Purple',
@@ -6071,16 +6072,41 @@
             const display = document.getElementById('tablatureDisplay');
             const stringLabels = ['e', 'B', 'G', 'D', 'A', 'E'];
 
+            // Nota sayısına göre dinamik tab string oluştur
+            const noteCount = tab.notes.length;
+            let generatedStrings = [[], [], [], [], [], []]; // 6 tel
+
+            if (noteCount > 0) {
+                tab.notes.forEach((note, idx) => {
+                    const stringIdx = note.s - 1; // 1-indexed to 0-indexed
+                    const fretStr = String(note.f);
+                    for (let t = 0; t < 6; t++) {
+                        if (t === stringIdx) {
+                            generatedStrings[t].push(fretStr.padEnd(2, '-'));
+                        } else {
+                            generatedStrings[t].push('--');
+                        }
+                    }
+                    // Bölüm ayırıcı (her 20 nota)
+                    if ((idx + 1) % 20 === 0 && idx < noteCount - 1) {
+                        for (let t = 0; t < 6; t++) generatedStrings[t].push('|-');
+                    }
+                });
+            }
+
+            const tabStrings = generatedStrings.map(arr => arr.join('-'));
+
             let headerHtml = '';
             if (tab.artist) {
                 headerHtml = `<div style="margin-bottom:8px;padding:6px 10px;background:rgba(139,92,246,0.1);border-radius:6px;border-left:3px solid #8b5cf6;">
                     <span style="color:#a78bfa;font-weight:600;font-size:0.85rem;">${tab.name}</span>
                     <span style="color:#666;font-size:0.75rem;"> — ${tab.artist} • ${tab.bpm} BPM</span>
-                    <span style="color:#4ade80;font-size:0.7rem;margin-left:8px;">♪ ${tab.notes.length} nota</span>
+                    <span style="color:#4ade80;font-size:0.7rem;margin-left:8px;">♪ ${noteCount} nota</span>
+                    <span style="color:#f59e0b;font-size:0.7rem;margin-left:6px;">⏱ ~${Math.round(noteCount * (60/tab.bpm) * 0.5)}s</span>
                 </div>`;
             }
 
-            display.innerHTML = headerHtml + tab.strings.map((line, i) => `
+            display.innerHTML = headerHtml + tabStrings.map((line, i) => `
                 <div class="tab-line">
                     <span class="tab-string-label">${stringLabels[i]}|</span>
                     <span class="tab-notes">${line}</span>
@@ -6355,6 +6381,7 @@
             window.scrollTo(0, 0);
         });
     </script>
+    <script src="js/fullSongData.js"></script>
 </body>
 
 </html>
