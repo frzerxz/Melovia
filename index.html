@@ -5338,54 +5338,103 @@
             const beatDuration = 60 / bpm;
             const chords = track.chords;
 
+            // Chord note frequencies (root + third + fifth)
+            function getChordFreqs(chordNote) {
+                const freq = noteToFreq(chordNote);
+                return {
+                    root: freq,
+                    third: freq * 1.26, // major third
+                    fifth: freq * 1.5,  // perfect fifth
+                    octave: freq * 2
+                };
+            }
+
             let beat = 0;
+            const totalBeats = Math.floor(track.duration / beatDuration);
+
             const playBeat = () => {
-                if (!trackPlaying) return;
+                if (!trackPlaying || !trackAudioContext) return;
 
                 const chordIndex = Math.floor(beat / 4) % chords.length;
-                const note = chords[chordIndex];
-                const freq = noteToFreq(note);
+                const chord = getChordFreqs(chords[chordIndex]);
+                const now = trackAudioContext.currentTime;
+                const isDownbeat = beat % 4 === 0;
+                const isUpbeat = beat % 4 === 2;
 
-                // Bass note
+                // === BASS NOTE (every beat) ===
                 const bassOsc = trackAudioContext.createOscillator();
                 const bassGain = trackAudioContext.createGain();
                 bassOsc.type = 'triangle';
-                bassOsc.frequency.value = freq;
-                bassGain.gain.setValueAtTime(0.12, trackAudioContext.currentTime);
-                bassGain.gain.exponentialRampToValueAtTime(0.01, trackAudioContext.currentTime + beatDuration * 0.8);
+                bassOsc.frequency.value = chord.root;
+                bassGain.gain.setValueAtTime(isDownbeat ? 0.18 : 0.12, now);
+                bassGain.gain.exponentialRampToValueAtTime(0.01, now + beatDuration * 0.85);
                 bassOsc.connect(bassGain);
                 bassGain.connect(trackGainNode);
-                bassOsc.start();
-                bassOsc.stop(trackAudioContext.currentTime + beatDuration);
+                bassOsc.start(now);
+                bassOsc.stop(now + beatDuration * 0.9);
 
-                // Harmony (on beats 2 and 4)
-                if (beat % 2 === 1) {
-                    const harmOsc = trackAudioContext.createOscillator();
-                    const harmGain = trackAudioContext.createGain();
-                    harmOsc.type = 'sine';
-                    harmOsc.frequency.value = freq * 1.5; // Perfect fifth
-                    harmGain.gain.setValueAtTime(0.06, trackAudioContext.currentTime);
-                    harmGain.gain.exponentialRampToValueAtTime(0.01, trackAudioContext.currentTime + beatDuration * 0.6);
-                    harmOsc.connect(harmGain);
-                    harmGain.connect(trackGainNode);
-                    harmOsc.start();
-                    harmOsc.stop(trackAudioContext.currentTime + beatDuration * 0.7);
+                // === CHORD PAD (every beat, sustaining) ===
+                const chordOsc1 = trackAudioContext.createOscillator();
+                const chordOsc2 = trackAudioContext.createOscillator();
+                const chordOsc3 = trackAudioContext.createOscillator();
+                const chordGain = trackAudioContext.createGain();
+                
+                chordOsc1.type = 'sine';
+                chordOsc2.type = 'sine';
+                chordOsc3.type = 'sine';
+                chordOsc1.frequency.value = chord.root * 2; // root up octave
+                chordOsc2.frequency.value = chord.third * 2;
+                chordOsc3.frequency.value = chord.fifth * 2;
+                
+                const chordVol = isDownbeat ? 0.06 : 0.04;
+                chordGain.gain.setValueAtTime(chordVol, now);
+                chordGain.gain.exponentialRampToValueAtTime(0.005, now + beatDuration * 0.9);
+                
+                chordOsc1.connect(chordGain);
+                chordOsc2.connect(chordGain);
+                chordOsc3.connect(chordGain);
+                chordGain.connect(trackGainNode);
+                chordOsc1.start(now);
+                chordOsc2.start(now);
+                chordOsc3.start(now);
+                chordOsc1.stop(now + beatDuration);
+                chordOsc2.stop(now + beatDuration);
+                chordOsc3.stop(now + beatDuration);
+
+                // === STRUM EFFECT (on downbeats and upbeats) ===
+                if (isDownbeat || isUpbeat) {
+                    [chord.root * 4, chord.third * 4, chord.fifth * 4, chord.octave * 2].forEach((freq, i) => {
+                        const strumOsc = trackAudioContext.createOscillator();
+                        const strumGain = trackAudioContext.createGain();
+                        strumOsc.type = 'sawtooth';
+                        strumOsc.frequency.value = freq;
+                        strumGain.gain.setValueAtTime(0, now + i * 0.015);
+                        strumGain.gain.linearRampToValueAtTime(0.02, now + i * 0.015 + 0.01);
+                        strumGain.gain.exponentialRampToValueAtTime(0.001, now + beatDuration * 0.5);
+                        strumOsc.connect(strumGain);
+                        strumGain.connect(trackGainNode);
+                        strumOsc.start(now + i * 0.015);
+                        strumOsc.stop(now + beatDuration * 0.6);
+                    });
                 }
 
-                // Hi-hat click (every beat)
-                const noiseGain = trackAudioContext.createGain();
-                const noiseOsc = trackAudioContext.createOscillator();
-                noiseOsc.type = 'square';
-                noiseOsc.frequency.value = 800 + Math.random() * 200;
-                noiseGain.gain.setValueAtTime(0.03, trackAudioContext.currentTime);
-                noiseGain.gain.exponentialRampToValueAtTime(0.001, trackAudioContext.currentTime + 0.05);
-                noiseOsc.connect(noiseGain);
-                noiseGain.connect(trackGainNode);
-                noiseOsc.start();
-                noiseOsc.stop(trackAudioContext.currentTime + 0.05);
+                // === KICK DRUM (beat 1 and 3) ===
+                if (beat % 2 === 0) {
+                    const kickOsc = trackAudioContext.createOscillator();
+                    const kickGain = trackAudioContext.createGain();
+                    kickOsc.type = 'sine';
+                    kickOsc.frequency.setValueAtTime(150, now);
+                    kickOsc.frequency.exponentialRampToValueAtTime(40, now + 0.1);
+                    kickGain.gain.setValueAtTime(0.15, now);
+                    kickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                    kickOsc.connect(kickGain);
+                    kickGain.connect(trackGainNode);
+                    kickOsc.start(now);
+                    kickOsc.stop(now + 0.2);
+                }
 
                 beat++;
-                if (trackPlaying && beat < track.duration / beatDuration) {
+                if (trackPlaying && beat < totalBeats) {
                     setTimeout(playBeat, beatDuration * 1000);
                 }
             };
@@ -5423,171 +5472,247 @@
             return `${mins}:${String(secs).padStart(2, '0')}`;
         }
 
-        // === TABLATURE VIEWER ===
+        // === TABLATURE VIEWER - TAM ŞARKI VERİLERİ ===
         const tablatures = {
             'smoke': {
-                name: 'Smoke on the Water (Full)',
+                name: 'Smoke on the Water',
                 artist: 'Deep Purple',
                 bpm: 112,
+                // Riff x2 + Verse riff x2 + turnaround
                 strings: [
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------',
-                    '--0--3--5----0--3--6-5----0--3--5----3--0--------------------',
-                    '--0--3--5----0--3--6-5----0--3--5----3--0--------------------',
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------'
+                    '-----------------------------------------------------------------------',
+                    '-----------------------------------------------------------------------',
+                    '--0--3--5-----0--3--6-5-----0--3--5--3--0-----0--3--5-----0--3--6-5----',
+                    '--0--3--5-----0--3--6-5-----0--3--5--3--0-----0--3--5-----0--3--6-5----',
+                    '-----------------------------------------------------------------------',
+                    '-----------------------------------------------------------------------'
                 ],
                 notes: [
-                    { s: 3, f: 0 }, { s: 3, f: 3 }, { s: 3, f: 5 },
-                    { s: 3, f: 0 }, { s: 3, f: 3 }, { s: 3, f: 6 }, { s: 3, f: 5 },
-                    { s: 3, f: 0 }, { s: 3, f: 3 }, { s: 3, f: 5 },
-                    { s: 3, f: 3 }, { s: 3, f: 0 }
+                    // Riff 1
+                    {s:4,f:0},{s:4,f:3},{s:4,f:5},
+                    {s:4,f:0},{s:4,f:3},{s:4,f:6},{s:4,f:5},
+                    {s:4,f:0},{s:4,f:3},{s:4,f:5},{s:4,f:3},{s:4,f:0},
+                    // Riff 2
+                    {s:4,f:0},{s:4,f:3},{s:4,f:5},
+                    {s:4,f:0},{s:4,f:3},{s:4,f:6},{s:4,f:5},
+                    // Verse power chords
+                    {s:6,f:0},{s:5,f:2},{s:6,f:3},{s:5,f:5},{s:6,f:5},{s:5,f:7},
+                    {s:6,f:3},{s:5,f:5},{s:6,f:0}
                 ]
             },
             'seven-nation': {
-                name: 'Seven Nation Army (Full)',
+                name: 'Seven Nation Army',
                 artist: 'The White Stripes',
                 bpm: 124,
+                // Main riff x4 + Pre-chorus G5-A5
                 strings: [
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------',
-                    '--7--7--10--7--5--3--2----7--7--10--7--5--3--2--3--2---------',
-                    '--------------------------------------------------------------'
+                    '-----------------------------------------------------------------------',
+                    '-----------------------------------------------------------------------',
+                    '-----------------------------------------------------------------------',
+                    '-----------------------------------------------------------------------',
+                    '-7-7-10-7-5-3-2---7-7-10-7-5-3-2---7-7-10-7-5-3-2-3-2---5-5-3-3-2-2-',
+                    '-----------------------------------------------------------------------'
                 ],
                 notes: [
-                    { s: 5, f: 7 }, { s: 5, f: 7 }, { s: 5, f: 10 },
-                    { s: 5, f: 7 }, { s: 5, f: 5 }, { s: 5, f: 3 }, { s: 5, f: 2 },
-                    { s: 5, f: 7 }, { s: 5, f: 7 }, { s: 5, f: 10 },
-                    { s: 5, f: 7 }, { s: 5, f: 5 }, { s: 5, f: 3 }, { s: 5, f: 2 },
-                    { s: 5, f: 3 }, { s: 5, f: 2 }
+                    // Riff x1
+                    {s:5,f:7},{s:5,f:7},{s:5,f:10},{s:5,f:7},{s:5,f:5},{s:5,f:3},{s:5,f:2},
+                    // Riff x2
+                    {s:5,f:7},{s:5,f:7},{s:5,f:10},{s:5,f:7},{s:5,f:5},{s:5,f:3},{s:5,f:2},
+                    // Riff x3 + extension
+                    {s:5,f:7},{s:5,f:7},{s:5,f:10},{s:5,f:7},{s:5,f:5},{s:5,f:3},{s:5,f:2},{s:5,f:3},{s:5,f:2},
+                    // Pre-chorus power chords
+                    {s:5,f:5},{s:5,f:5},{s:5,f:3},{s:5,f:3},{s:5,f:2},{s:5,f:2}
                 ]
             },
             'come-as': {
-                name: 'Come As You Are (Full)',
+                name: 'Come As You Are',
                 artist: 'Nirvana',
                 bpm: 120,
+                // Intro riff x4 + Chorus F#5-A5
                 strings: [
-                    '-----0--1--2-----2--1--0--------0--1--2-----2--1--0---------',
-                    '--2---------------------2----2---------------------2--------',
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------'
+                    '-0-0-1-2---2-1-0---0-0-1-2---2-1-0---0-0-1-2---2-1-0---2---4---------',
+                    '-----------2-----------2-----------2-----------2------2---2-----------',
+                    '-----------------------------------------------------------------------',
+                    '-----------------------------------------------------------------------',
+                    '-------------------------------------------------------------0-2-2-0--',
+                    '-----------------------------------------------------------------------'
                 ],
                 notes: [
-                    { s: 2, f: 2 }, { s: 1, f: 0 }, { s: 1, f: 1 }, { s: 1, f: 2 },
-                    { s: 1, f: 2 }, { s: 1, f: 1 }, { s: 1, f: 0 },
-                    { s: 2, f: 2 }, { s: 1, f: 0 }, { s: 1, f: 1 }, { s: 1, f: 2 },
-                    { s: 1, f: 2 }, { s: 1, f: 1 }, { s: 1, f: 0 }
+                    // Riff x1
+                    {s:1,f:0},{s:1,f:0},{s:1,f:1},{s:1,f:2},{s:2,f:2},{s:1,f:2},{s:1,f:1},{s:1,f:0},
+                    // Riff x2
+                    {s:1,f:0},{s:1,f:0},{s:1,f:1},{s:1,f:2},{s:2,f:2},{s:1,f:2},{s:1,f:1},{s:1,f:0},
+                    // Riff x3
+                    {s:1,f:0},{s:1,f:0},{s:1,f:1},{s:1,f:2},{s:2,f:2},{s:1,f:2},{s:1,f:1},{s:1,f:0},
+                    // Chorus
+                    {s:1,f:2},{s:2,f:2},{s:1,f:4},{s:2,f:2},
+                    {s:5,f:0},{s:5,f:2},{s:5,f:2},{s:5,f:0}
                 ]
             },
             'wish-you-were-here': {
-                name: 'Wish You Were Here (Intro)',
+                name: 'Wish You Were Here',
                 artist: 'Pink Floyd',
                 bpm: 60,
+                // Intro picking Em7→G→Em7→G→Em7→A7sus4→Em7→G
                 strings: [
-                    '------0---------0---------0---------0--------3--0-----------',
-                    '---0-----0---0-----0---1-----1---0-----0---0-----0----------',
-                    '--------------------------------------------------------------',
-                    '-2---------2---------2---------2---------0---------0--------',
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------'
+                    '-3---3---3---3---3---3---3---3---3---3---3---3---3--0-3--0--3-3-3-3----',
+                    '-3---3---3---3---3---3---0-1-0---3---3---3---3--0------0--3-3-3-3------',
+                    '-0-----0-0-----0-0-----0-------0-0-----0-0-----0---------0-0-0-0------',
+                    '-0-2-----0-2-----0-2-----0-2-----0-2-----0-2---2---------0---2--------',
+                    '-2-------2-------2-------0-------2-------0-----0---------2---0--------',
+                    '-0-------0-------0-----------------0-----------0---------0------------'
                 ],
                 notes: [
-                    { s: 4, f: 2 }, { s: 2, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 },
-                    { s: 4, f: 2 }, { s: 2, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 },
-                    { s: 4, f: 2 }, { s: 2, f: 1 }, { s: 1, f: 0 }, { s: 2, f: 1 },
-                    { s: 4, f: 2 }, { s: 2, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 },
-                    { s: 4, f: 0 }, { s: 2, f: 0 }, { s: 1, f: 3 }, { s: 1, f: 0 }
+                    // Em7 arpeggio
+                    {s:6,f:0},{s:1,f:3},{s:2,f:3},{s:3,f:0},{s:4,f:0},{s:4,f:2},{s:5,f:2},
+                    // G chord arpeggio
+                    {s:6,f:0},{s:1,f:3},{s:2,f:3},{s:3,f:0},{s:4,f:0},{s:4,f:2},{s:5,f:2},
+                    // Em7 again
+                    {s:6,f:0},{s:1,f:3},{s:2,f:3},{s:3,f:0},{s:4,f:0},{s:4,f:2},{s:5,f:2},
+                    // A7sus4
+                    {s:5,f:0},{s:2,f:0},{s:2,f:1},{s:2,f:0},{s:3,f:0},{s:4,f:2},
+                    // Em7 → G (verse start)
+                    {s:6,f:0},{s:1,f:3},{s:2,f:3},{s:3,f:0},{s:4,f:0},{s:4,f:2},
+                    {s:6,f:0},{s:1,f:3},{s:2,f:3},{s:3,f:0},{s:4,f:0},{s:4,f:2},
+                    // Solo melody
+                    {s:1,f:0},{s:1,f:3},{s:1,f:0},{s:2,f:0},
+                    // Outro chords strum
+                    {s:6,f:0},{s:1,f:3},{s:2,f:3},{s:3,f:0},{s:4,f:0},
+                    {s:6,f:0},{s:1,f:3},{s:2,f:3},{s:3,f:0},{s:4,f:2}
                 ]
             },
             'nothing-else-matters': {
-                name: 'Nothing Else Matters (Intro)',
+                name: 'Nothing Else Matters',
                 artist: 'Metallica',
                 bpm: 69,
+                // Intro arpeggio x4 + Verse Em→D→C→Em + Chorus G→B7→Em
                 strings: [
-                    '--0--------0--------0--------0--------0--------0------------',
-                    '--0--------0--------0--------0--------0--------0------------',
-                    '--0--------0--------0--------0--------0--------0------------',
-                    '---------2--------2--------2--------0--------0--------------',
-                    '------2--------0--------2-----------2--------0--------------',
-                    '--0--------0--------0--------0-------------------------------'
+                    '-0---0---0---0---0---0---0---0---0---0---0---0---0---0---0---0---3------',
+                    '-0---0---0---0---0---0---0---0---0---0---1---1---0---0---0---0---0------',
+                    '-0---0---0---0---0---0---0---0---0---0---0---0---0---0---0---0---0------',
+                    '-------2-------2-------0-------2-------2-------0-------2---0---0------',
+                    '---2-------0-------2-------0-------0-------0-------2-------2---2------',
+                    '-0-------0-------0-------0-------0------------------------------------'
                 ],
                 notes: [
-                    { s: 6, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
-                    { s: 5, f: 2 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
-                    { s: 6, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
-                    { s: 5, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
-                    { s: 6, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
-                    { s: 5, f: 2 }, { s: 4, f: 2 }, { s: 1, f: 0 }, { s: 2, f: 0 }
+                    // Intro arpeggio - Em (x4 patterns)
+                    {s:6,f:0},{s:1,f:0},{s:2,f:0},{s:3,f:0},{s:5,f:2},{s:4,f:2},
+                    {s:6,f:0},{s:1,f:0},{s:2,f:0},{s:3,f:0},{s:5,f:0},{s:4,f:2},
+                    {s:6,f:0},{s:1,f:0},{s:2,f:0},{s:3,f:0},{s:5,f:2},{s:4,f:0},
+                    {s:6,f:0},{s:1,f:0},{s:2,f:0},{s:3,f:0},{s:5,f:0},{s:4,f:2},
+                    // Verse - Em
+                    {s:6,f:0},{s:1,f:0},{s:2,f:0},{s:3,f:0},{s:5,f:0},{s:4,f:0},
+                    // Verse - D
+                    {s:1,f:0},{s:2,f:1},{s:3,f:0},{s:4,f:2},{s:5,f:0},
+                    // Verse - C
+                    {s:1,f:0},{s:2,f:0},{s:3,f:0},{s:4,f:0},{s:5,f:0},
+                    // Verse - Em
+                    {s:6,f:0},{s:1,f:0},{s:2,f:0},{s:3,f:0},{s:5,f:2},{s:4,f:2},
+                    // Chorus - G
+                    {s:6,f:0},{s:1,f:3},{s:2,f:0},{s:3,f:0},{s:4,f:0},{s:5,f:2}
                 ]
             },
             'wonderwall': {
-                name: 'Wonderwall (Verse)',
+                name: 'Wonderwall',
                 artist: 'Oasis',
                 bpm: 87,
+                // Capo 2 - Em7→G→Dsus4→A7sus4 x4 + Chorus Cadd9→Em7→G→Em7
                 strings: [
-                    '--3--------3--------3--------3--------3--------3------------',
-                    '--3--------3--------3--------3--------3--------3------------',
-                    '--0--------0--------0--------0--------0--------0------------',
-                    '--0--------2--------0--------2--------0--------2------------',
-                    '-----------0--------0--------0-----------------------------',
-                    '--0-------------------------------------------------------- '
+                    '-3-3-3---3-3-3---3-3-3---3-3-3---3-3-3---3-3-3---3-3-3---3-3-3--------',
+                    '-3-3-3---3-3-3---3-3-3---3-3-3---3-3-3---3-3-3---3-3-3---3-3-3--------',
+                    '-0-0-0---0-0-0---0-0-0---0-0-0---0-0-0---0-0-0---0-0-0---0-0-0--------',
+                    '-0-0-0---0-0-0---2-2-2---0-0-0---0-0-0---0-0-0---2-2-2---0-0-0--------',
+                    '-2-2-2---0-0-0---0-0-0---0-0-0---3-3-3---2-2-2---0-0-0---0-0-0--------',
+                    '-0-0-0---3-3-3---------------------------------0-0-0---3-3-3-----------'
                 ],
                 notes: [
-                    { s: 6, f: 0 }, { s: 1, f: 3 }, { s: 2, f: 3 }, { s: 3, f: 0 }, { s: 4, f: 0 },
-                    { s: 5, f: 0 }, { s: 1, f: 3 }, { s: 2, f: 3 }, { s: 3, f: 0 }, { s: 4, f: 2 },
-                    { s: 5, f: 0 }, { s: 1, f: 3 }, { s: 2, f: 3 }, { s: 3, f: 0 }, { s: 4, f: 0 },
-                    { s: 5, f: 0 }, { s: 1, f: 3 }, { s: 2, f: 3 }, { s: 3, f: 0 }, { s: 4, f: 2 }
+                    // Verse: Em7 strum
+                    {s:6,f:0},{s:5,f:2},{s:4,f:0},{s:3,f:0},{s:2,f:3},{s:1,f:3},
+                    // G strum
+                    {s:6,f:3},{s:5,f:0},{s:4,f:0},{s:3,f:0},{s:2,f:3},{s:1,f:3},
+                    // Dsus4 strum
+                    {s:5,f:0},{s:4,f:2},{s:3,f:0},{s:2,f:3},{s:1,f:3},
+                    // A7sus4 strum
+                    {s:5,f:0},{s:4,f:0},{s:3,f:0},{s:2,f:3},{s:1,f:3},
+                    // Em7 x2
+                    {s:6,f:0},{s:5,f:2},{s:4,f:0},{s:3,f:0},{s:2,f:3},{s:1,f:3},
+                    {s:6,f:0},{s:5,f:2},{s:4,f:0},{s:3,f:0},{s:2,f:3},{s:1,f:3},
+                    // Chorus: Cadd9
+                    {s:5,f:3},{s:4,f:0},{s:3,f:0},{s:2,f:3},{s:1,f:3},
+                    // Em7
+                    {s:6,f:0},{s:5,f:2},{s:4,f:0},{s:3,f:0},{s:2,f:3},{s:1,f:3},
+                    // G
+                    {s:6,f:3},{s:5,f:0},{s:4,f:0},{s:3,f:0},{s:2,f:3},{s:1,f:3},
+                    // Em7
+                    {s:6,f:0},{s:5,f:2},{s:4,f:0},{s:3,f:0},{s:2,f:3},{s:1,f:3}
                 ]
             },
             'stairway': {
-                name: 'Stairway to Heaven (Intro)',
+                name: 'Stairway to Heaven',
                 artist: 'Led Zeppelin',
                 bpm: 63,
+                // Intro: Am→Am(maj7)/G#→Am7/G→D/F#→Fmaj7→G→Am
                 strings: [
-                    '--5-----5--------8--5--------5--7--5---------5---------5----',
-                    '---------5---5---------5--------5---6--5--------5--5--------',
-                    '---6--5--------6--------5---5----------5---6--------6--5----',
-                    '------7---7---7--------7---7--------7---7--------7---7--7--',
-                    '--------------------------------------------------------------',
-                    '--------------------------------------------------------------'
+                    '---------5----------5----------5----------2---------0--------3--------',
+                    '-------5---5------5---5------5---5------3---3-----1---1----0---0------',
+                    '-----5-------5--5-------5--5-------5--2-------2-2-------2-0------0---',
+                    '---7---------6---------5---------0---------3---------0--------2------',
+                    '-0-----------4---------5---------0-----------------------------------------------',
+                    '-----------------------------------------------------------------------'
                 ],
                 notes: [
-                    { s: 3, f: 6 }, { s: 1, f: 5 }, { s: 3, f: 5 }, { s: 4, f: 7 }, { s: 2, f: 5 },
-                    { s: 1, f: 5 }, { s: 4, f: 7 }, { s: 3, f: 6 }, { s: 1, f: 8 }, { s: 1, f: 5 },
-                    { s: 3, f: 5 }, { s: 4, f: 7 }, { s: 2, f: 5 }, { s: 1, f: 5 }, { s: 2, f: 6 },
-                    { s: 1, f: 7 }, { s: 1, f: 5 }, { s: 4, f: 7 }, { s: 3, f: 5 },
-                    { s: 1, f: 5 }, { s: 4, f: 7 }, { s: 2, f: 5 }
+                    // Am
+                    {s:5,f:0},{s:4,f:7},{s:3,f:5},{s:2,f:5},{s:1,f:5},{s:2,f:5},{s:3,f:5},
+                    // Am(maj7)/G#
+                    {s:5,f:4},{s:4,f:6},{s:3,f:5},{s:2,f:5},{s:1,f:5},{s:2,f:5},{s:3,f:5},
+                    // Am7/G
+                    {s:5,f:5},{s:4,f:5},{s:3,f:5},{s:2,f:5},{s:1,f:5},{s:2,f:5},{s:3,f:5},
+                    // D/F#
+                    {s:5,f:0},{s:4,f:0},{s:3,f:2},{s:2,f:3},{s:1,f:2},{s:2,f:3},{s:3,f:2},
+                    // Fmaj7
+                    {s:4,f:3},{s:3,f:2},{s:2,f:1},{s:1,f:0},{s:2,f:1},{s:3,f:2},
+                    // G→Am
+                    {s:4,f:0},{s:3,f:0},{s:2,f:0},{s:1,f:3},{s:2,f:0},{s:3,f:0},
+                    {s:5,f:0},{s:4,f:2},{s:3,f:0},{s:2,f:0},{s:1,f:0}
                 ]
             },
             'hotel-california': {
-                name: 'Hotel California (Intro)',
+                name: 'Hotel California',
                 artist: 'Eagles',
                 bpm: 75,
+                // Capo 7: Em→B7→D→A→C→G→Am→B7
                 strings: [
-                    '---------0---------0----2--------0--2---------0-------------',
-                    '------0--------3--------3-----0--------0--------3----------',
-                    '---4--------4--------2--------2--------4--------4----------',
-                    '-4--------4--------2--------0--------4--------4------------',
-                    '--2--------2----------------------------------------------- ',
-                    '--------------------------------------------------------------'
+                    '---------0---------0---------2---------0---------0--------3---0------',
+                    '------0--------0--------3--------2--------1--------0---0--------0----',
+                    '---0--------4--------2--------2--------0--------0----------4---------',
+                    '-2--------2--------0--------2--------2--------0--------2--------1----',
+                    '-2--------2-------------------------------------------------------------',
+                    '-0----------------------------------------------------------------------'
                 ],
                 notes: [
-                    { s: 5, f: 2 }, { s: 4, f: 4 }, { s: 3, f: 4 }, { s: 2, f: 0 }, { s: 1, f: 0 },
-                    { s: 5, f: 2 }, { s: 4, f: 4 }, { s: 3, f: 4 }, { s: 2, f: 3 }, { s: 1, f: 0 },
-                    { s: 4, f: 2 }, { s: 3, f: 2 }, { s: 2, f: 3 }, { s: 1, f: 2 },
-                    { s: 4, f: 0 }, { s: 3, f: 2 }, { s: 2, f: 0 }, { s: 1, f: 0 }, { s: 1, f: 2 },
-                    { s: 4, f: 4 }, { s: 3, f: 4 }, { s: 2, f: 0 }, { s: 1, f: 0 }
+                    // Em (Bm with capo)
+                    {s:6,f:0},{s:5,f:2},{s:4,f:2},{s:3,f:0},{s:2,f:0},{s:1,f:0},
+                    // B7 (F#7 with capo)
+                    {s:5,f:2},{s:4,f:2},{s:3,f:4},{s:2,f:0},{s:1,f:0},
+                    // D (A with capo)
+                    {s:4,f:0},{s:3,f:2},{s:2,f:3},{s:1,f:2},
+                    // A (E with capo)
+                    {s:4,f:2},{s:3,f:2},{s:2,f:2},{s:1,f:0},
+                    // C (G with capo)
+                    {s:4,f:2},{s:3,f:0},{s:2,f:1},{s:1,f:0},
+                    // G (D with capo)
+                    {s:4,f:0},{s:3,f:0},{s:2,f:0},{s:1,f:3},
+                    // Am (Em with capo)
+                    {s:4,f:2},{s:3,f:0},{s:2,f:0},{s:1,f:0},{s:3,f:4},
+                    // B7 (F#7 with capo)
+                    {s:4,f:1},{s:3,f:0},{s:2,f:0},{s:1,f:0}
                 ]
             },
             'custom': {
-                name: 'Custom',
+                name: 'Çaldığın Notalar',
                 artist: '',
                 bpm: 120,
-                strings: Array(6).fill('--------------------------------------------------------------'),
+                strings: Array(6).fill('-----------------------------------------------------------------------'),
                 notes: []
             }
         };
@@ -5607,6 +5732,7 @@
                 headerHtml = `<div style="margin-bottom:8px;padding:6px 10px;background:rgba(139,92,246,0.1);border-radius:6px;border-left:3px solid #8b5cf6;">
                     <span style="color:#a78bfa;font-weight:600;font-size:0.85rem;">${tab.name}</span>
                     <span style="color:#666;font-size:0.75rem;"> — ${tab.artist} • ${tab.bpm} BPM</span>
+                    <span style="color:#4ade80;font-size:0.7rem;margin-left:8px;">♪ ${tab.notes.length} nota</span>
                 </div>`;
             }
 
@@ -5623,14 +5749,27 @@
             if (!tab || !tab.notes.length) return;
 
             await ensureAudio();
+            const beatMs = (60 / tab.bpm) * 500; // half-beat per note
 
-            tab.notes.forEach((note, i) => {
+            // Visual highlight
+            const display = document.getElementById('tablatureDisplay');
+            display.style.borderColor = '#8b5cf6';
+
+            for (let i = 0; i < tab.notes.length; i++) {
+                const note = tab.notes[i];
                 setTimeout(() => {
                     if (typeof audioEngine !== 'undefined') {
                         audioEngine.playGuitarString(note.s, note.f);
                     }
-                }, i * 300);
-            });
+                    // Highlight corresponding fret on fretboard
+                    if (typeof GuitarModule !== 'undefined') GuitarModule.showActive(note.s, note.f);
+                }, i * beatMs);
+            }
+
+            // Reset border after playback
+            setTimeout(() => {
+                display.style.borderColor = '';
+            }, tab.notes.length * beatMs + 500);
         }
 
         function showTablatureFromRecording() {
