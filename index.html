@@ -2634,6 +2634,24 @@
             border-radius: 2px;
         }
 
+        .tn {
+            transition: color 0.1s, text-shadow 0.1s;
+        }
+
+        .tn.active-note {
+            color: #c084fc !important;
+            text-shadow: 0 0 8px rgba(192, 132, 252, 0.8);
+            font-weight: bold;
+        }
+
+        .tab-info-bar {
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid #8b5cf6;
+        }
+
         .tablature-controls {
             display: flex;
             gap: 8px;
@@ -6071,34 +6089,25 @@
 
             const display = document.getElementById('tablatureDisplay');
             const stringLabels = ['e', 'B', 'G', 'D', 'A', 'E'];
-
-            // Nota sayısına göre dinamik tab string oluştur
             const noteCount = tab.notes.length;
-            let generatedStrings = [[], [], [], [], [], []]; // 6 tel
 
-            if (noteCount > 0) {
-                tab.notes.forEach((note, idx) => {
-                    const stringIdx = note.s - 1; // 1-indexed to 0-indexed
-                    const fretStr = String(note.f);
-                    for (let t = 0; t < 6; t++) {
-                        if (t === stringIdx) {
-                            generatedStrings[t].push(fretStr.padEnd(2, '-'));
-                        } else {
-                            generatedStrings[t].push('--');
-                        }
-                    }
-                    // Bölüm ayırıcı (her 20 nota)
-                    if ((idx + 1) % 20 === 0 && idx < noteCount - 1) {
-                        for (let t = 0; t < 6; t++) generatedStrings[t].push('|-');
-                    }
-                });
-            }
+            // Her tel için nota span'ları oluştur
+            let rows = [[], [], [], [], [], []]; // 6 string row
 
-            const tabStrings = generatedStrings.map(arr => arr.join('-'));
+            tab.notes.forEach((note, idx) => {
+                const sIdx = note.s - 1; // tel indexi (0-based, e=0 B=1 G=2 D=3 A=4 E=5)
+                for (let t = 0; t < 6; t++) {
+                    if (t === sIdx) {
+                        rows[t].push(`<span class="tn" data-ni="${idx}">${String(note.f).padStart(2,'-')}</span>`);
+                    } else {
+                        rows[t].push(`<span class="tn" data-ni="${idx}">--</span>`);
+                    }
+                }
+            });
 
             let headerHtml = '';
             if (tab.artist) {
-                headerHtml = `<div style="margin-bottom:8px;padding:6px 10px;background:rgba(139,92,246,0.1);border-radius:6px;border-left:3px solid #8b5cf6;">
+                headerHtml = `<div class="tab-info-bar">
                     <span style="color:#a78bfa;font-weight:600;font-size:0.85rem;">${tab.name}</span>
                     <span style="color:#666;font-size:0.75rem;"> — ${tab.artist} • ${tab.bpm} BPM</span>
                     <span style="color:#4ade80;font-size:0.7rem;margin-left:8px;">♪ ${noteCount} nota</span>
@@ -6106,28 +6115,38 @@
                 </div>`;
             }
 
-            display.innerHTML = headerHtml + tabStrings.map((line, i) => `
+            display.innerHTML = headerHtml + rows.map((spans, i) => `
                 <div class="tab-line">
                     <span class="tab-string-label">${stringLabels[i]}|</span>
-                    <span class="tab-notes">${line}</span>
+                    <span class="tab-notes">${spans.join('-')}</span>
                 </div>
             `).join('');
         }
 
         let tabPlayingTimeout = [];
+        let tabIsPlaying = false;
 
         async function playTablature() {
             const tab = tablatures[currentTab];
             if (!tab || !tab.notes.length) return;
 
             // Önceki çalmayı durdur
-            tabPlayingTimeout.forEach(t => clearTimeout(t));
-            tabPlayingTimeout = [];
+            stopTabPlayback();
 
-            // Sayfayı kaydır: fretboard üstte, tablature altında görünsün
-            const fretboard = document.getElementById('fretboard');
-            if (fretboard) {
-                fretboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            tabIsPlaying = true;
+
+            // Sayfayı kaydır: fretboard üstte, tablature hemen altında
+            const guitarSection = document.getElementById('guitar');
+            if (guitarSection) {
+                // Tablature panelini bul ve fretboard ile birlikte görünsün
+                const tabPanel = document.getElementById('tablaturePanel');
+                if (tabPanel) {
+                    const fretboardRect = document.getElementById('fretboard')?.getBoundingClientRect();
+                    const tabRect = tabPanel.getBoundingClientRect();
+                    // Fretboard'un başlangıcına scroll
+                    const targetY = window.scrollY + (fretboardRect?.top || 0) - 10;
+                    window.scrollTo({ top: targetY, behavior: 'smooth' });
+                }
             }
 
             await ensureAudio();
@@ -6135,50 +6154,84 @@
 
             const display = document.getElementById('tablatureDisplay');
             display.style.borderColor = '#8b5cf6';
+            display.style.transition = 'border-color 0.3s';
 
-            // Her nota için karakter pozisyonunu hesapla (her nota ~3 karakter yer kaplıyor)
-            const charWidth = 9.6; // monospace karakter genişliği (yaklaşık)
-            const noteSpacing = 3; // her nota ~3 karakter
+            // İlerleme çubuğu oluştur
+            let progressBar = display.querySelector('.tab-progress');
+            if (!progressBar) {
+                progressBar = document.createElement('div');
+                progressBar.className = 'tab-progress';
+                progressBar.style.cssText = 'height:3px;background:linear-gradient(90deg,#8b5cf6,#06b6d4);border-radius:2px;margin:4px 0 8px;width:0%;transition:width 0.3s;';
+                display.insertBefore(progressBar, display.querySelector('.tab-line'));
+            }
 
             for (let i = 0; i < tab.notes.length; i++) {
                 const note = tab.notes[i];
                 const tid = setTimeout(() => {
-                    // Ses çal
+                    if (!tabIsPlaying) return;
+
+                    // === SES ===
                     if (typeof audioEngine !== 'undefined') {
                         audioEngine.playGuitarString(note.s, note.f);
                     }
-                    // Fretboard highlight
-                    if (typeof GuitarModule !== 'undefined') GuitarModule.showActive(note.s, note.f);
 
-                    // Tablature auto-scroll: nota pozisyonuna kay
-                    const scrollPos = i * noteSpacing * charWidth;
-                    display.scrollTo({
-                        left: Math.max(0, scrollPos - display.clientWidth / 3),
-                        behavior: 'smooth'
+                    // === FRETBOARD HIGHLIGHT (aynı milisaniye) ===
+                    if (typeof GuitarModule !== 'undefined') {
+                        GuitarModule.showActive(note.s, note.f);
+                    }
+
+                    // === TABLATURE NOTA HIGHLIGHT ===
+                    // Önceki aktif notaları temizle
+                    display.querySelectorAll('.tn.active-note').forEach(el => el.classList.remove('active-note'));
+
+                    // Bu notanın tüm tel span'larını bul ve aktif olanı vurgula
+                    const noteSpans = display.querySelectorAll(`.tn[data-ni="${i}"]`);
+                    noteSpans.forEach(span => {
+                        span.classList.add('active-note');
                     });
 
-                    // Aktif nota satır vurgusu
-                    const stringIdx = note.s - 1;
-                    const tabLines = display.querySelectorAll('.tab-line');
-                    tabLines.forEach((line, li) => {
-                        if (li === stringIdx) {
-                            line.style.background = 'rgba(139,92,246,0.15)';
-                            line.style.transition = 'background 0.15s';
-                        } else {
-                            line.style.background = 'transparent';
-                        }
-                    });
+                    // === YATAY AUTO-SCROLL: aktif notayı merkezde tut ===
+                    const activeSpan = display.querySelector(`.tab-notes .tn[data-ni="${i}"]`);
+                    if (activeSpan) {
+                        const spanRect = activeSpan.getBoundingClientRect();
+                        const displayRect = display.getBoundingClientRect();
+                        const scrollTarget = display.scrollLeft + (spanRect.left - displayRect.left) - (displayRect.width / 3);
+                        display.scrollTo({
+                            left: Math.max(0, scrollTarget),
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    // === İLERLEME ÇUBUĞU ===
+                    const pct = ((i + 1) / tab.notes.length) * 100;
+                    progressBar.style.width = pct + '%';
+
                 }, i * beatMs);
                 tabPlayingTimeout.push(tid);
             }
 
-            // Reset after playback
+            // Çalma bitince temizle
             const endTid = setTimeout(() => {
+                tabIsPlaying = false;
                 display.style.borderColor = '';
-                display.querySelectorAll('.tab-line').forEach(l => l.style.background = 'transparent');
+                display.querySelectorAll('.tn.active-note').forEach(el => el.classList.remove('active-note'));
+                progressBar.style.width = '0%';
                 display.scrollTo({ left: 0, behavior: 'smooth' });
             }, tab.notes.length * beatMs + 500);
             tabPlayingTimeout.push(endTid);
+        }
+
+        function stopTabPlayback() {
+            tabIsPlaying = false;
+            tabPlayingTimeout.forEach(t => clearTimeout(t));
+            tabPlayingTimeout = [];
+            const display = document.getElementById('tablatureDisplay');
+            if (display) {
+                display.style.borderColor = '';
+                display.querySelectorAll('.tn.active-note').forEach(el => el.classList.remove('active-note'));
+                const pb = display.querySelector('.tab-progress');
+                if (pb) pb.style.width = '0%';
+            }
         }
 
         function showTablatureFromRecording() {
