@@ -3153,7 +3153,7 @@
             </div>
 
             <!-- Tablature Viewer -->
-            <div class="tablature-panel">
+            <div class="tablature-panel" id="tablaturePanel">
                 <div class="tablature-header">
                     <span class="tablature-title">📜 Tablature</span>
                     <select class="scale-select" onchange="loadTablature(this.value)">
@@ -6123,6 +6123,12 @@
             // Önceki çalmayı durdur
             tabPlayingTimeout.forEach(t => clearTimeout(t));
             tabPlayingTimeout = [];
+
+            // Sayfayı kaydır: fretboard üstte, tablature altında görünsün
+            const fretboard = document.getElementById('fretboard');
+            if (fretboard) {
+                fretboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
 
             await ensureAudio();
             const beatMs = (60 / tab.bpm) * 500;
