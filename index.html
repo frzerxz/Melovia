@@ -6114,32 +6114,65 @@
             `).join('');
         }
 
+        let tabPlayingTimeout = [];
+
         async function playTablature() {
             const tab = tablatures[currentTab];
             if (!tab || !tab.notes.length) return;
 
-            await ensureAudio();
-            const beatMs = (60 / tab.bpm) * 500; // half-beat per note
+            // Önceki çalmayı durdur
+            tabPlayingTimeout.forEach(t => clearTimeout(t));
+            tabPlayingTimeout = [];
 
-            // Visual highlight
+            await ensureAudio();
+            const beatMs = (60 / tab.bpm) * 500;
+
             const display = document.getElementById('tablatureDisplay');
             display.style.borderColor = '#8b5cf6';
 
+            // Her nota için karakter pozisyonunu hesapla (her nota ~3 karakter yer kaplıyor)
+            const charWidth = 9.6; // monospace karakter genişliği (yaklaşık)
+            const noteSpacing = 3; // her nota ~3 karakter
+
             for (let i = 0; i < tab.notes.length; i++) {
                 const note = tab.notes[i];
-                setTimeout(() => {
+                const tid = setTimeout(() => {
+                    // Ses çal
                     if (typeof audioEngine !== 'undefined') {
                         audioEngine.playGuitarString(note.s, note.f);
                     }
-                    // Highlight corresponding fret on fretboard
+                    // Fretboard highlight
                     if (typeof GuitarModule !== 'undefined') GuitarModule.showActive(note.s, note.f);
+
+                    // Tablature auto-scroll: nota pozisyonuna kay
+                    const scrollPos = i * noteSpacing * charWidth;
+                    display.scrollTo({
+                        left: Math.max(0, scrollPos - display.clientWidth / 3),
+                        behavior: 'smooth'
+                    });
+
+                    // Aktif nota satır vurgusu
+                    const stringIdx = note.s - 1;
+                    const tabLines = display.querySelectorAll('.tab-line');
+                    tabLines.forEach((line, li) => {
+                        if (li === stringIdx) {
+                            line.style.background = 'rgba(139,92,246,0.15)';
+                            line.style.transition = 'background 0.15s';
+                        } else {
+                            line.style.background = 'transparent';
+                        }
+                    });
                 }, i * beatMs);
+                tabPlayingTimeout.push(tid);
             }
 
-            // Reset border after playback
-            setTimeout(() => {
+            // Reset after playback
+            const endTid = setTimeout(() => {
                 display.style.borderColor = '';
+                display.querySelectorAll('.tab-line').forEach(l => l.style.background = 'transparent');
+                display.scrollTo({ left: 0, behavior: 'smooth' });
             }, tab.notes.length * beatMs + 500);
+            tabPlayingTimeout.push(endTid);
         }
 
         function showTablatureFromRecording() {
