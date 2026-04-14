@@ -3096,6 +3096,41 @@
                             <div class="track-item-details">Key: Em • 140 BPM • Metal</div>
                         </div>
                     </div>
+                    <div class="track-item" onclick="selectTrack(3)">
+                        <span class="track-item-icon">🎵</span>
+                        <div class="track-item-info">
+                            <div class="track-item-name">Fingerpicking - Am Pattern</div>
+                            <div class="track-item-details">Key: Am • 80 BPM • Acoustic</div>
+                        </div>
+                    </div>
+                    <div class="track-item" onclick="selectTrack(4)">
+                        <span class="track-item-icon">🎷</span>
+                        <div class="track-item-info">
+                            <div class="track-item-name">Slow Blues - G Minor</div>
+                            <div class="track-item-details">Key: Gm • 70 BPM • Slow Blues</div>
+                        </div>
+                    </div>
+                    <div class="track-item" onclick="selectTrack(5)">
+                        <span class="track-item-icon">🎹</span>
+                        <div class="track-item-info">
+                            <div class="track-item-name">Jazz Chord Changes</div>
+                            <div class="track-item-details">Key: C • 110 BPM • Jazz Swing</div>
+                        </div>
+                    </div>
+                    <div class="track-item" onclick="selectTrack(6)">
+                        <span class="track-item-icon">🌊</span>
+                        <div class="track-item-info">
+                            <div class="track-item-name">Funk Groove - E7</div>
+                            <div class="track-item-details">Key: E • 95 BPM • Funk</div>
+                        </div>
+                    </div>
+                    <div class="track-item" onclick="selectTrack(7)">
+                        <span class="track-item-icon">🏜️</span>
+                        <div class="track-item-info">
+                            <div class="track-item-name">Classic Rock - A Major</div>
+                            <div class="track-item-details">Key: A • 130 BPM • Rock</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="track-player-controls">
                     <button class="track-btn play" id="trackPlayBtn" onclick="toggleTrackPlay()">▶</button>
@@ -3121,10 +3156,15 @@
                 <div class="tablature-header">
                     <span class="tablature-title">📜 Tablature</span>
                     <select class="scale-select" onchange="loadTablature(this.value)">
-                        <option value="smoke">Smoke on the Water Riff</option>
-                        <option value="seven-nation">Seven Nation Army</option>
-                        <option value="come-as">Come As You Are</option>
-                        <option value="custom">Çaldığın Notalar</option>
+                        <option value="smoke">🔥 Smoke on the Water - Deep Purple</option>
+                        <option value="seven-nation">⚡ Seven Nation Army - White Stripes</option>
+                        <option value="come-as">🌧️ Come As You Are - Nirvana</option>
+                        <option value="wish-you-were-here">🌅 Wish You Were Here - Pink Floyd</option>
+                        <option value="nothing-else-matters">🖤 Nothing Else Matters - Metallica</option>
+                        <option value="wonderwall">🧱 Wonderwall - Oasis</option>
+                        <option value="stairway">🪜 Stairway to Heaven - Led Zeppelin</option>
+                        <option value="hotel-california">🏨 Hotel California - Eagles</option>
+                        <option value="custom">📝 Çaldığın Notalar</option>
                     </select>
                 </div>
                 <div class="tablature-display" id="tablatureDisplay">
@@ -3397,6 +3437,273 @@
                         <button class="lesson-btn primary" onclick="currentLessonId=8; startLesson()">▶ Çalmaya
                             Başla</button>
                         <button class="lesson-btn secondary" onclick="showLessonDetail(8)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Pratik 9: Wish You Were Here -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🌅</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Wish You Were Here</span>
+                                <span class="lesson-stars">★★☆</span>
+                            </div>
+                            <span class="lesson-artist">Pink Floyd - Progressive Rock</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category parmak">Fingerpicking + Strumming</span>
+                    <p class="lesson-desc">Akustik gitar klasiği. 12-string intro, fingerpicking verse, strumming chorus. Em-G-A7sus4-Am geçişleri.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Em</span>
+                        <span class="chord-btn">G</span>
+                        <span class="chord-btn">A7sus4</span>
+                        <span class="chord-btn">C</span>
+                        <span class="chord-btn">D</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=9; startLesson()">▶ Çalmaya Başla</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(9)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Pratik 10: Nothing Else Matters -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🖤</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Nothing Else Matters</span>
+                                <span class="lesson-stars">★★☆</span>
+                            </div>
+                            <span class="lesson-artist">Metallica - Ballad</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category parmak">Arpej + Akor</span>
+                    <p class="lesson-desc">Metallica'nın efsane balladı. Açık teller üzerinde arpej intro (0-0-0 pattern), güçlü akor verse ve solo bölümü.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Em</span>
+                        <span class="chord-btn">D</span>
+                        <span class="chord-btn">C</span>
+                        <span class="chord-btn">G</span>
+                        <span class="chord-btn">B7</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=10; startLesson()">▶ Çalmaya Başla</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(10)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Pratik 11: Wonderwall -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🧱</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Wonderwall</span>
+                                <span class="lesson-stars">★☆☆</span>
+                            </div>
+                            <span class="lesson-artist">Oasis - Britpop</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category ritim">Ritim Çalışması</span>
+                    <p class="lesson-desc">Kamp ateşi klasiği! Em7-G-Dsus4-A7sus4 döngüsü. Capo 2. perde. Düz ve sürekli strumming pattern.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Em7</span>
+                        <span class="chord-btn">G</span>
+                        <span class="chord-btn">Dsus4</span>
+                        <span class="chord-btn">A7sus4</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=11; startLesson()">▶ Çalmaya Başla</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(11)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Pratik 12: Stairway to Heaven -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🪜</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Stairway to Heaven</span>
+                                <span class="lesson-stars">★★★</span>
+                            </div>
+                            <span class="lesson-artist">Led Zeppelin - Hard Rock</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category sarki">Efsane Şarkı</span>
+                    <p class="lesson-desc">Gitarın en ünlü şarkısı! Arpej intro, fingerpicking verse, strumming bridge ve efsanevi solo. Am-C/G-D/F#-Fmaj7 progresyonu.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Am</span>
+                        <span class="chord-btn">C</span>
+                        <span class="chord-btn">D</span>
+                        <span class="chord-btn">Fmaj7</span>
+                        <span class="chord-btn">G</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=12; startLesson()">▶ Çalmaya Başla</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(12)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Pratik 13: Hotel California -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🏨</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Hotel California</span>
+                                <span class="lesson-stars">★★★</span>
+                            </div>
+                            <span class="lesson-artist">Eagles - Classic Rock</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category teknik">Arpej + Solo</span>
+                    <p class="lesson-desc">İkonik intro, 12-string arpej çalım ve çift gitar solosu. Bm-F#7-A-E-G-D-Em progresyonu.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Bm</span>
+                        <span class="chord-btn">F#7</span>
+                        <span class="chord-btn">A</span>
+                        <span class="chord-btn">E</span>
+                        <span class="chord-btn">G</span>
+                        <span class="chord-btn">D</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=13; startLesson()">▶ Çalmaya Başla</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(13)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- İleri Teknikler Bölüm Başlığı -->
+                <div style="grid-column: 1 / -1; margin-top: 16px;">
+                    <h3 style="color: #f59e0b; font-size: 16px; margin-bottom: 4px;">🔥 İleri Teknikler</h3>
+                    <p style="color: var(--dim); font-size: 12px;">Gitar yolculuğunun bir sonraki seviyesi</p>
+                </div>
+
+                <!-- Ders 6: Blues Temelleri -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🎷</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 6: Blues Temelleri</span>
+                                <span class="lesson-stars">★★☆</span>
+                            </div>
+                            <span class="lesson-artist">12-Bar Blues & Shuffle</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category teknik">Tarz Çalışması</span>
+                    <p class="lesson-desc">12-bar blues yapısı, blues skalası (Am), shuffle ritmi, turnaround ve blues lick'leri. Jam session hazırlığı.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">A7</span>
+                        <span class="chord-btn">D7</span>
+                        <span class="chord-btn">E7</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=14; startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(14)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Ders 7: Fingerstyle -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🤌</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 7: Fingerstyle</span>
+                                <span class="lesson-stars">★★★</span>
+                            </div>
+                            <span class="lesson-artist">Travis Picking & Klasik</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category parmak">İleri Parmak Tekniği</span>
+                    <p class="lesson-desc">P-I-M-A parmak tekniği, Travis picking, alternating bass, bağımsız melodi + bas çizgisi. Dust in the Wind pattern.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">C</span>
+                        <span class="chord-btn">Am</span>
+                        <span class="chord-btn">G</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=15; startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(15)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Ders 8: Pentatonik Skalalar -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🎹</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 8: Pentatonik Skala</span>
+                                <span class="lesson-stars">★★☆</span>
+                            </div>
+                            <span class="lesson-artist">Solo Çalım & Improvizasyon</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category melodi">Solo Tekniği</span>
+                    <p class="lesson-desc">Am Pentatonik 5 pozisyon, bending, vibrato, hammer-on/pull-off, basit solo cümleleri ve improvizasyon temelleri.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">Am Pent.</span>
+                        <span class="chord-btn">Pos 1-5</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=16; startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(16)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Ders 9: Rock & Metal -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">🤘</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 9: Rock & Metal</span>
+                                <span class="lesson-stars">★★★</span>
+                            </div>
+                            <span class="lesson-artist">Power Chord & Distortion</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category teknik">Elektro Gitar</span>
+                    <p class="lesson-desc">Power chord formları, palm muting, alternate picking, gallop picking, pinch harmonics ve metal riff yazma teknikleri.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">E5</span>
+                        <span class="chord-btn">A5</span>
+                        <span class="chord-btn">D5</span>
+                        <span class="chord-btn">G5</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=17; startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(17)">📄 Detay</button>
+                    </div>
+                </div>
+
+                <!-- Ders 10: Müzik Teorisi -->
+                <div class="lesson-card locked">
+                    <div class="lesson-header">
+                        <div class="lesson-icon">📐</div>
+                        <div class="lesson-info">
+                            <div class="lesson-title-row">
+                                <span class="lesson-title">Ders 10: Müzik Teorisi</span>
+                                <span class="lesson-stars">★★★</span>
+                            </div>
+                            <span class="lesson-artist">Aralıklar, Tonalite, Derecelendirme</span>
+                        </div>
+                    </div>
+                    <span class="lesson-category sarki">Teori + Uygulama</span>
+                    <p class="lesson-desc">Aralıklar (interval), major skala yapısı, diyatonik akorlar, Nashville sayı sistemi, I-IV-V-vi fonksiyonları ve transpozisyon.</p>
+                    <div class="lesson-chords">
+                        <span class="chord-btn">I</span>
+                        <span class="chord-btn">IV</span>
+                        <span class="chord-btn">V</span>
+                        <span class="chord-btn">vi</span>
+                    </div>
+                    <div class="lesson-btns">
+                        <button class="lesson-btn primary" onclick="currentLessonId=18; startLesson()">▶ Dersi Başlat</button>
+                        <button class="lesson-btn secondary" onclick="showLessonDetail(18)">📄 Detay</button>
                     </div>
                 </div>
             </div>
@@ -4946,9 +5253,14 @@
 
         // === BACKING TRACK PLAYER ===
         const backingTracks = [
-            { name: 'Blues in A', key: 'A', bpm: 100, duration: 60 },
-            { name: 'Pop Rock - D Major', key: 'D', bpm: 120, duration: 45 },
-            { name: 'Metal Riff - E Minor', key: 'Em', bpm: 140, duration: 30 }
+            { name: 'Blues in A', key: 'A', bpm: 100, duration: 60, style: 'Blues', chords: ['A2', 'D3', 'E3', 'A2'] },
+            { name: 'Pop Rock - D Major', key: 'D', bpm: 120, duration: 45, style: 'Pop', chords: ['D3', 'A3', 'Bm2', 'G2'] },
+            { name: 'Metal Riff - E Minor', key: 'Em', bpm: 140, duration: 30, style: 'Metal', chords: ['E2', 'G2', 'A2', 'E2'] },
+            { name: 'Fingerpicking - Am', key: 'Am', bpm: 80, duration: 50, style: 'Acoustic', chords: ['A2', 'C3', 'E3', 'A2'] },
+            { name: 'Slow Blues - G Minor', key: 'Gm', bpm: 70, duration: 55, style: 'Slow Blues', chords: ['G2', 'C3', 'D3', 'G2'] },
+            { name: 'Jazz Chord Changes', key: 'C', bpm: 110, duration: 40, style: 'Jazz', chords: ['C3', 'A2', 'D3', 'G2'] },
+            { name: 'Funk Groove - E7', key: 'E', bpm: 95, duration: 45, style: 'Funk', chords: ['E2', 'A2', 'B2', 'E2'] },
+            { name: 'Classic Rock - A', key: 'A', bpm: 130, duration: 35, style: 'Rock', chords: ['A2', 'D3', 'E3', 'A2'] }
         ];
 
         let currentTrack = null;
@@ -4956,6 +5268,7 @@
         let trackPlaying = false;
         let trackStartTime = 0;
         let trackProgressInterval = null;
+        let trackGainNode = null;
 
         function selectTrack(index) {
             document.querySelectorAll('.track-item').forEach((el, i) => {
@@ -4975,14 +5288,12 @@
             }
 
             if (!trackPlaying) {
-                // Start playing (simulated backing track with generated audio)
                 trackPlaying = true;
                 btn.textContent = '⏸';
                 btn.classList.remove('play');
                 btn.classList.add('pause');
                 trackStartTime = Date.now();
 
-                // Generate simple backing track
                 playBackingTrackAudio(currentTrack);
 
                 trackProgressInterval = setInterval(() => {
@@ -5013,24 +5324,20 @@
             if (trackAudioContext) {
                 trackAudioContext.close();
                 trackAudioContext = null;
+                trackGainNode = null;
             }
         }
 
         async function playBackingTrackAudio(track) {
             trackAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            trackGainNode = trackAudioContext.createGain();
+            trackGainNode.gain.value = 0.15;
+            trackGainNode.connect(trackAudioContext.destination);
+            
             const bpm = track.bpm;
             const beatDuration = 60 / bpm;
-            const key = track.key;
+            const chords = track.chords;
 
-            // Simple chord progression based on key
-            const chordMap = {
-                'A': ['A2', 'D3', 'E3', 'A2'],
-                'D': ['D3', 'G3', 'A3', 'D3'],
-                'Em': ['E2', 'A2', 'B2', 'E2']
-            };
-            const chords = chordMap[key] || chordMap['A'];
-
-            // Play simple rhythm
             let beat = 0;
             const playBeat = () => {
                 if (!trackPlaying) return;
@@ -5039,19 +5346,43 @@
                 const note = chords[chordIndex];
                 const freq = noteToFreq(note);
 
-                // Create bass drum + bass note
-                const osc = trackAudioContext.createOscillator();
-                const gain = trackAudioContext.createGain();
+                // Bass note
+                const bassOsc = trackAudioContext.createOscillator();
+                const bassGain = trackAudioContext.createGain();
+                bassOsc.type = 'triangle';
+                bassOsc.frequency.value = freq;
+                bassGain.gain.setValueAtTime(0.12, trackAudioContext.currentTime);
+                bassGain.gain.exponentialRampToValueAtTime(0.01, trackAudioContext.currentTime + beatDuration * 0.8);
+                bassOsc.connect(bassGain);
+                bassGain.connect(trackGainNode);
+                bassOsc.start();
+                bassOsc.stop(trackAudioContext.currentTime + beatDuration);
 
-                osc.type = 'triangle';
-                osc.frequency.value = freq;
-                gain.gain.setValueAtTime(0.15, trackAudioContext.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, trackAudioContext.currentTime + beatDuration * 0.8);
+                // Harmony (on beats 2 and 4)
+                if (beat % 2 === 1) {
+                    const harmOsc = trackAudioContext.createOscillator();
+                    const harmGain = trackAudioContext.createGain();
+                    harmOsc.type = 'sine';
+                    harmOsc.frequency.value = freq * 1.5; // Perfect fifth
+                    harmGain.gain.setValueAtTime(0.06, trackAudioContext.currentTime);
+                    harmGain.gain.exponentialRampToValueAtTime(0.01, trackAudioContext.currentTime + beatDuration * 0.6);
+                    harmOsc.connect(harmGain);
+                    harmGain.connect(trackGainNode);
+                    harmOsc.start();
+                    harmOsc.stop(trackAudioContext.currentTime + beatDuration * 0.7);
+                }
 
-                osc.connect(gain);
-                gain.connect(trackAudioContext.destination);
-                osc.start();
-                osc.stop(trackAudioContext.currentTime + beatDuration);
+                // Hi-hat click (every beat)
+                const noiseGain = trackAudioContext.createGain();
+                const noiseOsc = trackAudioContext.createOscillator();
+                noiseOsc.type = 'square';
+                noiseOsc.frequency.value = 800 + Math.random() * 200;
+                noiseGain.gain.setValueAtTime(0.03, trackAudioContext.currentTime);
+                noiseGain.gain.exponentialRampToValueAtTime(0.001, trackAudioContext.currentTime + 0.05);
+                noiseOsc.connect(noiseGain);
+                noiseGain.connect(trackGainNode);
+                noiseOsc.start();
+                noiseOsc.stop(trackAudioContext.currentTime + 0.05);
 
                 beat++;
                 if (trackPlaying && beat < track.duration / beatDuration) {
@@ -5080,8 +5411,10 @@
         }
 
         function setTrackVolume(value) {
-            // Volume control (would need proper implementation with gain node)
-            console.log('Track volume:', value);
+            const vol = value / 100;
+            if (trackGainNode) {
+                trackGainNode.gain.value = vol * 0.2;
+            }
         }
 
         function formatTime(seconds) {
@@ -5093,53 +5426,168 @@
         // === TABLATURE VIEWER ===
         const tablatures = {
             'smoke': {
-                name: 'Smoke on the Water',
+                name: 'Smoke on the Water (Full)',
+                artist: 'Deep Purple',
+                bpm: 112,
                 strings: [
-                    '----------------------------------',
-                    '----------------------------------',
-                    '--0--3--5----0--3--6--5-----------',
-                    '--0--3--5----0--3--6--5-----------',
-                    '----------------------------------',
-                    '----------------------------------'
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------',
+                    '--0--3--5----0--3--6-5----0--3--5----3--0--------------------',
+                    '--0--3--5----0--3--6-5----0--3--5----3--0--------------------',
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------'
                 ],
                 notes: [
                     { s: 3, f: 0 }, { s: 3, f: 3 }, { s: 3, f: 5 },
-                    { s: 3, f: 0 }, { s: 3, f: 3 }, { s: 3, f: 6 }, { s: 3, f: 5 }
+                    { s: 3, f: 0 }, { s: 3, f: 3 }, { s: 3, f: 6 }, { s: 3, f: 5 },
+                    { s: 3, f: 0 }, { s: 3, f: 3 }, { s: 3, f: 5 },
+                    { s: 3, f: 3 }, { s: 3, f: 0 }
                 ]
             },
             'seven-nation': {
-                name: 'Seven Nation Army',
+                name: 'Seven Nation Army (Full)',
+                artist: 'The White Stripes',
+                bpm: 124,
                 strings: [
-                    '----------------------------------',
-                    '----------------------------------',
-                    '----------------------------------',
-                    '----------------------------------',
-                    '--7--7--10--7--5--3--2------------',
-                    '----------------------------------'
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------',
+                    '--7--7--10--7--5--3--2----7--7--10--7--5--3--2--3--2---------',
+                    '--------------------------------------------------------------'
                 ],
                 notes: [
                     { s: 5, f: 7 }, { s: 5, f: 7 }, { s: 5, f: 10 },
-                    { s: 5, f: 7 }, { s: 5, f: 5 }, { s: 5, f: 3 }, { s: 5, f: 2 }
+                    { s: 5, f: 7 }, { s: 5, f: 5 }, { s: 5, f: 3 }, { s: 5, f: 2 },
+                    { s: 5, f: 7 }, { s: 5, f: 7 }, { s: 5, f: 10 },
+                    { s: 5, f: 7 }, { s: 5, f: 5 }, { s: 5, f: 3 }, { s: 5, f: 2 },
+                    { s: 5, f: 3 }, { s: 5, f: 2 }
                 ]
             },
             'come-as': {
-                name: 'Come As You Are',
+                name: 'Come As You Are (Full)',
+                artist: 'Nirvana',
+                bpm: 120,
                 strings: [
-                    '-----0--1--2--2--1--0-------------',
-                    '--2-----------2-------------------',
-                    '----------------------------------',
-                    '----------------------------------',
-                    '----------------------------------',
-                    '----------------------------------'
+                    '-----0--1--2-----2--1--0--------0--1--2-----2--1--0---------',
+                    '--2---------------------2----2---------------------2--------',
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------'
                 ],
                 notes: [
                     { s: 2, f: 2 }, { s: 1, f: 0 }, { s: 1, f: 1 }, { s: 1, f: 2 },
-                    { s: 2, f: 2 }, { s: 1, f: 2 }, { s: 1, f: 1 }, { s: 1, f: 0 }
+                    { s: 1, f: 2 }, { s: 1, f: 1 }, { s: 1, f: 0 },
+                    { s: 2, f: 2 }, { s: 1, f: 0 }, { s: 1, f: 1 }, { s: 1, f: 2 },
+                    { s: 1, f: 2 }, { s: 1, f: 1 }, { s: 1, f: 0 }
+                ]
+            },
+            'wish-you-were-here': {
+                name: 'Wish You Were Here (Intro)',
+                artist: 'Pink Floyd',
+                bpm: 60,
+                strings: [
+                    '------0---------0---------0---------0--------3--0-----------',
+                    '---0-----0---0-----0---1-----1---0-----0---0-----0----------',
+                    '--------------------------------------------------------------',
+                    '-2---------2---------2---------2---------0---------0--------',
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------'
+                ],
+                notes: [
+                    { s: 4, f: 2 }, { s: 2, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 },
+                    { s: 4, f: 2 }, { s: 2, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 },
+                    { s: 4, f: 2 }, { s: 2, f: 1 }, { s: 1, f: 0 }, { s: 2, f: 1 },
+                    { s: 4, f: 2 }, { s: 2, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 },
+                    { s: 4, f: 0 }, { s: 2, f: 0 }, { s: 1, f: 3 }, { s: 1, f: 0 }
+                ]
+            },
+            'nothing-else-matters': {
+                name: 'Nothing Else Matters (Intro)',
+                artist: 'Metallica',
+                bpm: 69,
+                strings: [
+                    '--0--------0--------0--------0--------0--------0------------',
+                    '--0--------0--------0--------0--------0--------0------------',
+                    '--0--------0--------0--------0--------0--------0------------',
+                    '---------2--------2--------2--------0--------0--------------',
+                    '------2--------0--------2-----------2--------0--------------',
+                    '--0--------0--------0--------0-------------------------------'
+                ],
+                notes: [
+                    { s: 6, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
+                    { s: 5, f: 2 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
+                    { s: 6, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
+                    { s: 5, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
+                    { s: 6, f: 0 }, { s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 },
+                    { s: 5, f: 2 }, { s: 4, f: 2 }, { s: 1, f: 0 }, { s: 2, f: 0 }
+                ]
+            },
+            'wonderwall': {
+                name: 'Wonderwall (Verse)',
+                artist: 'Oasis',
+                bpm: 87,
+                strings: [
+                    '--3--------3--------3--------3--------3--------3------------',
+                    '--3--------3--------3--------3--------3--------3------------',
+                    '--0--------0--------0--------0--------0--------0------------',
+                    '--0--------2--------0--------2--------0--------2------------',
+                    '-----------0--------0--------0-----------------------------',
+                    '--0-------------------------------------------------------- '
+                ],
+                notes: [
+                    { s: 6, f: 0 }, { s: 1, f: 3 }, { s: 2, f: 3 }, { s: 3, f: 0 }, { s: 4, f: 0 },
+                    { s: 5, f: 0 }, { s: 1, f: 3 }, { s: 2, f: 3 }, { s: 3, f: 0 }, { s: 4, f: 2 },
+                    { s: 5, f: 0 }, { s: 1, f: 3 }, { s: 2, f: 3 }, { s: 3, f: 0 }, { s: 4, f: 0 },
+                    { s: 5, f: 0 }, { s: 1, f: 3 }, { s: 2, f: 3 }, { s: 3, f: 0 }, { s: 4, f: 2 }
+                ]
+            },
+            'stairway': {
+                name: 'Stairway to Heaven (Intro)',
+                artist: 'Led Zeppelin',
+                bpm: 63,
+                strings: [
+                    '--5-----5--------8--5--------5--7--5---------5---------5----',
+                    '---------5---5---------5--------5---6--5--------5--5--------',
+                    '---6--5--------6--------5---5----------5---6--------6--5----',
+                    '------7---7---7--------7---7--------7---7--------7---7--7--',
+                    '--------------------------------------------------------------',
+                    '--------------------------------------------------------------'
+                ],
+                notes: [
+                    { s: 3, f: 6 }, { s: 1, f: 5 }, { s: 3, f: 5 }, { s: 4, f: 7 }, { s: 2, f: 5 },
+                    { s: 1, f: 5 }, { s: 4, f: 7 }, { s: 3, f: 6 }, { s: 1, f: 8 }, { s: 1, f: 5 },
+                    { s: 3, f: 5 }, { s: 4, f: 7 }, { s: 2, f: 5 }, { s: 1, f: 5 }, { s: 2, f: 6 },
+                    { s: 1, f: 7 }, { s: 1, f: 5 }, { s: 4, f: 7 }, { s: 3, f: 5 },
+                    { s: 1, f: 5 }, { s: 4, f: 7 }, { s: 2, f: 5 }
+                ]
+            },
+            'hotel-california': {
+                name: 'Hotel California (Intro)',
+                artist: 'Eagles',
+                bpm: 75,
+                strings: [
+                    '---------0---------0----2--------0--2---------0-------------',
+                    '------0--------3--------3-----0--------0--------3----------',
+                    '---4--------4--------2--------2--------4--------4----------',
+                    '-4--------4--------2--------0--------4--------4------------',
+                    '--2--------2----------------------------------------------- ',
+                    '--------------------------------------------------------------'
+                ],
+                notes: [
+                    { s: 5, f: 2 }, { s: 4, f: 4 }, { s: 3, f: 4 }, { s: 2, f: 0 }, { s: 1, f: 0 },
+                    { s: 5, f: 2 }, { s: 4, f: 4 }, { s: 3, f: 4 }, { s: 2, f: 3 }, { s: 1, f: 0 },
+                    { s: 4, f: 2 }, { s: 3, f: 2 }, { s: 2, f: 3 }, { s: 1, f: 2 },
+                    { s: 4, f: 0 }, { s: 3, f: 2 }, { s: 2, f: 0 }, { s: 1, f: 0 }, { s: 1, f: 2 },
+                    { s: 4, f: 4 }, { s: 3, f: 4 }, { s: 2, f: 0 }, { s: 1, f: 0 }
                 ]
             },
             'custom': {
                 name: 'Custom',
-                strings: Array(6).fill('----------------------------------'),
+                artist: '',
+                bpm: 120,
+                strings: Array(6).fill('--------------------------------------------------------------'),
                 notes: []
             }
         };
@@ -5154,7 +5602,15 @@
             const display = document.getElementById('tablatureDisplay');
             const stringLabels = ['e', 'B', 'G', 'D', 'A', 'E'];
 
-            display.innerHTML = tab.strings.map((line, i) => `
+            let headerHtml = '';
+            if (tab.artist) {
+                headerHtml = `<div style="margin-bottom:8px;padding:6px 10px;background:rgba(139,92,246,0.1);border-radius:6px;border-left:3px solid #8b5cf6;">
+                    <span style="color:#a78bfa;font-weight:600;font-size:0.85rem;">${tab.name}</span>
+                    <span style="color:#666;font-size:0.75rem;"> — ${tab.artist} • ${tab.bpm} BPM</span>
+                </div>`;
+            }
+
+            display.innerHTML = headerHtml + tab.strings.map((line, i) => `
                 <div class="tab-line">
                     <span class="tab-string-label">${stringLabels[i]}|</span>
                     <span class="tab-notes">${line}</span>
