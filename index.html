@@ -356,18 +356,40 @@
             background: var(--panel);
             border: 1px solid rgba(139, 92, 246, 0.4);
             border-radius: 12px;
-            padding: 10px 20px;
+            padding: 10px 20px 10px 16px;
             font-size: 13px;
             color: var(--text);
             z-index: 9999;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
             white-space: nowrap;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            pointer-events: none;
+            pointer-events: auto;
+            cursor: pointer;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
         }
 
         .toast-notification.show {
             transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-close-btn {
+            background: none;
+            border: none;
+            color: var(--dim);
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .toast-close-btn:hover {
+            color: var(--text);
         }
 
         /* Hamburger toggle for mobile */
@@ -3758,7 +3780,7 @@
         <!-- AYARLAR -->
         <div class="sidebar-section-label">Ayarlar</div>
         <button class="sidebar-item" onclick="showHelp()">❓ Yardım</button>
-        <button class="sidebar-item" onclick="toggleEffectsPanel()">⚙️ Ayarlar</button>
+        <button class="sidebar-item" onclick="showComingSoon('Ayarlar')">⚙️ Ayarlar <span class="badge-soon">Yakında</span></button>
 
         <!-- NOW PLAYING WIDGET -->
         <div class="sidebar-now-playing">
@@ -4881,7 +4903,10 @@
     </div><!-- /.app-content -->
 
     <!-- Toast notification -->
-    <div class="toast-notification" id="toastNotification"></div>
+    <div class="toast-notification" id="toastNotification" onclick="dismissToast()">
+        <span id="toastMessage"></span>
+        <button class="toast-close-btn" onclick="dismissToast(); event.stopPropagation();" aria-label="Kapat">✕</button>
+    </div>
 
     <!-- Lesson Detail Modal -->
     <div class="lesson-modal" id="lessonModal">
@@ -6180,8 +6205,14 @@
             const target = document.getElementById(id);
             if (target) target.classList.add('active');
 
-            // Update sidebar active states
-            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
+            // Update sidebar active states — skip sidebarEffects (it's an overlay, not a section)
+            const efektsOpen = document.getElementById('effectsPanel')?.classList.contains('active');
+            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => {
+                if (el.id !== 'sidebarEffects') el.classList.remove('active');
+            });
+            // Restore Efektler button state to match panel state
+            const efektBtn = document.getElementById('sidebarEffects');
+            if (efektBtn) efektBtn.classList.toggle('active', !!efektsOpen);
             if (id === 'home') {
                 const homeBtn = document.getElementById('sidebarHome');
                 if (homeBtn) homeBtn.classList.add('active');
@@ -6779,10 +6810,10 @@
 
         function toggleEffectsPanel() {
             const panel = document.getElementById('effectsPanel');
-            panel.classList.toggle('active');
-            // Sync sidebar effects button
+            const isOpen = panel.classList.toggle('active');
+            // Only manage the Efektler button's own active state — never touch other sidebar items
             const btn = document.getElementById('sidebarEffects');
-            if (btn) btn.classList.toggle('active', panel.classList.contains('active'));
+            if (btn) btn.classList.toggle('active', isOpen);
         }
 
         // Amp Presets
@@ -8161,8 +8192,13 @@
             // Hide sidebar on mobile after navigation
             closeMobileSidebar();
 
-            // Clear all active states
-            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
+            // Clear all active states — skip sidebarEffects (overlay)
+            const efektsOpen = document.getElementById('effectsPanel')?.classList.contains('active');
+            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => {
+                if (el.id !== 'sidebarEffects') el.classList.remove('active');
+            });
+            const efektBtn = document.getElementById('sidebarEffects');
+            if (efektBtn) efektBtn.classList.toggle('active', !!efektsOpen);
 
             if (section === 'home') {
                 showSection('home');
@@ -8205,8 +8241,13 @@
         function showSidebarModule(moduleName) {
             closeMobileSidebar();
 
-            // Clear all active states
-            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
+            // Clear all active states — skip sidebarEffects (overlay)
+            const efektsOpen = document.getElementById('effectsPanel')?.classList.contains('active');
+            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => {
+                if (el.id !== 'sidebarEffects') el.classList.remove('active');
+            });
+            const efektBtn2 = document.getElementById('sidebarEffects');
+            if (efektBtn2) efektBtn2.classList.toggle('active', !!efektsOpen);
 
             // Map module names to panel IDs and sidebar button IDs
             const moduleMap = {
@@ -8235,31 +8276,28 @@
             }
         }
 
-        // Toggle effects panel and update sidebar active state
-        function toggleEffectsSidebar() {
-            toggleEffectsPanel();
-            const btn = document.getElementById('sidebarEffects');
-            if (btn) {
-                const panel = document.getElementById('effectsPanel');
-                btn.classList.toggle('active', panel && panel.classList.contains('active'));
-            }
-        }
-
         // Toast notification for "Coming Soon" items
         let toastTimer = null;
+        function dismissToast() {
+            const toast = document.getElementById('toastNotification');
+            if (!toast) return;
+            if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; }
+            toast.classList.remove('show');
+        }
         function showComingSoon(instrumentName) {
             closeMobileSidebar();
             const toast = document.getElementById('toastNotification');
-            if (!toast) return;
+            const msgEl = document.getElementById('toastMessage');
+            if (!toast || !msgEl) return;
 
             // Check if it's a Turkish instrument
             const turkishInstruments = ['Bağlama', 'Saz', 'Ud', 'Darbuka', 'Ney', 'Kaval', 'Def'];
             const isTurkish = turkishInstruments.some(t => instrumentName.includes(t));
 
             if (isTurkish) {
-                toast.textContent = `🇹🇷 ${instrumentName} — Türk Müziği • Çok Yakında!`;
+                msgEl.textContent = `🇹🇷 ${instrumentName} — Türk Müziği • Çok Yakında!`;
             } else {
-                toast.textContent = `🔒 ${instrumentName} — Yakında eklenecek!`;
+                msgEl.textContent = `🔒 ${instrumentName} — Yakında eklenecek!`;
             }
 
             toast.classList.add('show');
@@ -8288,6 +8326,7 @@
         window.showSidebarSection = showSidebarSection;
         window.showSidebarModule = showSidebarModule;
         window.showComingSoon = showComingSoon;
+        window.dismissToast = dismissToast;
         window.toggleMobileSidebar = toggleMobileSidebar;
         window.closeMobileSidebar = closeMobileSidebar;
         window.showSection = showSection;
