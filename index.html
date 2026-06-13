@@ -3940,7 +3940,7 @@
 
         let currentPair = 1;
         let currentMode = 'guitar';
-        let fretStart = 1;
+        let fretStart = 0;
         const visibleFrets = 12;
         const maxFrets = 19;
         const tuning = ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'];
@@ -3999,37 +3999,37 @@
                 tips: 'Önce melodiyi yavaş tempoda (50 BPM) ezberleyin. Sağ el baş parmağınızla tek tek tellere vurun. 4. telden 3. tele geçişlerde parmağınızı hazırlayın. Metronom kullanarak tempoyu kademeli artırın. RE-LA-Sİ nota geçişini tekrar tekrar pratik edin.',
                 songData: [
                     // PART 1: The Hook
-                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }, { note: 'RE (D3)', s: 4, f: 0, key: '3' },
-                    { note: 'LA (A3)', s: 3, f: 2, key: 'F' }, { note: 'LA (A3)', s: 3, f: 2, key: 'F' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '5' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '5' },
-                    { note: 'LA (A3)', s: 3, f: 2, key: 'F' },
+                    { note: 'RE (D3)', s: 4, f: 0, key: '4' }, { note: 'RE (D3)', s: 4, f: 0, key: '4' },
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
                     // PART 2: The Verse
-                    { note: 'SOL (G3)', s: 3, f: 0, key: '4' }, { note: 'SOL (G3)', s: 3, f: 0, key: '4' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '5' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '5' },
-                    { note: 'LA (A3)', s: 3, f: 2, key: 'F' },
-                    { note: 'SOL (G3)', s: 3, f: 0, key: '4' }, { note: 'SOL (G3)', s: 3, f: 0, key: '4' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '5' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '5' },
+                    { note: 'SOL (G3)', s: 3, f: 0, key: '3' }, { note: 'SOL (G3)', s: 3, f: 0, key: '3' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
+                    { note: 'SOL (G3)', s: 3, f: 0, key: '3' }, { note: 'SOL (G3)', s: 3, f: 0, key: '3' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
                     // PART 3: The Descent
-                    { note: 'LA (A3)', s: 3, f: 2, key: 'F' }, { note: 'SOL (G3)', s: 3, f: 0, key: '4' },
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' }, { note: 'SOL (G3)', s: 3, f: 0, key: '3' },
                     { note: 'FA (F3)', s: 4, f: 3, key: 'C' },
                     { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
                     { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
-                    { note: 'RE (D3)', s: 4, f: 0, key: '3' },
+                    { note: 'RE (D3)', s: 4, f: 0, key: '4' },
                     // PART 4: Outro Loop x3 + Finale (4. ve 5. Teller - Kalın Ton)
                     // Cycle 1
-                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
-                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'RE (D3)', s: 4, f: 0, key: '3' },
-                    { note: 'DO (C3)', s: 5, f: 3, key: 'X' },
+                    { note: 'RE (D3)', s: 4, f: 0, key: '4' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
+                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'RE (D3)', s: 4, f: 0, key: '4' },
+                    { note: 'DO (C3)', s: 5, f: 3, key: 'V' },
                     // Cycle 2
-                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
-                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'RE (D3)', s: 4, f: 0, key: '3' },
-                    { note: 'DO (C3)', s: 5, f: 3, key: 'X' },
+                    { note: 'RE (D3)', s: 4, f: 0, key: '4' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
+                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'RE (D3)', s: 4, f: 0, key: '4' },
+                    { note: 'DO (C3)', s: 5, f: 3, key: 'V' },
                     // Cycle 3
-                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
-                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'RE (D3)', s: 4, f: 0, key: '3' },
-                    { note: 'DO (C3)', s: 5, f: 3, key: 'X' },
+                    { note: 'RE (D3)', s: 4, f: 0, key: '4' }, { note: 'Mİ (E3)', s: 4, f: 2, key: 'D' },
+                    { note: 'FA (F3)', s: 4, f: 3, key: 'C' }, { note: 'RE (D3)', s: 4, f: 0, key: '4' },
+                    { note: 'DO (C3)', s: 5, f: 3, key: 'V' },
                     // Grand Finale
-                    { note: 'RE (D3)', s: 4, f: 0, key: '3' }
+                    { note: 'RE (D3)', s: 4, f: 0, key: '4' }
                 ]
             },
             2: {
@@ -4715,6 +4715,8 @@
                 data: lesson.songData
             };
 
+            setPair(getRequiredPairForLesson(lesson.songData));
+
             // HUD Bilgilerini güncelle
             const artistParts = lesson.artist.split('-');
             document.getElementById('hudTitle').textContent = artistParts[0] ? artistParts[0].trim() : lesson.title;
@@ -4760,6 +4762,8 @@
 
             const step = currentLessonState.data[stepIndex];
 
+            ensurePairForNote(step.s, step.f);
+
             // Sayaç ve Progress
             document.getElementById('hudCounter').textContent = `${stepIndex + 1} / ${total}`;
             const progressPct = (stepIndex / total) * 100;
@@ -4769,7 +4773,7 @@
             document.getElementById('hudCurrentNote').textContent = step.note;
             document.getElementById('hudStringInfo').textContent = `Tel ${step.s}`;
             document.getElementById('hudFretInfo').textContent = `Perde ${step.f}`;
-            document.getElementById('hudKeyHint').textContent = step.key;
+            document.getElementById('hudKeyHint').textContent = getKeyForNote(step.s, step.f);
 
             // Timeline Görünümü (Class Güncelleme)
             const notes = document.querySelectorAll('.timeline-note');
@@ -4901,6 +4905,38 @@
             };
         }
 
+        function getKeyForNote(stringNum, fretNum, pair = currentPair) {
+            const off = getPairOffsets(pair);
+            const sIdx = stringNum - 1;
+
+            if (fretNum >= off.zone1Start && fretNum <= off.zone1End) {
+                const idx = fretNum - off.zone1Start;
+                if (oddZoneKeys[idx] && oddZoneKeys[idx][sIdx] !== undefined) {
+                    return oddZoneKeys[idx][sIdx];
+                }
+            }
+            if (fretNum >= off.zone2Start && fretNum <= off.zone2End) {
+                const idx = fretNum - off.zone2Start;
+                if (evenZoneKeys[idx] && evenZoneKeys[idx][sIdx] !== undefined) {
+                    return evenZoneKeys[idx][sIdx];
+                }
+            }
+            return '?';
+        }
+
+        function getRequiredPairForLesson(songData) {
+            const maxF = songData.reduce((m, step) => Math.max(m, step.f), 0);
+            if (maxF <= 7) return 1;
+            if (maxF <= 15) return 2;
+            return 3;
+        }
+
+        function ensurePairForNote(s, f) {
+            if (getKeyForNote(s, f) !== '?') return;
+            const pair = f <= 7 ? 1 : f <= 15 ? 2 : 3;
+            setPair(pair);
+        }
+
         let audioReady = false;
         async function ensureAudio() {
             if (!audioReady && typeof audioEngine !== 'undefined') {
@@ -4953,7 +4989,7 @@
                 }
 
                 for (let s = 6; s >= 1; s--) {
-                    h += `<div class="string-cell" data-s="${s}" data-f="${f}" onclick="playFretCell(this)"><div class="note-dot"></div></div>`;
+                    h += `<div class="string-cell" data-s="${s}" data-f="${f}" data-string="${s}" data-fret="${f}" onclick="playFretCell(this)"><div class="note-dot"></div></div>`;
                 }
                 // Only show fret number for inlay frets
                 const showNum = hasInlay ? 'show' : '';
@@ -4981,7 +5017,7 @@
         }
 
         function shiftFrets(dir) {
-            fretStart = Math.max(1, Math.min(fretStart + dir * 4, maxFrets - visibleFrets + 1));
+            fretStart = Math.max(0, Math.min(fretStart + dir * 4, maxFrets - visibleFrets + 1));
             buildFretboard();
         }
 
@@ -5505,7 +5541,7 @@
                     }
                     // Visual feedback
                     const cell = document.querySelector(
-                        `.string-cell[data-string="${note.string}"][data-fret="${note.fret}"]`
+                        `.string-cell[data-s="${note.string}"][data-f="${note.fret}"]`
                     );
                     if (cell) {
                         cell.classList.add('active');
@@ -6289,6 +6325,8 @@
             practiceCorrectCount = 0;
             practiceStartTime = Date.now();
 
+            setPair(getRequiredPairForLesson(practiceNotes));
+
             // Show practice bar
             document.getElementById('practiceBar').classList.add('active');
             document.getElementById('practiceSongName').textContent = tab.name || tabKey;
@@ -6336,6 +6374,7 @@
 
             // Current target note
             const currentNote = practiceNotes[practiceCurrentIndex];
+            ensurePairForNote(currentNote.s, currentNote.f);
             const targetCell = findFretboardCell(currentNote.s, currentNote.f);
 
             if (targetCell) {
@@ -6360,6 +6399,8 @@
 
         function findFretboardCell(stringNum, fretNum) {
             return document.querySelector(
+                `.string-cell[data-s="${stringNum}"][data-f="${fretNum}"]`
+            ) || document.querySelector(
                 `.string-cell[data-string="${stringNum}"][data-fret="${fretNum}"]`
             );
         }
@@ -6462,10 +6503,39 @@
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
 
+        function validateLessonKeys() {
+            if (typeof lessonsData === 'undefined') return;
+            const mismatches = [];
+            Object.keys(lessonsData).forEach(function (id) {
+                const lesson = lessonsData[id];
+                if (!lesson || !lesson.songData) return;
+                const reqPair = getRequiredPairForLesson(lesson.songData);
+                lesson.songData.forEach(function (step, idx) {
+                    const computed = getKeyForNote(step.s, step.f, reqPair);
+                    if (step.key && step.key !== computed && computed !== '?') {
+                        mismatches.push({
+                            lessonId: id,
+                            idx: idx,
+                            s: step.s,
+                            f: step.f,
+                            stored: step.key,
+                            computed: computed
+                        });
+                    }
+                });
+            });
+            if (mismatches.length) {
+                console.warn('⚠️ Lesson key mismatches (stored key ≠ computed getKeyForNote):', mismatches);
+            } else {
+                console.log('✅ All lesson keys match computed keyboard mapping');
+            }
+        }
+
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
             document.documentElement.scrollTop = 0;
             document.body.scrollTop = 0;
+            validateLessonKeys();
         });
 
         // Sayfa kapanmadan scroll sıfırla
