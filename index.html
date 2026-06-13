@@ -194,6 +194,7 @@
             background: none;
             width: calc(100% - 12px);
             text-align: left;
+            justify-content: space-between;
         }
 
         .sidebar-item:hover {
@@ -244,17 +245,21 @@
         }
 
         .sidebar-cat-items {
-            display: none;
+            max-height: 0;
+            overflow: hidden;
             padding-left: 8px;
+            transition: max-height 0.25s ease;
         }
 
-        .sidebar-cat-items.open { display: block; }
+        .sidebar-cat-items.open {
+            max-height: 600px;
+        }
 
         .sidebar-subitem {
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 5px 14px 5px 22px;
+            padding: 6px 14px 6px 28px;
             font-size: 11px;
             color: var(--muted);
             cursor: pointer;
@@ -277,6 +282,7 @@
         .sidebar-subitem.active {
             color: #c4b5fd;
             font-weight: 600;
+            background: rgba(139, 92, 246, 0.12);
         }
 
         .sidebar-subitem.active::before {
@@ -396,9 +402,13 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 190;
             backdrop-filter: blur(2px);
+            pointer-events: none;
         }
 
-        .sidebar-overlay.show { display: block; }
+        .sidebar-overlay.show {
+            display: block;
+            pointer-events: auto;
+        }
 
         /* Module sub-tabs (for within guitar section) */
         .module-tabs {
@@ -6126,7 +6136,7 @@
                     { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }
                 ]
             }
-        };""""""""
+        };
 
         // Modal fonksiyonları
         function showLessonDetail(lessonId) {
@@ -8224,6 +8234,17 @@
             sidebar.classList.remove('mobile-open');
             overlay.classList.remove('show');
         }
+
+        // Explicitly expose sidebar functions to window for inline onclick compatibility
+        window.toggleSidebarCat = toggleSidebarCat;
+        window.showSidebarSection = showSidebarSection;
+        window.showSidebarModule = showSidebarModule;
+        window.showComingSoon = showComingSoon;
+        window.toggleMobileSidebar = toggleMobileSidebar;
+        window.closeMobileSidebar = closeMobileSidebar;
+        window.showSection = showSection;
+        window.showGuitarPanel = showGuitarPanel;
+        window.toggleEffectsPanel = toggleEffectsPanel;
 
     </script>
     <script src="js/fullSongData.js"></script>
