@@ -360,12 +360,13 @@
             font-size: 13px;
             color: var(--text);
             z-index: 9999;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease, visibility 0.3s ease;
             white-space: nowrap;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            pointer-events: auto;
+            pointer-events: none;
             cursor: pointer;
             opacity: 0;
+            visibility: hidden;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -375,6 +376,8 @@
         .toast-notification.show {
             transform: translateX(-50%) translateY(0);
             opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
 
         .toast-close-btn {
@@ -3773,7 +3776,7 @@
         <button class="sidebar-item" id="sidebarTab" onclick="showSidebarModule('tablature')">📋 Tablature</button>
         <button class="sidebar-item" id="sidebarBacking" onclick="showSidebarModule('backing')">🎵 Backing Track</button>
         <button class="sidebar-item" id="sidebarRec" onclick="showSidebarModule('recording')">🎙️ Kayıt</button>
-        <button class="sidebar-item" id="sidebarEffects" onclick="toggleEffectsPanel()">🎛️ Efektler</button>
+        <button class="sidebar-item" id="sidebarEffects" onclick="toggleEffectsPanel(); event.stopPropagation();">🎛️ Efektler</button>
         <button class="sidebar-item" onclick="showComingSoon('Hedefler')">🎯 Hedefler <span class="badge-soon">Yakında</span></button>
         <button class="sidebar-item" onclick="showComingSoon('İstatistikler')">📊 İstatistikler <span class="badge-soon">Yakında</span></button>
 
@@ -6205,14 +6208,9 @@
             const target = document.getElementById(id);
             if (target) target.classList.add('active');
 
-            // Update sidebar active states — skip sidebarEffects (it's an overlay, not a section)
-            const efektsOpen = document.getElementById('effectsPanel')?.classList.contains('active');
-            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => {
-                if (el.id !== 'sidebarEffects') el.classList.remove('active');
-            });
-            // Restore Efektler button state to match panel state
-            const efektBtn = document.getElementById('sidebarEffects');
-            if (efektBtn) efektBtn.classList.toggle('active', !!efektsOpen);
+            // Update sidebar active states (effects overlay closed on section change)
+            closeEffectsPanel(false);
+            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
             if (id === 'home') {
                 const homeBtn = document.getElementById('sidebarHome');
                 if (homeBtn) homeBtn.classList.add('active');
@@ -6808,12 +6806,34 @@
         // EFFECTS PANEL CONTROLS
         // ============================================
 
+        let savedSidebarActives = [];
+
+        function closeEffectsPanel(restoreNav = true) {
+            const panel = document.getElementById('effectsPanel');
+            if (!panel || !panel.classList.contains('active')) return;
+            panel.classList.remove('active');
+            const btn = document.getElementById('sidebarEffects');
+            if (btn) btn.classList.remove('active');
+            if (restoreNav && savedSidebarActives.length) {
+                savedSidebarActives.forEach(el => el.classList.add('active'));
+                savedSidebarActives = [];
+            }
+        }
+
         function toggleEffectsPanel() {
             const panel = document.getElementById('effectsPanel');
-            const isOpen = panel.classList.toggle('active');
-            // Only manage the Efektler button's own active state — never touch other sidebar items
+            if (!panel) return;
+            const willOpen = !panel.classList.contains('active');
             const btn = document.getElementById('sidebarEffects');
-            if (btn) btn.classList.toggle('active', isOpen);
+
+            if (willOpen) {
+                savedSidebarActives = [...document.querySelectorAll('.sidebar-item.active, .sidebar-subitem.active')];
+                document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
+                panel.classList.add('active');
+                if (btn) btn.classList.add('active');
+            } else {
+                closeEffectsPanel(true);
+            }
         }
 
         // Amp Presets
@@ -6973,12 +6993,10 @@
         // Click outside to close effects panel
         document.addEventListener('click', (e) => {
             const panel = document.getElementById('effectsPanel');
-            const btn = e.target.closest('.icon-btn');
-            if (panel.classList.contains('active') &&
-                !panel.contains(e.target) &&
-                !btn) {
-                panel.classList.remove('active');
-            }
+            if (!panel || !panel.classList.contains('active')) return;
+            if (panel.contains(e.target)) return;
+            if (e.target.closest('#sidebarEffects')) return;
+            closeEffectsPanel(true);
         });
 
         // === CHORD & STRUM FUNCTIONS ===
@@ -7714,9 +7732,9 @@
                 const sIdx = note.s - 1; // tel indexi (0-based, e=0 B=1 G=2 D=3 A=4 E=5)
                 for (let t = 0; t < 6; t++) {
                     if (t === sIdx) {
-                        rows[t].push(`<span class="tn" data-ni="${idx}">${String(note.f).padStart(2,'-')}</span>`);
+                        rows[t].push(`<span class="tn" data-ni="${idx}" data-s="${t}">${String(note.f).padStart(2,' ')}</span>`);
                     } else {
-                        rows[t].push(`<span class="tn" data-ni="${idx}">--</span>`);
+                        rows[t].push(`<span class="tn" data-ni="${idx}" data-s="${t}">--</span>`);
                     }
                 }
             });
@@ -7823,14 +7841,14 @@
                     // Önceki aktif notaları temizle
                     display.querySelectorAll('.tn.active-note').forEach(el => el.classList.remove('active-note'));
 
-                    // Bu notanın tüm tel span'larını bul ve aktif olanı vurgula
-                    const noteSpans = display.querySelectorAll(`.tn[data-ni="${i}"]`);
+                    // Yalnızca çalınan telin span'ını vurgula
+                    const noteSpans = display.querySelectorAll(`.tn[data-ni="${i}"][data-s="${note.s - 1}"]`);
                     noteSpans.forEach(span => {
                         span.classList.add('active-note');
                     });
 
                     // === YATAY AUTO-SCROLL: aktif notayı merkezde tut ===
-                    const activeSpan = display.querySelector(`.tab-notes .tn[data-ni="${i}"]`);
+                    const activeSpan = display.querySelector(`.tab-notes .tn[data-ni="${i}"][data-s="${note.s - 1}"]`);
                     if (activeSpan) {
                         const spanRect = activeSpan.getBoundingClientRect();
                         const displayRect = display.getBoundingClientRect();
@@ -7885,8 +7903,8 @@
 
             // Convert recording to tab
             recording.notes.forEach((note, i) => {
-                const strIdx = 6 - note.string; // Convert string number to array index
-                strings[strIdx] += note.fret.toString().padStart(2, '-') + '-';
+                const strIdx = note.string - 1; // Convert string number to 0-based index (s=1 → row 0, s=6 → row 5)
+                strings[strIdx] += note.fret.toString().padStart(2, ' ') + '-';
             });
 
             // Pad strings to same length
@@ -8192,13 +8210,8 @@
             // Hide sidebar on mobile after navigation
             closeMobileSidebar();
 
-            // Clear all active states — skip sidebarEffects (overlay)
-            const efektsOpen = document.getElementById('effectsPanel')?.classList.contains('active');
-            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => {
-                if (el.id !== 'sidebarEffects') el.classList.remove('active');
-            });
-            const efektBtn = document.getElementById('sidebarEffects');
-            if (efektBtn) efektBtn.classList.toggle('active', !!efektsOpen);
+            closeEffectsPanel(false);
+            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
 
             if (section === 'home') {
                 showSection('home');
@@ -8241,13 +8254,8 @@
         function showSidebarModule(moduleName) {
             closeMobileSidebar();
 
-            // Clear all active states — skip sidebarEffects (overlay)
-            const efektsOpen = document.getElementById('effectsPanel')?.classList.contains('active');
-            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => {
-                if (el.id !== 'sidebarEffects') el.classList.remove('active');
-            });
-            const efektBtn2 = document.getElementById('sidebarEffects');
-            if (efektBtn2) efektBtn2.classList.toggle('active', !!efektsOpen);
+            closeEffectsPanel(false);
+            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
 
             // Map module names to panel IDs and sidebar button IDs
             const moduleMap = {
@@ -8300,9 +8308,11 @@
                 msgEl.textContent = `🔒 ${instrumentName} — Yakında eklenecek!`;
             }
 
-            toast.classList.add('show');
             if (toastTimer) clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+            toast.classList.remove('show');
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            toastTimer = setTimeout(dismissToast, 3000);
         }
 
         // Mobile sidebar controls
@@ -8332,6 +8342,7 @@
         window.showSection = showSection;
         window.showGuitarPanel = showGuitarPanel;
         window.toggleEffectsPanel = toggleEffectsPanel;
+        window.closeEffectsPanel = closeEffectsPanel;
 
     </script>
     <script src="js/fullSongData.js"></script>
