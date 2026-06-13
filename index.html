@@ -3382,7 +3382,9 @@
         .tab-line {
             display: flex;
             align-items: center;
-            margin-bottom: 2px;
+            height: 1.6em;
+            line-height: 1.6em;
+            margin-bottom: 0;
         }
 
         .tab-string-label {
@@ -3585,6 +3587,12 @@
 
         .string-cell.practice-success {
             animation: successFlash 0.4s ease;
+        }
+
+        .string-cell.practice-fret-target {
+            background: rgba(139, 92, 246, 0.5) !important;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
+            border-color: #8b5cf6 !important;
         }
 
         @keyframes successFlash {
@@ -7703,6 +7711,15 @@
         let tabPlayingTimeout = [];
         let tabIsPlaying = false;
 
+        function ensureFretVisible(fret) {
+            if (fret === 0) return; // open string, always visible
+            const endFret = fretStart + visibleFrets - 1;
+            if (fret < fretStart || fret > endFret) {
+                fretStart = Math.max(0, fret - Math.floor(visibleFrets / 2));
+                buildFretboard();
+            }
+        }
+
         async function playTablature() {
             const tab = tablatures[currentTab];
             if (!tab || !tab.notes.length) return;
@@ -7752,9 +7769,23 @@
                         audioEngine.playGuitarString(note.s, note.f);
                     }
 
-                    // === FRETBOARD HIGHLIGHT (aynı milisaniye) ===
-                    if (typeof GuitarModule !== 'undefined') {
-                        GuitarModule.showActive(note.s, note.f);
+                    // === FRETBOARD VISIBLE RANGE ===
+                    ensureFretVisible(note.f);
+
+                    // === FRETBOARD HIGHLIGHT (visual only, no double audio) ===
+                    const fretCell = document.querySelector(`.string-cell[data-s="${note.s}"][data-f="${note.f}"]`);
+                    if (fretCell) {
+                        document.querySelectorAll('.string-cell.active').forEach(e => e.classList.remove('active'));
+                        fretCell.classList.add('active');
+                        setTimeout(() => fretCell.classList.remove('active'), 350);
+                    }
+                    // Also highlight string label for open strings (f=0)
+                    if (note.f === 0) {
+                        const label = document.querySelector(`.string-label[data-s="${note.s}"]`);
+                        if (label) {
+                            label.classList.add('active');
+                            setTimeout(() => label.classList.remove('active'), 350);
+                        }
                     }
 
                     // === TABLATURE NOTA HIGHLIGHT ===
@@ -7907,6 +7938,9 @@
             document.querySelectorAll('.practice-target, .practice-next').forEach(el => {
                 el.classList.remove('practice-target', 'practice-next');
             });
+            document.querySelectorAll('.string-cell.practice-fret-target').forEach(el => {
+                el.classList.remove('practice-fret-target');
+            });
 
             practiceNotes = [];
             practiceCurrentIndex = 0;
@@ -7924,14 +7958,25 @@
             document.querySelectorAll('.practice-target, .practice-next').forEach(el => {
                 el.classList.remove('practice-target', 'practice-next');
             });
+            document.querySelectorAll('.string-cell.practice-fret-target').forEach(el => {
+                el.classList.remove('practice-fret-target');
+            });
 
             // Current target note
             const currentNote = practiceNotes[practiceCurrentIndex];
             ensurePairForNote(currentNote.s, currentNote.f);
+            ensureFretVisible(currentNote.f);
             const targetCell = findFretboardCell(currentNote.s, currentNote.f);
 
             if (targetCell) {
                 targetCell.classList.add('practice-target');
+            }
+
+            // Also highlight with practice-fret-target on fretboard cell
+            const fretboardTarget = document.querySelector(`.string-cell[data-s="${currentNote.s}"][data-f="${currentNote.f}"]`);
+            if (fretboardTarget) {
+                document.querySelectorAll('.string-cell.practice-fret-target').forEach(e => e.classList.remove('practice-fret-target'));
+                fretboardTarget.classList.add('practice-fret-target');
             }
 
             // Show next 2 notes as preview
@@ -7970,7 +8015,7 @@
                 // Success animation
                 const cell = findFretboardCell(stringNum, fretNum);
                 if (cell) {
-                    cell.classList.remove('practice-target');
+                    cell.classList.remove('practice-target', 'practice-fret-target');
                     cell.classList.add('practice-success');
                     setTimeout(() => cell.classList.remove('practice-success'), 400);
                 }
@@ -8011,6 +8056,9 @@
             // Clear targets
             document.querySelectorAll('.practice-target, .practice-next').forEach(el => {
                 el.classList.remove('practice-target', 'practice-next');
+            });
+            document.querySelectorAll('.string-cell.practice-fret-target').forEach(el => {
+                el.classList.remove('practice-fret-target');
             });
 
             // Update progress to 100%
