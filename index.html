@@ -3733,7 +3733,7 @@
         <button class="sidebar-item" id="sidebarTab" onclick="showSidebarModule('tablature')">📋 Tablature</button>
         <button class="sidebar-item" id="sidebarBacking" onclick="showSidebarModule('backing')">🎵 Backing Track</button>
         <button class="sidebar-item" id="sidebarRec" onclick="showSidebarModule('recording')">🎙️ Kayıt</button>
-        <button class="sidebar-item" id="sidebarEffects" onclick="toggleEffectsSidebar()">🎛️ Efektler</button>
+        <button class="sidebar-item" id="sidebarEffects" onclick="toggleEffectsPanel()">🎛️ Efektler</button>
         <button class="sidebar-item" onclick="showComingSoon('Hedefler')">🎯 Hedefler <span class="badge-soon">Yakında</span></button>
         <button class="sidebar-item" onclick="showComingSoon('İstatistikler')">📊 İstatistikler <span class="badge-soon">Yakında</span></button>
 
@@ -4920,7 +4920,7 @@
                     <span class="amp-icon">⚡</span>High Gain
                 </button>
                 <button class="amp-btn" data-preset="acoustic" onclick="setAmpPreset('acoustic')">
-                    <span class="amp-icon">🪕</span>Acoustic
+                    <span class="amp-icon">🎸</span>Acoustic
                 </button>
                 <button class="amp-btn" data-preset="jazz" onclick="setAmpPreset('jazz')">
                     <span class="amp-icon">🎷</span>Jazz
@@ -5063,7 +5063,7 @@
         </div>
     </div>
 
-  """"""""  <script src="js/noteMapping.js"></script>
+    <script src="js/noteMapping.js"></script>
     <script src="js/audioEngine.js"></script>
     <script>
         // EN BAŞTA: Browser scroll hafızasını engelle
@@ -5428,89 +5428,70 @@
                 ],
                 tips: 'Sağ el tenis topu tutar gibi kıvrık olmalı, bilek havada kalmalı. Önce boş tellerle P-İ-M-A kalıbını çalışın. Sonra P-İ-M-A-M-İ (yükselen-alçalan) kalıbına geçin. Her parmak kendi telinden sorumludur, teller arasında parmak değiştirmeyin. Metronom 60 BPM ile başlayıp kademeli artırın.',
                 songData: [
-                    // Am arpej: P-I-M-A-M-I
-                    { note: 'LA (A2)', s: 5, f: 0, key: '5' },
-                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
-                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
-                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    // Dm arpej: P-I-M-A-M-I
-                    { note: 'RE (D3)', s: 4, f: 0, key: '4' },
-                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' },
-                    { note: 'FA (F4)', s: 1, f: 1, key: 'Q' },
-                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' },
-                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    // E arpej: P-I-M-A-M-I
-                    { note: 'Mİ (E2)', s: 6, f: 0, key: '6' },
-                    { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
-                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
-                    { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
-                    // Am kapanış: P-I-M-A
-                    { note: 'LA (A2)', s: 5, f: 0, key: '5' },
-                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
-                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    // VERSE 1 - Kıta 1 (Caddelerde rüzgar aklımda aşk var)
-                    // Am arpej tam döngü × 2 (P-I-M-A-M-I)
+                    // INTRO - Arpej teknik alıştırması (P-I-M-A-M-I)
+                    // Am arpej
                     { note: 'LA (A2)', s: 5, f: 0, key: '5' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
                     { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
                     { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'LA (A2)', s: 5, f: 0, key: '5' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    // Dm arpej tam döngü × 2 (gece yarısında eski yağmurlar)
+                    // Dm arpej
                     { note: 'RE (D3)', s: 4, f: 0, key: '4' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
                     { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'FA (F4)', s: 1, f: 1, key: 'Q' },
                     { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'RE (D3)', s: 4, f: 0, key: '4' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'FA (F4)', s: 1, f: 1, key: 'Q' },
-                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    // E arpej tam döngü × 2 (özlediğim şimdi çok uzaklarda)
+                    // E arpej
                     { note: 'Mİ (E2)', s: 6, f: 0, key: '6' }, { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
                     { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
                     { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
-                    { note: 'Mİ (E2)', s: 6, f: 0, key: '6' }, { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
-                    // Am dönüş (şarkı söylüyorlar sessiz usulca)
-                    { note: 'LA (A2)', s: 5, f: 0, key: '5' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    // VERSE 2 - Kıta 2 (Deli dolu günler hayat güzeldi)
-                    // Am × 2
-                    { note: 'LA (A2)', s: 5, f: 0, key: '5' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'LA (A2)', s: 5, f: 0, key: '5' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    // Dm × 2 (kahkahalarıyla günler geçerdi)
-                    { note: 'RE (D3)', s: 4, f: 0, key: '4' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'FA (F4)', s: 1, f: 1, key: 'Q' },
-                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'RE (D3)', s: 4, f: 0, key: '4' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'FA (F4)', s: 1, f: 1, key: 'Q' },
-                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
-                    // E × 2 (özlediğim şimdi çok uzaklarda)
-                    { note: 'Mİ (E2)', s: 6, f: 0, key: '6' }, { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
-                    { note: 'Mİ (E2)', s: 6, f: 0, key: '6' }, { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
-                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
-                    // BRIDGE - köprü (o da özlüyormuş benim bir tanem)
-                    // Am → Dm → E → Am kapanış
-                    { note: 'LA (A2)', s: 5, f: 0, key: '5' }, { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
+                    // VERSE 1 MELODY - "Caddelerde rüzgar, aklımda aşk var"
+                    // "Cad-de-ler-de rüz-gar" → Mi Mi Re Do Si La
+                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
+                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
+                    // "ak-lım-da aşk var" → Do Do Si La
+                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
+                    // "Geç-ti-ğim cad-de-ler-de" → Mi Fa Mi Re Do Si
+                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }, { note: 'FA (F4)', s: 1, f: 1, key: 'Q' },
+                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }, { note: 'RE (D4)', s: 2, f: 3, key: 'Z' },
+                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
+                    // "sev-gi-ni düş-lü-yo-rum" → La Si Do Re Mi Do La
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
+                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'RE (D4)', s: 2, f: 3, key: 'Z' },
                     { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }, { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
-                    { note: 'RE (D3)', s: 4, f: 0, key: '4' }, { note: 'RE (D4)', s: 2, f: 3, key: 'Z' },
-                    { note: 'FA (F4)', s: 1, f: 1, key: 'Q' }, { note: 'RE (D4)', s: 2, f: 3, key: 'Z' },
-                    { note: 'Mİ (E2)', s: 6, f: 0, key: '6' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
-                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
-                    // FINALE - La la la la (kapanış Am)
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
+                    // VERSE 2 MELODY - "Deli dolu günler, hayat güzeldi"
+                    // "De-li do-lu gün-ler" → Mi Mi Re Do Si La
+                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
+                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
+                    // "ha-yat gü-zel-di" → Re Mi Fa Mi Re Do
+                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
+                    { note: 'FA (F4)', s: 1, f: 1, key: 'Q' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
+                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
+                    // "kah-ka-ha-la-rıy-la" → Si La Sol# Si La
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
+                    { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
+                    // CHORUS MELODY - Nakarat yükselen melodi
+                    // "O za-man-lar" → Do Re Mi Fa Mi Re Do
+                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'RE (D4)', s: 2, f: 3, key: 'Z' },
+                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }, { note: 'FA (F4)', s: 1, f: 1, key: 'Q' },
+                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }, { note: 'RE (D4)', s: 2, f: 3, key: 'Z' },
+                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
+                    // "hep be-ra-ber-dik" → Si Do Re Mi Re Do Si La
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
+                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
+                    { note: 'RE (D4)', s: 2, f: 3, key: 'Z' }, { note: 'DO (C4)', s: 2, f: 1, key: 'W' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
+                    // BRIDGE arpej geçişi (E → Am)
+                    { note: 'Mİ (E2)', s: 6, f: 0, key: '6' }, { note: 'SOL# (G#3)', s: 3, f: 1, key: 'E' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
+                    { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
+                    // OUTRO - İniş melodisi Am karar
+                    // Mi Re Do Si La Sol (iniş)
+                    { note: 'Mİ (E4)', s: 1, f: 0, key: '1' }, { note: 'RE (D4)', s: 2, f: 3, key: 'Z' },
+                    { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'Sİ (B3)', s: 2, f: 0, key: '2' },
+                    { note: 'LA (A3)', s: 3, f: 2, key: 'D' }, { note: 'SOL (G3)', s: 3, f: 0, key: '3' },
+                    // Am final arpej
                     { note: 'LA (A2)', s: 5, f: 0, key: '5' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
                     { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'Mİ (E4)', s: 1, f: 0, key: '1' },
                     { note: 'DO (C4)', s: 2, f: 1, key: 'W' }, { note: 'LA (A3)', s: 3, f: 2, key: 'D' },
