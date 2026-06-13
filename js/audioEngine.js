@@ -13,6 +13,25 @@ class AudioEngine {
         this.distortion = null;
         this.isInitialized = false;
 
+        // Input gain (all note sources connect here)
+        this.inputGain = null;
+
+        // EQ nodes
+        this.eqLowNode = null;   // BiquadFilter, lowshelf, 200 Hz
+        this.eqMidNode = null;   // BiquadFilter, peaking, 1000 Hz
+        this.eqHighNode = null;  // BiquadFilter, highshelf, 4000 Hz
+
+        // Delay nodes
+        this.delayNode = null;
+        this.delayFeedbackNode = null;
+        this.delayWetGain = null;
+
+        // Chorus nodes
+        this.chorusDelay = null;
+        this.chorusLFO = null;
+        this.chorusLFOGain = null;
+        this.chorusWetGain = null;
+
         // Active sustained notes (key -> {source, gainNode})
         this.sustainedNotes = new Map();
         this.activeNotes = new Map();
@@ -23,7 +42,7 @@ class AudioEngine {
             reverbMix: 0.15,
             distortionAmount: 0,
             sustainEnabled: true,
-            // Effect panel settings (UI only - no audio processing)
+            // Effect panel settings
             chorusEnabled: false,
             chorusRate: 1.5,
             chorusDepth: 0.002,
@@ -64,12 +83,34 @@ class AudioEngine {
 
         try {
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const now = this.audioContext.currentTime;
 
             // === EFFECT CHAIN ===
-            // Source -> Distortion -> Compressor -> [Dry + Reverb] -> Master -> Output
+            // inputGain → distortion → EQ → compressor → [dry + reverb + delay + chorus] → masterGain → output
+
+            // Input gain (collect all note sources)
+            this.inputGain = this.audioContext.createGain();
+            this.inputGain.gain.value = 1.0;
 
             // Distortion (waveshaper)
             this.distortion = this.createDistortion(0);
+
+            // EQ: 3-band
+            this.eqLowNode = this.audioContext.createBiquadFilter();
+            this.eqLowNode.type = 'lowshelf';
+            this.eqLowNode.frequency.value = 200;
+            this.eqLowNode.gain.setValueAtTime(this.settings.eqLow * 2, now);
+
+            this.eqMidNode = this.audioContext.createBiquadFilter();
+            this.eqMidNode.type = 'peaking';
+            this.eqMidNode.frequency.value = 1000;
+            this.eqMidNode.Q.value = 1.0;
+            this.eqMidNode.gain.setValueAtTime(this.settings.eqMid * 2, now);
+
+            this.eqHighNode = this.audioContext.createBiquadFilter();
+            this.eqHighNode.type = 'highshelf';
+            this.eqHighNode.frequency.value = 4000;
+            this.eqHighNode.gain.setValueAtTime(this.settings.eqHigh * 2, now);
 
             // Compressor
             this.compressor = this.audioContext.createDynamicsCompressor();
@@ -92,19 +133,62 @@ class AudioEngine {
             this.dryGain = this.audioContext.createGain();
             this.dryGain.gain.value = 1 - this.settings.reverbMix;
 
-            // Connect chain
-            this.distortion.connect(this.compressor);
+            // Delay nodes
+            this.delayNode = this.audioContext.createDelay(1.0);
+            this.delayNode.delayTime.setValueAtTime(this.settings.delayTime, now);
+
+            this.delayFeedbackNode = this.audioContext.createGain();
+            this.delayFeedbackNode.gain.setValueAtTime(this.settings.delayFeedback, now);
+
+            this.delayWetGain = this.audioContext.createGain();
+            this.delayWetGain.gain.setValueAtTime(0, now); // off by default
+
+            // Chorus: short delay + LFO modulation
+            this.chorusDelay = this.audioContext.createDelay(0.05);
+            this.chorusDelay.delayTime.setValueAtTime(0.02, now);
+
+            this.chorusLFO = this.audioContext.createOscillator();
+            this.chorusLFO.type = 'sine';
+            this.chorusLFO.frequency.setValueAtTime(this.settings.chorusRate || 1.5, now);
+
+            this.chorusLFOGain = this.audioContext.createGain();
+            this.chorusLFOGain.gain.setValueAtTime(this.settings.chorusDepth || 0.002, now);
+
+            this.chorusWetGain = this.audioContext.createGain();
+            this.chorusWetGain.gain.setValueAtTime(0, now); // off by default
+
+            // === CONNECT MAIN CHAIN ===
+            this.inputGain.connect(this.distortion);
+            this.distortion.connect(this.eqLowNode);
+            this.eqLowNode.connect(this.eqMidNode);
+            this.eqMidNode.connect(this.eqHighNode);
+            this.eqHighNode.connect(this.compressor);
+
             this.compressor.connect(this.dryGain);
             this.compressor.connect(this.reverb);
-
             this.dryGain.connect(this.masterGain);
             this.reverb.connect(this.reverbGain);
             this.reverbGain.connect(this.masterGain);
 
+            // Delay feedback loop
+            this.compressor.connect(this.delayNode);
+            this.delayNode.connect(this.delayFeedbackNode);
+            this.delayFeedbackNode.connect(this.delayNode);
+            this.delayNode.connect(this.delayWetGain);
+            this.delayWetGain.connect(this.masterGain);
+
+            // Chorus
+            this.compressor.connect(this.chorusDelay);
+            this.chorusLFO.connect(this.chorusLFOGain);
+            this.chorusLFOGain.connect(this.chorusDelay.delayTime);
+            this.chorusDelay.connect(this.chorusWetGain);
+            this.chorusWetGain.connect(this.masterGain);
+            this.chorusLFO.start();
+
             this.masterGain.connect(this.audioContext.destination);
 
             this.isInitialized = true;
-            console.log('🔊 Audio Engine v3 initialized (Sustain + Distortion)');
+            console.log('🔊 Audio Engine v4 initialized (Karplus-Strong + real Delay/EQ/Chorus)');
         } catch (error) {
             console.error('Audio init failed:', error);
         }
@@ -205,7 +289,7 @@ class AudioEngine {
         // Connect
         oscillator.connect(filter);
         filter.connect(gainNode);
-        gainNode.connect(this.distortion);
+        gainNode.connect(this.inputGain);
 
         oscillator.start(now);
 
@@ -341,7 +425,7 @@ class AudioEngine {
         highPass.connect(lowShelf);
         lowShelf.connect(highShelf);
         highShelf.connect(noteGain);
-        noteGain.connect(this.distortion);
+        noteGain.connect(this.inputGain);
 
         source.start();
 
@@ -417,7 +501,7 @@ class AudioEngine {
         filter.frequency.setValueAtTime(Math.min(frequency * 10, 12000), now);
 
         noteGain.connect(filter);
-        filter.connect(this.distortion);
+        filter.connect(this.inputGain);
 
         oscillators.forEach(osc => {
             osc.start(now);
@@ -471,6 +555,7 @@ class AudioEngine {
         this.settings.ampPreset = presetName;
         this.setDistortion(preset.distortion);
         this.setReverbMix(preset.reverb);
+        this.setEQ(preset.eqLow || 0, preset.eqMid || 0, preset.eqHigh || 0);
         console.log(`🎸 Amp preset: ${presetName}`);
     }
 
@@ -478,45 +563,77 @@ class AudioEngine {
         return Object.keys(this.ampPresets);
     }
 
-    // Chorus controls (UI state only)
-    setChorusEnabled(enabled) {
-        this.settings.chorusEnabled = enabled;
-    }
-
-    setChorusRate(rate) {
-        this.settings.chorusRate = rate;
-    }
-
-    setChorusDepth(depth) {
-        this.settings.chorusDepth = depth;
-    }
-
-    setChorusMix(mix) {
-        this.settings.chorusMix = mix;
-    }
-
-    // Delay controls (UI state only)
-    setDelayEnabled(enabled) {
-        this.settings.delayEnabled = enabled;
-    }
-
-    setDelayTime(time) {
-        this.settings.delayTime = time;
-    }
-
-    setDelayFeedback(feedback) {
-        this.settings.delayFeedback = Math.min(feedback, 0.9);
-    }
-
-    setDelayMix(mix) {
-        this.settings.delayMix = mix;
-    }
-
-    // EQ controls (UI state only)
+    // === EQ ===
     setEQ(low, mid, high) {
         this.settings.eqLow = low;
         this.settings.eqMid = mid;
         this.settings.eqHigh = high;
+        if (!this.audioContext) return;
+        const now = this.audioContext.currentTime;
+        if (this.eqLowNode) this.eqLowNode.gain.setValueAtTime(low * 2, now);
+        if (this.eqMidNode) this.eqMidNode.gain.setValueAtTime(mid * 2, now);
+        if (this.eqHighNode) this.eqHighNode.gain.setValueAtTime(high * 2, now);
+    }
+
+    // === DELAY ===
+    setDelayEnabled(enabled) {
+        this.settings.delayEnabled = enabled;
+        if (!this.audioContext || !this.delayWetGain) return;
+        this.delayWetGain.gain.setValueAtTime(
+            enabled ? this.settings.delayMix : 0,
+            this.audioContext.currentTime
+        );
+    }
+
+    setDelayTime(time) {
+        this.settings.delayTime = time;
+        if (!this.audioContext || !this.delayNode) return;
+        this.delayNode.delayTime.setValueAtTime(time, this.audioContext.currentTime);
+    }
+
+    setDelayFeedback(feedback) {
+        this.settings.delayFeedback = Math.min(feedback, 0.85);
+        if (!this.audioContext || !this.delayFeedbackNode) return;
+        this.delayFeedbackNode.gain.setValueAtTime(this.settings.delayFeedback, this.audioContext.currentTime);
+    }
+
+    setDelayMix(mix) {
+        this.settings.delayMix = mix;
+        if (!this.audioContext || !this.delayWetGain) return;
+        if (this.settings.delayEnabled) {
+            this.delayWetGain.gain.setValueAtTime(mix, this.audioContext.currentTime);
+        }
+    }
+
+    // === CHORUS ===
+    setChorusEnabled(enabled) {
+        this.settings.chorusEnabled = enabled;
+        if (!this.audioContext || !this.chorusWetGain) return;
+        this.chorusWetGain.gain.setValueAtTime(
+            enabled ? (this.settings.chorusMix || 0.3) : 0,
+            this.audioContext.currentTime
+        );
+    }
+
+    setChorusRate(rate) {
+        this.settings.chorusRate = rate;
+        if (this.chorusLFO && this.audioContext) {
+            this.chorusLFO.frequency.setValueAtTime(rate, this.audioContext.currentTime);
+        }
+    }
+
+    setChorusDepth(depth) {
+        this.settings.chorusDepth = depth;
+        if (this.chorusLFOGain && this.audioContext) {
+            this.chorusLFOGain.gain.setValueAtTime(depth, this.audioContext.currentTime);
+        }
+    }
+
+    setChorusMix(mix) {
+        this.settings.chorusMix = mix;
+        if (this.chorusWetGain && this.settings.chorusEnabled && this.audioContext) {
+            this.chorusWetGain.gain.setValueAtTime(mix, this.audioContext.currentTime);
+        }
     }
 
     // === METRONOME ===
