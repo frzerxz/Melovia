@@ -3890,6 +3890,9 @@
                 <span class="note-value" id="posDisplay">--</span>
             </div>
 
+            <!-- PANEL: Pair + Zone Grid (default) -->
+            <div id="panelPairZone" class="guitar-module-panel active">
+
             <!-- Pair Row SECOND -->
             <div class="pair-row">
                 <div class="pair-card active" data-pair="1" onclick="setPair(1)">
@@ -3969,7 +3972,12 @@
                     <span style="color: var(--dim); font-size: 12px; margin-left: 8px;">Son akor: <span
                             id="lastChord">-</span></span>
                 </div>
-            </div>
+            </div><!-- /.chord-strum-panel -->
+
+            </div><!-- /#panelPairZone -->
+
+            <!-- PANEL: Recording -->
+            <div id="panelRecording" class="guitar-module-panel">
 
             <!-- Recording Panel -->
             <div class="recording-panel">
@@ -3987,6 +3995,11 @@
                     <!-- Recordings will be listed here -->
                 </div>
             </div>
+
+            </div><!-- /#panelRecording -->
+
+            <!-- PANEL: Backing Track -->
+            <div id="panelBacking" class="guitar-module-panel">
 
             <!-- Backing Track Player -->
             <div class="backing-track-panel">
@@ -4070,6 +4083,11 @@
                 </div>
             </div>
 
+            </div><!-- /#panelBacking -->
+
+            <!-- PANEL: Tablature -->
+            <div id="panelTablature" class="guitar-module-panel">
+
             <!-- Tablature Viewer -->
             <div class="tablature-panel" id="tablaturePanel">
                 <div class="tablature-header">
@@ -4109,6 +4127,13 @@
                     <button class="tab-control-btn" onclick="clearTablature()">🗑️ Temizle</button>
                 </div>
             </div>
+
+            </div><!-- /#panelTablature -->
+
+            <!-- PANEL: Lessons -->
+            <div id="panelLessons" class="guitar-module-panel">
+
+            </div><!-- /#panelLessons -->
 
             </div><!-- /.guitar-modules -->
         </section>
@@ -6086,6 +6111,9 @@
                 document.querySelectorAll('.sidebar-subitem').forEach(el => {
                     if (el.textContent.includes('Klasik Gitar')) el.classList.add('active');
                 });
+                // Ensure default panel is visible when switching to guitar without a specific panel
+                const anyActive = document.querySelector('.guitar-module-panel.active');
+                if (!anyActive) showGuitarPanel('panelPairZone');
             } else if (id === 'piano') {
                 document.querySelectorAll('.sidebar-subitem').forEach(el => {
                     if (el.textContent.includes('Piyano (88')) el.classList.add('active');
@@ -6120,8 +6148,9 @@
                 return;
             }
 
-            // Gitar moduna geç
+            // Gitar moduna geç ve PairZone panelini göster
             showSection('guitar');
+            showGuitarPanel('panelPairZone');
 
             // HUD'u göster
             const hud = document.getElementById('lessonHud');
@@ -7781,6 +7810,10 @@
             document.getElementById('practiceBar').classList.add('active');
             document.getElementById('practiceSongName').textContent = tab.name || tabKey;
 
+            // Switch to pair/zone panel so keyboard is visible during practice
+            showSection('guitar');
+            showGuitarPanel('panelPairZone');
+
             // Scroll to fretboard
             document.querySelector('.fretboard-wrap').scrollIntoView({ behavior: 'smooth' });
 
@@ -8019,6 +8052,7 @@
                 if (homeBtn) homeBtn.classList.add('active');
             } else if (section === 'guitar') {
                 showSection('guitar');
+                showGuitarPanel('panelPairZone');
                 document.querySelectorAll('.sidebar-subitem').forEach(el => {
                     if (el.textContent.includes('Klasik Gitar')) el.classList.add('active');
                 });
@@ -8038,48 +8072,48 @@
             }
         }
 
+        // ============================================
+        // EXCLUSIVE GUITAR PANEL SWITCHING
+        // ============================================
+
+        function showGuitarPanel(panelId) {
+            // Hide all guitar module panels
+            document.querySelectorAll('.guitar-module-panel').forEach(p => p.classList.remove('active'));
+            // Show the requested panel
+            const panel = document.getElementById(panelId);
+            if (panel) panel.classList.add('active');
+        }
+
         function showSidebarModule(moduleName) {
             closeMobileSidebar();
 
             // Clear all active states
             document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
 
-            if (moduleName === 'lessons') {
-                showSection('lessons');
-                const lBtn = document.getElementById('sidebarLessons');
-                if (lBtn) lBtn.classList.add('active');
-                return;
+            // Map module names to panel IDs and sidebar button IDs
+            const moduleMap = {
+                'lessons':   { section: 'lessons',  panelId: null,              sidebarId: 'sidebarLessons' },
+                'practice':  { section: 'guitar',   panelId: 'panelTablature',  sidebarId: 'sidebarPractice' },
+                'tablature': { section: 'guitar',   panelId: 'panelTablature',  sidebarId: 'sidebarTab' },
+                'backing':   { section: 'guitar',   panelId: 'panelBacking',    sidebarId: 'sidebarBacking' },
+                'recording': { section: 'guitar',   panelId: 'panelRecording',  sidebarId: 'sidebarRec' }
+            };
+
+            const config = moduleMap[moduleName];
+            if (!config) return;
+
+            // Show the correct section
+            showSection(config.section);
+
+            // If a guitar panel is specified, switch to it exclusively
+            if (config.panelId) {
+                showGuitarPanel(config.panelId);
             }
 
-            // For guitar-based modules: ensure guitar section is active first
-            showSection('guitar');
-
-            // Activate correct sidebar item
-            const sidebarIds = {
-                'practice': 'sidebarPractice',
-                'tablature': 'sidebarTab',
-                'backing': 'sidebarBacking',
-                'recording': 'sidebarRec'
-            };
-            const sid = sidebarIds[moduleName];
-            if (sid) {
-                const btn = document.getElementById(sid);
+            // Activate sidebar button
+            if (config.sidebarId) {
+                const btn = document.getElementById(config.sidebarId);
                 if (btn) btn.classList.add('active');
-            }
-
-            // Scroll to the target panel after a short delay (section show needs a tick)
-            const panelSelectors = {
-                'practice': '#tablaturePanel',
-                'tablature': '#tablaturePanel',
-                'backing': '.backing-track-panel',
-                'recording': '.recording-panel'
-            };
-            const sel = panelSelectors[moduleName];
-            if (sel) {
-                setTimeout(() => {
-                    const panel = document.querySelector(sel);
-                    if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 80);
             }
         }
 
