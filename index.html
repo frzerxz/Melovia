@@ -2189,6 +2189,392 @@
         /* ============================================
            EFFECTS PANEL - Floating Sidebar
            ============================================ */
+        /* ============================================
+           HOME / DASHBOARD SECTION
+           ============================================ */
+        .home-section {
+            padding: 24px 24px 40px;
+            max-width: 1000px;
+        }
+
+        .home-welcome-banner {
+            background: linear-gradient(135deg, rgba(139,92,246,0.18) 0%, rgba(6,182,212,0.12) 100%);
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-welcome-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(139,92,246,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .home-welcome-title {
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #c084fc, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .home-welcome-sub {
+            font-size: 14px;
+            color: var(--dim);
+        }
+
+        .home-welcome-cta {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .home-cta-btn {
+            padding: 9px 20px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .home-cta-btn.primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .home-cta-btn.primary:hover { background: #7c3aed; }
+
+        .home-cta-btn.secondary {
+            background: transparent;
+            border: 1px solid rgba(139,92,246,0.4);
+            color: #c4b5fd;
+        }
+
+        .home-cta-btn.secondary:hover { background: rgba(139,92,246,0.12); }
+
+        .home-stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 700px) { .home-stats-row { grid-template-columns: repeat(2, 1fr); } }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-card-icon { font-size: 22px; margin-bottom: 6px; }
+        .stat-card-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #c4b5fd;
+        }
+
+        .stat-card-label {
+            font-size: 11px;
+            color: var(--dim);
+            margin-top: 2px;
+        }
+
+        .home-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 700px) { .home-grid-2 { grid-template-columns: 1fr; } }
+
+        .home-section-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .home-section-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+        }
+
+        .activity-item:last-child { border-bottom: none; }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: rgba(139,92,246,0.12);
+            flex-shrink: 0;
+        }
+
+        .activity-text { flex: 1; }
+        .activity-name { color: var(--text); font-weight: 500; }
+        .activity-meta { color: var(--dim); font-size: 10px; margin-top: 1px; }
+        .activity-time { color: var(--muted); font-size: 10px; flex-shrink: 0; }
+
+        .featured-lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 700px) { .featured-lesson-grid { grid-template-columns: 1fr; } }
+
+        .featured-lesson-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .featured-lesson-card:hover {
+            border-color: var(--accent);
+            background: rgba(139,92,246,0.08);
+        }
+
+        .featured-lesson-icon { font-size: 24px; margin-bottom: 8px; }
+        .featured-lesson-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+        .featured-lesson-artist { font-size: 11px; color: var(--dim); margin-bottom: 10px; }
+
+        .featured-lesson-stars { color: #facc15; font-size: 11px; margin-bottom: 10px; }
+
+        .featured-start-btn {
+            width: 100%;
+            padding: 7px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .featured-start-btn:hover { background: #7c3aed; }
+
+        .popular-songs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .popular-song-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .popular-song-item:hover {
+            border-color: rgba(139,92,246,0.4);
+            background: rgba(139,92,246,0.06);
+        }
+
+        .song-rank {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted);
+            width: 20px;
+            text-align: center;
+        }
+
+        .song-cover {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .song-info { flex: 1; }
+        .song-name { font-size: 12px; font-weight: 600; color: var(--text); }
+        .song-artist { font-size: 10px; color: var(--dim); margin-top: 1px; }
+        .song-difficulty { font-size: 10px; padding: 2px 8px; border-radius: 4px; flex-shrink: 0; }
+        .song-difficulty.easy { background: rgba(34,197,94,0.12); color: #4ade80; }
+        .song-difficulty.medium { background: rgba(249,115,22,0.12); color: #fb923c; }
+        .song-difficulty.hard { background: rgba(236,72,153,0.12); color: #f472b6; }
+
+        .home-section-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ============================================
+           KEŞFET SECTION
+           ============================================ */
+        .kesfet-section {
+            padding: 24px 24px 40px;
+        }
+
+        .kesfet-header {
+            margin-bottom: 24px;
+        }
+
+        .kesfet-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .kesfet-sub {
+            font-size: 13px;
+            color: var(--dim);
+        }
+
+        .kesfet-categories {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 600px) { .kesfet-categories { grid-template-columns: repeat(2, 1fr); } }
+
+        .kesfet-cat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .kesfet-cat-card:hover {
+            border-color: var(--accent);
+            background: rgba(139,92,246,0.08);
+            transform: translateY(-2px);
+        }
+
+        .kesfet-cat-icon { font-size: 28px; margin-bottom: 8px; }
+        .kesfet-cat-name { font-size: 13px; font-weight: 600; color: var(--text); }
+        .kesfet-cat-count { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+        /* ============================================
+           NOW PLAYING WIDGET (Sidebar bottom)
+           ============================================ */
+        .sidebar-now-playing {
+            margin-top: auto;
+            padding: 10px 10px 12px;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .now-playing-inner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(139,92,246,0.08);
+            border: 1px solid rgba(139,92,246,0.18);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .now-playing-inner:hover {
+            background: rgba(139,92,246,0.14);
+            border-color: rgba(139,92,246,0.35);
+        }
+
+        .np-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(139,92,246,0.15);
+            border-radius: 8px;
+        }
+
+        .np-text { flex: 1; min-width: 0; }
+        .np-instrument { font-size: 11px; font-weight: 600; color: #c4b5fd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .np-note { font-size: 10px; color: var(--dim); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .np-eq {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .np-bar {
+            width: 3px;
+            background: var(--accent);
+            border-radius: 1px;
+            animation: npPulse 1.2s ease-in-out infinite;
+        }
+
+        .np-bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+        .np-bar:nth-child(2) { height: 10px; animation-delay: 0.2s; }
+        .np-bar:nth-child(3) { height: 8px; animation-delay: 0.4s; }
+
+        @keyframes npPulse {
+            0%, 100% { opacity: 0.4; transform: scaleY(0.6); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        .np-eq.idle .np-bar {
+            animation: none;
+            opacity: 0.2;
+            height: 3px;
+        }
+
         .effects-panel {
             position: fixed;
             top: 16px;
@@ -3243,8 +3629,10 @@
 
         <!-- KEŞFET -->
         <div class="sidebar-section-label">Keşfet</div>
-        <button class="sidebar-item active" id="sidebarHome" onclick="showSidebarSection('guitar')">🏠 Ana Sayfa</button>
-        <button class="sidebar-item" id="sidebarDiscover" onclick="showComingSoon('Keşfet özelliği')">🔍 Keşfet</button>
+        <button class="sidebar-item active" id="sidebarHome" onclick="showSidebarSection('home')">🏠 Ana Sayfa</button>
+        <button class="sidebar-item" id="sidebarDiscover" onclick="showSidebarSection('kesfet')">🔍 Keşfet</button>
+        <button class="sidebar-item" onclick="showComingSoon('Liderlik Tablosu')">🏆 Liderlik Tablosu <span class="badge-soon">Yakında</span></button>
+        <button class="sidebar-item" onclick="showComingSoon('Günlük Görev')">📅 Günlük Görev <span class="badge-soon">Yakında</span></button>
 
         <!-- MÜZİK ALETLERİ -->
         <div class="sidebar-section-label">Müzik Aletleri</div>
@@ -3345,19 +3733,37 @@
         <button class="sidebar-item" id="sidebarTab" onclick="showSidebarModule('tablature')">📋 Tablature</button>
         <button class="sidebar-item" id="sidebarBacking" onclick="showSidebarModule('backing')">🎵 Backing Track</button>
         <button class="sidebar-item" id="sidebarRec" onclick="showSidebarModule('recording')">🎙️ Kayıt</button>
-        <button class="sidebar-item" id="sidebarEffects" onclick="toggleEffectsPanel()">🎛️ Efektler</button>
+        <button class="sidebar-item" id="sidebarEffects" onclick="toggleEffectsSidebar()">🎛️ Efektler</button>
+        <button class="sidebar-item" onclick="showComingSoon('Hedefler')">🎯 Hedefler <span class="badge-soon">Yakında</span></button>
+        <button class="sidebar-item" onclick="showComingSoon('İstatistikler')">📊 İstatistikler <span class="badge-soon">Yakında</span></button>
 
         <!-- AYARLAR -->
         <div class="sidebar-section-label">Ayarlar</div>
         <button class="sidebar-item" onclick="showHelp()">❓ Yardım</button>
         <button class="sidebar-item" onclick="toggleEffectsPanel()">⚙️ Ayarlar</button>
 
+        <!-- NOW PLAYING WIDGET -->
+        <div class="sidebar-now-playing">
+            <div class="now-playing-inner" onclick="showSidebarSection('guitar')" title="Gitara git">
+                <div class="np-icon">🎸</div>
+                <div class="np-text">
+                    <div class="np-instrument" id="npInstrument">Klasik Gitar</div>
+                    <div class="np-note" id="npNote">-- (nota yok)</div>
+                </div>
+                <div class="np-eq idle" id="npEq">
+                    <div class="np-bar"></div>
+                    <div class="np-bar"></div>
+                    <div class="np-bar"></div>
+                </div>
+            </div>
+        </div>
+
     </nav>
 
     <!-- App content (shifts right for sidebar) -->
     <div class="app-content" id="appContent">
     <main class="main">
-        <section class="section active" id="guitar">
+        <section class="section" id="guitar">
             <!-- Fretboard FIRST (EN ÜSTTE) -->
             <div class="fretboard-wrap">
                 <!-- Practice Mode Bar -->
@@ -4223,6 +4629,211 @@
                 </div>
             </div>
         </section>
+
+        <!-- ========= ANA SAYFA / HOME ========= -->
+        <section class="section active" id="home">
+            <div class="home-section">
+
+                <!-- Welcome Banner -->
+                <div class="home-welcome-banner">
+                    <div class="home-welcome-title">🎵 Melovia'ya Hoş Geldiniz</div>
+                    <div class="home-welcome-sub">Dijital müzik enstrümanları ve interaktif derslerle müzik öğrenin</div>
+                    <div class="home-welcome-cta">
+                        <button class="home-cta-btn primary" onclick="showSidebarSection('guitar')">🎸 Gitara Başla</button>
+                        <button class="home-cta-btn secondary" onclick="showSidebarModule('lessons')">📚 Derslere Git</button>
+                        <button class="home-cta-btn secondary" onclick="showSidebarSection('kesfet')">🔍 Keşfet</button>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="home-section-label">📊 Genel Bakış</div>
+                <div class="home-stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card-icon">📚</div>
+                        <div class="stat-card-value">18</div>
+                        <div class="stat-card-label">Toplam Ders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">✅</div>
+                        <div class="stat-card-value" id="statCompleted">0</div>
+                        <div class="stat-card-label">Tamamlanan Ders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">🎸</div>
+                        <div class="stat-card-value">5</div>
+                        <div class="stat-card-label">Enstrüman</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon">⭐</div>
+                        <div class="stat-card-value">850</div>
+                        <div class="stat-card-label">Toplam XP</div>
+                    </div>
+                </div>
+
+                <!-- Son Aktivite + Öne Çıkan -->
+                <div class="home-grid-2">
+                    <!-- Son Aktivite -->
+                    <div class="home-section-card">
+                        <div class="home-section-card-title">🕐 Son Aktivite</div>
+                        <div class="activity-item">
+                            <div class="activity-icon">🎵</div>
+                            <div class="activity-text">
+                                <div class="activity-name">Arkadaşım Eşek - Barış Manço</div>
+                                <div class="activity-meta">Ders 1 • 125 nota tamamlandı</div>
+                            </div>
+                            <div class="activity-time">Dün</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">🎸</div>
+                            <div class="activity-text">
+                                <div class="activity-name">Blues in A Jam Track</div>
+                                <div class="activity-meta">Backing Track • 12 dakika</div>
+                            </div>
+                            <div class="activity-time">2 gün</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">🎼</div>
+                            <div class="activity-text">
+                                <div class="activity-name">Smoke on the Water</div>
+                                <div class="activity-meta">Practice Mode • %78 doğruluk</div>
+                            </div>
+                            <div class="activity-time">3 gün</div>
+                        </div>
+                    </div>
+
+                    <!-- Popüler Şarkılar -->
+                    <div class="home-section-card">
+                        <div class="home-section-card-title">🔥 Popüler Şarkılar</div>
+                        <div class="popular-songs-list">
+                            <div class="popular-song-item" onclick="startPracticeSong('smoke')">
+                                <div class="song-rank">1</div>
+                                <div class="song-cover" style="background:rgba(6,182,212,0.12);">🎸</div>
+                                <div class="song-info">
+                                    <div class="song-name">Smoke on the Water</div>
+                                    <div class="song-artist">Deep Purple</div>
+                                </div>
+                                <span class="song-difficulty easy">Kolay</span>
+                            </div>
+                            <div class="popular-song-item" onclick="showComingSoon('Seven Nation Army Practice')">
+                                <div class="song-rank">2</div>
+                                <div class="song-cover" style="background:rgba(236,72,153,0.12);">🎵</div>
+                                <div class="song-info">
+                                    <div class="song-name">Seven Nation Army</div>
+                                    <div class="song-artist">The White Stripes</div>
+                                </div>
+                                <span class="song-difficulty easy">Kolay</span>
+                            </div>
+                            <div class="popular-song-item" onclick="showComingSoon('Sultans of Swing Practice')">
+                                <div class="song-rank">3</div>
+                                <div class="song-cover" style="background:rgba(139,92,246,0.12);">🎶</div>
+                                <div class="song-info">
+                                    <div class="song-name">Sultans of Swing</div>
+                                    <div class="song-artist">Dire Straits</div>
+                                </div>
+                                <span class="song-difficulty medium">Orta</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Öne Çıkan Dersler -->
+                <div class="home-section-label">⭐ Öne Çıkan Dersler</div>
+                <div class="featured-lesson-grid">
+                    <div class="featured-lesson-card">
+                        <div class="featured-lesson-icon">🎵</div>
+                        <div class="featured-lesson-title">Ders 1: İlk Melodim</div>
+                        <div class="featured-lesson-artist">Arkadaşım Eşek — Barış Manço</div>
+                        <div class="featured-lesson-stars">★☆☆ Başlangıç</div>
+                        <button class="featured-start-btn" onclick="currentLessonId=1; showSidebarModule('lessons');">▶ Başlat</button>
+                    </div>
+                    <div class="featured-lesson-card">
+                        <div class="featured-lesson-icon">🎸</div>
+                        <div class="featured-lesson-title">Ders 2: Smoke on the Water</div>
+                        <div class="featured-lesson-artist">Deep Purple</div>
+                        <div class="featured-lesson-stars">★★☆ Kolay</div>
+                        <button class="featured-start-btn" onclick="currentLessonId=2; showSidebarModule('lessons');">▶ Başlat</button>
+                    </div>
+                    <div class="featured-lesson-card">
+                        <div class="featured-lesson-icon">🎵</div>
+                        <div class="featured-lesson-title">Ders 3: Seven Nation Army</div>
+                        <div class="featured-lesson-artist">The White Stripes</div>
+                        <div class="featured-lesson-stars">★★☆ Kolay</div>
+                        <button class="featured-start-btn" onclick="currentLessonId=3; showSidebarModule('lessons');">▶ Başlat</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========= KEŞFET ========= -->
+        <section class="section" id="kesfet">
+            <div class="kesfet-section">
+                <div class="kesfet-header">
+                    <div class="kesfet-title">🔍 Keşfet</div>
+                    <div class="kesfet-sub">Enstrümanları ve dersleri keşfet</div>
+                </div>
+
+                <div class="home-section-label">🎼 Enstrüman Kategorileri</div>
+                <div class="kesfet-categories">
+                    <div class="kesfet-cat-card" onclick="showSidebarSection('guitar')">
+                        <div class="kesfet-cat-icon">🎸</div>
+                        <div class="kesfet-cat-name">Telli Çalgılar</div>
+                        <div class="kesfet-cat-count">13 enstrüman</div>
+                    </div>
+                    <div class="kesfet-cat-card" onclick="showComingSoon('Nefesli Çalgılar')">
+                        <div class="kesfet-cat-icon">🎷</div>
+                        <div class="kesfet-cat-name">Nefesli Çalgılar</div>
+                        <div class="kesfet-cat-count">13 enstrüman • Yakında</div>
+                    </div>
+                    <div class="kesfet-cat-card" onclick="showComingSoon('Vurmalı Çalgılar')">
+                        <div class="kesfet-cat-icon">🥁</div>
+                        <div class="kesfet-cat-name">Vurmalı Çalgılar</div>
+                        <div class="kesfet-cat-count">10 enstrüman • Yakında</div>
+                    </div>
+                    <div class="kesfet-cat-card" onclick="showSidebarSection('piano')">
+                        <div class="kesfet-cat-icon">🎹</div>
+                        <div class="kesfet-cat-name">Tuşlu Çalgılar</div>
+                        <div class="kesfet-cat-count">5 enstrüman</div>
+                    </div>
+                    <div class="kesfet-cat-card" onclick="showComingSoon('Vokal ve Diğer')">
+                        <div class="kesfet-cat-icon">🎤</div>
+                        <div class="kesfet-cat-name">Vokal & Diğer</div>
+                        <div class="kesfet-cat-count">3 enstrüman • Yakında</div>
+                    </div>
+                    <div class="kesfet-cat-card" onclick="showComingSoon('Türk Müziği')">
+                        <div class="kesfet-cat-icon">🇹🇷</div>
+                        <div class="kesfet-cat-name">Türk Müziği</div>
+                        <div class="kesfet-cat-count">Bağlama, Ud, Ney • Yakında</div>
+                    </div>
+                </div>
+
+                <div class="home-section-label">🎓 Öne Çıkan Dersler</div>
+                <div class="featured-lesson-grid">
+                    <div class="featured-lesson-card" onclick="showSidebarModule('lessons')">
+                        <div class="featured-lesson-icon">🌱</div>
+                        <div class="featured-lesson-title">Başlangıç Paketi</div>
+                        <div class="featured-lesson-artist">6 ders • Temel seviye</div>
+                        <div class="featured-lesson-stars">★☆☆ Yeni Başlayanlar</div>
+                        <button class="featured-start-btn" onclick="showSidebarModule('lessons')">📚 Derslere Git</button>
+                    </div>
+                    <div class="featured-lesson-card">
+                        <div class="featured-lesson-icon">🎸</div>
+                        <div class="featured-lesson-title">Rock Klasikleri</div>
+                        <div class="featured-lesson-artist">5 şarkı • Orta seviye</div>
+                        <div class="featured-lesson-stars">★★☆ Orta Seviye</div>
+                        <button class="featured-start-btn" onclick="showSidebarModule('lessons')">📚 Derslere Git</button>
+                    </div>
+                    <div class="featured-lesson-card">
+                        <div class="featured-lesson-icon">🎵</div>
+                        <div class="featured-lesson-title">Türk Melodileri</div>
+                        <div class="featured-lesson-artist">4 şarkı • Karışık seviye</div>
+                        <div class="featured-lesson-stars">★★☆ Orta Seviye</div>
+                        <button class="featured-start-btn" onclick="showSidebarModule('lessons')">📚 Derslere Git</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
     </div><!-- /.app-content -->
 
@@ -4439,7 +5050,7 @@
         document.body.scrollTop = 0;
 
         let currentPair = 1;
-        let currentMode = 'guitar';
+        let currentMode = 'home';
         let fretStart = 0;
         const visibleFrets = 12;
         const maxFrets = 19;
@@ -5463,13 +6074,18 @@
         function showSection(id) {
             currentMode = id;
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const target = document.getElementById(id);
+            if (target) target.classList.add('active');
 
             // Update sidebar active states
             document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
-            if (id === 'guitar') {
+            if (id === 'home') {
                 const homeBtn = document.getElementById('sidebarHome');
                 if (homeBtn) homeBtn.classList.add('active');
+            } else if (id === 'guitar') {
+                document.querySelectorAll('.sidebar-subitem').forEach(el => {
+                    if (el.textContent.includes('Klasik Gitar')) el.classList.add('active');
+                });
             } else if (id === 'piano') {
                 document.querySelectorAll('.sidebar-subitem').forEach(el => {
                     if (el.textContent.includes('Piyano (88')) el.classList.add('active');
@@ -5477,6 +6093,9 @@
             } else if (id === 'lessons') {
                 const lBtn = document.getElementById('sidebarLessons');
                 if (lBtn) lBtn.classList.add('active');
+            } else if (id === 'kesfet') {
+                const dBtn = document.getElementById('sidebarDiscover');
+                if (dBtn) dBtn.classList.add('active');
             }
 
             // Scroll to top on section change
@@ -5933,6 +6552,17 @@
             }
             document.getElementById('noteDisplay').textContent = `${turkish} (${note}) - ${freq.toFixed(1)} Hz`;
             document.getElementById('posDisplay').textContent = `Tel ${s}, Perde ${f}`;
+
+            // Update now-playing sidebar widget
+            const npNote = document.getElementById('npNote');
+            const npEq = document.getElementById('npEq');
+            if (npNote) npNote.textContent = `${turkish} (${note}) — Tel ${s}, Perde ${f}`;
+            if (npEq) {
+                npEq.classList.remove('idle');
+                // Re-add idle after note decay
+                clearTimeout(npEq._idleTimer);
+                npEq._idleTimer = setTimeout(() => npEq.classList.add('idle'), 1500);
+            }
         }
 
         function stopAll() { if (typeof audioEngine !== 'undefined') audioEngine.stopAll(); }
@@ -6043,6 +6673,9 @@
         function toggleEffectsPanel() {
             const panel = document.getElementById('effectsPanel');
             panel.classList.toggle('active');
+            // Sync sidebar effects button
+            const btn = document.getElementById('sidebarEffects');
+            if (btn) btn.classList.toggle('active', panel.classList.contains('active'));
         }
 
         // Amp Presets
@@ -7120,6 +7753,14 @@
         let practiceStartTime = null;
         let practiceTimer = null;
 
+        // Quick-start a practice song from home/discovery (navigates to guitar section + starts practice)
+        function startPracticeSong(songKey) {
+            showSidebarSection('guitar');
+            setTimeout(() => {
+                startPractice(songKey);
+            }, 100);
+        }
+
         function startPractice(tabKey) {
             const tab = tablatures[tabKey];
             if (!tab || !tab.notes || tab.notes.length === 0) {
@@ -7372,60 +8013,84 @@
             // Clear all active states
             document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
 
-            if (section === 'guitar') {
+            if (section === 'home') {
+                showSection('home');
+                const homeBtn = document.getElementById('sidebarHome');
+                if (homeBtn) homeBtn.classList.add('active');
+            } else if (section === 'guitar') {
                 showSection('guitar');
-                document.getElementById('sidebarHome').classList.add('active');
-                document.querySelector('.sidebar-subitem:first-child').classList.add('active');
+                document.querySelectorAll('.sidebar-subitem').forEach(el => {
+                    if (el.textContent.includes('Klasik Gitar')) el.classList.add('active');
+                });
             } else if (section === 'piano') {
                 showSection('piano');
-                // Activate the piano subitem
                 document.querySelectorAll('.sidebar-subitem').forEach(el => {
                     if (el.textContent.includes('Piyano (88')) el.classList.add('active');
                 });
             } else if (section === 'lessons') {
                 showSection('lessons');
-                document.getElementById('sidebarLessons').classList.add('active');
+                const lBtn = document.getElementById('sidebarLessons');
+                if (lBtn) lBtn.classList.add('active');
+            } else if (section === 'kesfet') {
+                showSection('kesfet');
+                const dBtn = document.getElementById('sidebarDiscover');
+                if (dBtn) dBtn.classList.add('active');
             }
         }
 
         function showSidebarModule(moduleName) {
             closeMobileSidebar();
-            // Make sure guitar section is active
+
+            // Clear all active states
+            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
+
+            if (moduleName === 'lessons') {
+                showSection('lessons');
+                const lBtn = document.getElementById('sidebarLessons');
+                if (lBtn) lBtn.classList.add('active');
+                return;
+            }
+
+            // For guitar-based modules: ensure guitar section is active first
             showSection('guitar');
 
-            // Map module to the inner panel IDs / functions
-            const moduleMap = {
-                'lessons': () => {
-                    showSection('lessons');
-                    document.getElementById('sidebarLessons').classList.add('active');
-                },
-                'practice': () => {
-                    // Scroll to tablature panel and click practice mode
-                    const tabPanel = document.getElementById('tablaturePanel');
-                    if (tabPanel) tabPanel.scrollIntoView({ behavior: 'smooth' });
-                    document.getElementById('sidebarPractice').classList.add('active');
-                },
-                'tablature': () => {
-                    const tabPanel = document.getElementById('tablaturePanel');
-                    if (tabPanel) tabPanel.scrollIntoView({ behavior: 'smooth' });
-                    document.getElementById('sidebarTab').classList.add('active');
-                },
-                'backing': () => {
-                    const panel = document.querySelector('.backing-track-panel');
-                    if (panel) panel.scrollIntoView({ behavior: 'smooth' });
-                    document.getElementById('sidebarBacking').classList.add('active');
-                },
-                'recording': () => {
-                    const panel = document.querySelector('.recording-panel');
-                    if (panel) panel.scrollIntoView({ behavior: 'smooth' });
-                    document.getElementById('sidebarRec').classList.add('active');
-                }
+            // Activate correct sidebar item
+            const sidebarIds = {
+                'practice': 'sidebarPractice',
+                'tablature': 'sidebarTab',
+                'backing': 'sidebarBacking',
+                'recording': 'sidebarRec'
             };
+            const sid = sidebarIds[moduleName];
+            if (sid) {
+                const btn = document.getElementById(sid);
+                if (btn) btn.classList.add('active');
+            }
 
-            // Clear other active states
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            // Scroll to the target panel after a short delay (section show needs a tick)
+            const panelSelectors = {
+                'practice': '#tablaturePanel',
+                'tablature': '#tablaturePanel',
+                'backing': '.backing-track-panel',
+                'recording': '.recording-panel'
+            };
+            const sel = panelSelectors[moduleName];
+            if (sel) {
+                setTimeout(() => {
+                    const panel = document.querySelector(sel);
+                    if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 80);
+            }
+        }
 
-            if (moduleMap[moduleName]) moduleMap[moduleName]();
+        // Toggle effects panel and update sidebar active state
+        function toggleEffectsSidebar() {
+            toggleEffectsPanel();
+            const btn = document.getElementById('sidebarEffects');
+            if (btn) {
+                const panel = document.getElementById('effectsPanel');
+                btn.classList.toggle('active', panel && panel.classList.contains('active'));
+            }
         }
 
         // Toast notification for "Coming Soon" items
