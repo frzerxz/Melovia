@@ -471,38 +471,38 @@
             {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G4)',s:1,f:3,key:'<'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'}
         ],
 
-        // Nothing Else Matters (lesson 10)
+        // Nothing Else Matters (lesson 10) — Gemini-verified, 119 notes
         10: [
-            // INTRO arpeggio x6 — correct 6/8 loop: s6→s3→s2→s1→s2→s3 (all open strings)
+            // INTRO × 4 — Em open-string arpeggio (6/8: s6→s3→s2→s1→s2→s3)
             {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
             {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
             {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
             {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
+            // TIRMANIŞ — s1 tırmanış G4→A4→B4 (s1f3=G4, s1f5=A4, s1f7=B4)
+            {note:'SOL (G4)',s:1,f:3,key:'<'},{note:'LA (A4)',s:1,f:5,key:'U'},{note:'Sİ (B4)',s:1,f:7,key:'N'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B4)',s:1,f:7,key:'N'},
+            // İNİŞ — s1 iniş A4→G4→E4
+            {note:'LA (A4)',s:1,f:5,key:'U'},{note:'SOL (G4)',s:1,f:3,key:'<'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
+            // VERSE 1 — Em (s4f2=E3)
+            {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E3)',s:4,f:2,key:'F'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
+            // VERSE 1 — D (s3f2=A3, s2f3=D4, s1f2=F#4)
+            {note:'RE (D3)',s:4,f:0,key:'4'},{note:'LA (A3)',s:3,f:2,key:'D'},{note:'RE (D4)',s:2,f:3,key:'Z'},{note:'FA# (F#4)',s:1,f:2,key:'A'},{note:'RE (D4)',s:2,f:3,key:'Z'},{note:'LA (A3)',s:3,f:2,key:'D'},
+            // VERSE 1 — C (s5f3=C3, s2f1=C4)
+            {note:'DO (C3)',s:5,f:3,key:'V'},{note:'DO (C4)',s:2,f:1,key:'W'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'DO (C4)',s:2,f:1,key:'W'},{note:'SOL (G3)',s:3,f:0,key:'3'},
+            // VERSE 1 — G (s6f3=G2)
+            {note:'SOL (G2)',s:6,f:3,key:'B'},{note:'RE (D3)',s:4,f:0,key:'4'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'RE (D3)',s:4,f:0,key:'4'},
+            // VERSE 2 — Em
+            {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E3)',s:4,f:2,key:'F'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
+            // VERSE 2 — D
+            {note:'RE (D3)',s:4,f:0,key:'4'},{note:'LA (A3)',s:3,f:2,key:'D'},{note:'RE (D4)',s:2,f:3,key:'Z'},{note:'FA# (F#4)',s:1,f:2,key:'A'},{note:'RE (D4)',s:2,f:3,key:'Z'},{note:'LA (A3)',s:3,f:2,key:'D'},
+            // VERSE 2 — C
+            {note:'DO (C3)',s:5,f:3,key:'V'},{note:'DO (C4)',s:2,f:1,key:'W'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'DO (C4)',s:2,f:1,key:'W'},{note:'SOL (G3)',s:3,f:0,key:'3'},
+            // VERSE 2 — G
+            {note:'SOL (G2)',s:6,f:3,key:'B'},{note:'RE (D3)',s:4,f:0,key:'4'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'RE (D3)',s:4,f:0,key:'4'},
+            // CHORUS — Em open
             {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
-            {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
-            // VERSE Em→Am→C→D
-            {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'LA (A2)',s:5,f:0,key:'5'},{note:'RE (D3)',s:4,f:0,key:'4'},
-            {note:'LA (A2)',s:5,f:0,key:'5'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'DO (C4)',s:2,f:1,key:'W'},{note:'LA (A3)',s:3,f:2,key:'D'},{note:'Mİ (E3)',s:4,f:2,key:'F'},
-            {note:'DO (C3)',s:5,f:3,key:'V'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'DO (C4)',s:2,f:1,key:'W'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Mİ (E3)',s:4,f:2,key:'F'},
-            {note:'RE (D3)',s:4,f:0,key:'4'},{note:'FA# (F#4)',s:1,f:2,key:'A'},{note:'RE (D4)',s:2,f:3,key:'Z'},{note:'LA (A3)',s:3,f:2,key:'D'},
-            // PRE-CHORUS Em→D→C
-            {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'Sİ (B2)',s:5,f:2,key:'G'},{note:'Mİ (E3)',s:4,f:2,key:'F'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},
-            {note:'RE (D3)',s:4,f:0,key:'4'},{note:'LA (A3)',s:3,f:2,key:'D'},{note:'RE (D4)',s:2,f:3,key:'Z'},{note:'FA# (F#4)',s:1,f:2,key:'A'},
-            {note:'DO (C3)',s:5,f:3,key:'V'},{note:'Mİ (E3)',s:4,f:2,key:'F'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'DO (C4)',s:2,f:1,key:'W'},{note:'Mİ (E4)',s:1,f:0,key:'1'},
-            // CHORUS G→B7→Em
-            {note:'SOL (G2)',s:6,f:3,key:'B'},{note:'Sİ (B2)',s:5,f:2,key:'G'},{note:'RE (D3)',s:4,f:0,key:'4'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G4)',s:1,f:3,key:'<'},
-            {note:'Sİ (B2)',s:5,f:2,key:'G'},{note:'RE# (D#3)',s:4,f:1,key:'R'},{note:'LA (A3)',s:3,f:2,key:'D'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'FA# (F#4)',s:1,f:2,key:'A'},
-            {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'Sİ (B2)',s:5,f:2,key:'G'},{note:'Mİ (E3)',s:4,f:2,key:'F'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},
-            // CHORUS REPEAT
-            {note:'SOL (G2)',s:6,f:3,key:'B'},{note:'Sİ (B2)',s:5,f:2,key:'G'},{note:'RE (D3)',s:4,f:0,key:'4'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G4)',s:1,f:3,key:'<'},
-            {note:'Sİ (B2)',s:5,f:2,key:'G'},{note:'RE# (D#3)',s:4,f:1,key:'R'},{note:'LA (A3)',s:3,f:2,key:'D'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'FA# (F#4)',s:1,f:2,key:'A'},
-            {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'Sİ (B2)',s:5,f:2,key:'G'},{note:'Mİ (E3)',s:4,f:2,key:'F'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},
-            // VERSE 2 arpeggio - Em→Am→C→D
-            {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'LA (A2)',s:5,f:0,key:'5'},{note:'RE (D3)',s:4,f:0,key:'4'},
-            {note:'LA (A2)',s:5,f:0,key:'5'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'DO (C4)',s:2,f:1,key:'W'},{note:'LA (A3)',s:3,f:2,key:'D'},{note:'Mİ (E3)',s:4,f:2,key:'F'},
-            {note:'DO (C3)',s:5,f:3,key:'V'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'DO (C4)',s:2,f:1,key:'W'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Mİ (E3)',s:4,f:2,key:'F'},
-            {note:'RE (D3)',s:4,f:0,key:'4'},{note:'FA# (F#4)',s:1,f:2,key:'A'},{note:'RE (D4)',s:2,f:3,key:'Z'},{note:'LA (A3)',s:3,f:2,key:'D'},
-            // OUTRO arpeggios x4 - kapanış Em (correct 6/8 loop: s6→s3→s2→s1→s2→s3)
+            // CHORUS — Tırmanış tekrar
+            {note:'SOL (G4)',s:1,f:3,key:'<'},{note:'LA (A4)',s:1,f:5,key:'U'},{note:'Sİ (B4)',s:1,f:7,key:'N'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B4)',s:1,f:7,key:'N'},
+            // OUTRO × 4 — Em open kapanış
             {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
             {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
             {note:'Mİ (E2)',s:6,f:0,key:'6'},{note:'SOL (G3)',s:3,f:0,key:'3'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'Mİ (E4)',s:1,f:0,key:'1'},{note:'Sİ (B3)',s:2,f:0,key:'2'},{note:'SOL (G3)',s:3,f:0,key:'3'},
