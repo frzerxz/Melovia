@@ -101,9 +101,375 @@
         }
 
         .main {
-            padding: 16px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+        }
+
+        /* ============================================
+           SIDEBAR LAYOUT
+           ============================================ */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Fixed left sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 220px;
+            height: 100vh;
+            background: #0e0e18;
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            scrollbar-width: thin;
+            scrollbar-color: var(--muted) transparent;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 14px 12px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo .logo-icon { font-size: 20px; }
+
+        .sidebar-logo .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #c084fc, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            flex: 1;
+        }
+
+        .sidebar-logo .version {
+            font-size: 8px;
+            padding: 1px 5px;
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            color: #22d3ee;
+            border-radius: 5px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section-label {
+            padding: 12px 14px 4px;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--muted);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--dim);
+            cursor: pointer;
+            border-radius: 6px;
+            margin: 1px 6px;
+            transition: all 0.15s;
+            text-decoration: none;
+            border: none;
+            background: none;
+            width: calc(100% - 12px);
+            text-align: left;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--text);
+        }
+
+        .sidebar-item.active {
+            background: rgba(139, 92, 246, 0.18);
+            color: #c4b5fd;
+            font-weight: 600;
+        }
+
+        /* Expandable categories */
+        .sidebar-category { flex-shrink: 0; }
+
+        .sidebar-cat-header {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--dim);
+            cursor: pointer;
+            margin: 1px 6px;
+            border-radius: 6px;
+            transition: all 0.15s;
+            border: none;
+            background: none;
+            width: calc(100% - 12px);
+            text-align: left;
+        }
+
+        .sidebar-cat-header:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+        }
+
+        .sidebar-cat-header .cat-arrow {
+            margin-left: auto;
+            font-size: 9px;
+            transition: transform 0.2s;
+        }
+
+        .sidebar-cat-header.open .cat-arrow {
+            transform: rotate(-180deg);
+        }
+
+        .sidebar-cat-items {
+            display: none;
+            padding-left: 8px;
+        }
+
+        .sidebar-cat-items.open { display: block; }
+
+        .sidebar-subitem {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px 5px 22px;
+            font-size: 11px;
+            color: var(--muted);
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 1px 6px;
+            transition: all 0.15s;
+            text-decoration: none;
+            border: none;
+            background: none;
+            width: calc(100% - 12px);
+            text-align: left;
+            justify-content: space-between;
+        }
+
+        .sidebar-subitem:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+        }
+
+        .sidebar-subitem.active {
+            color: #c4b5fd;
+            font-weight: 600;
+        }
+
+        .sidebar-subitem.active::before {
+            content: '✓';
+            color: #4ade80;
+            font-size: 9px;
+            margin-right: 4px;
+        }
+
+        .badge-soon {
+            font-size: 8px;
+            padding: 1px 5px;
+            background: rgba(100, 100, 120, 0.25);
+            border: 1px solid rgba(100, 100, 120, 0.4);
+            color: var(--muted);
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .badge-turk {
+            font-size: 7px;
+            padding: 1px 4px;
+            background: rgba(236, 72, 153, 0.15);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            color: #f472b6;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .badge-active {
+            font-size: 8px;
+            padding: 1px 5px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        /* Main content shifts right */
+        .app-content {
+            margin-left: 220px;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fretboard always sticky at top */
+        .fretboard-wrap {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4px;
+        }
+
+        /* Module area below sticky fretboard */
+        .guitar-modules {
+            flex: 1;
+            padding: 8px 20px 16px;
+        }
+
+        /* Toast notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--panel);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-size: 13px;
+            color: var(--text);
+            z-index: 9999;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+        }
+
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Hamburger toggle for mobile */
+        .hamburger-btn {
+            display: none;
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 300;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 38px;
+            height: 38px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .hamburger-btn:hover {
+            border-color: var(--accent);
+        }
+
+        /* Sidebar overlay for mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 190;
+            backdrop-filter: blur(2px);
+        }
+
+        .sidebar-overlay.show { display: block; }
+
+        /* Module sub-tabs (for within guitar section) */
+        .module-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 8px 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+            flex-shrink: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .module-tabs::-webkit-scrollbar { display: none; }
+
+        .module-tab {
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--dim);
+            cursor: pointer;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: all 0.15s;
+            margin-bottom: -1px;
+        }
+
+        .module-tab:hover { color: var(--text); }
+
+        .module-tab.active {
+            color: #c4b5fd;
+            border-bottom-color: var(--accent);
+        }
+
+        /* Module panels within guitar section */
+        .guitar-module-panel {
+            display: none;
+        }
+
+        .guitar-module-panel.active {
+            display: block;
+        }
+
+        /* Pair row + zones - compact */
+        .controls-strip {
+            padding: 8px 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .controls-strip::-webkit-scrollbar { display: none; }
+
+        @media (max-width: 768px) {
+            .hamburger-btn { display: flex; }
+            .sidebar { transform: translateX(-220px); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .app-content { margin-left: 0; }
+            .guitar-modules { padding: 8px 12px 16px; }
+            .module-tabs { padding: 6px 12px 0; }
+        }
+
+        @media (max-width: 480px) {
+            .main { padding: 8px 12px; }
         }
 
         .section {
@@ -112,6 +478,12 @@
 
         .section.active {
             display: block;
+        }
+
+        /* Guitar section: flex column so fretboard can be sticky */
+        #guitar.active {
+            display: flex;
+            flex-direction: column;
         }
 
         /* Note Bar */
@@ -246,11 +618,8 @@
 
         /* FRETBOARD */
         .fretboard-wrap {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 12px;
+            background: var(--bg);
+            padding: 10px 20px 6px;
         }
 
         .fretboard-toolbar {
@@ -919,6 +1288,7 @@
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 20px;
+            margin: 16px 20px;
         }
 
         .piano-wrap h2 {
@@ -978,6 +1348,10 @@
         }
 
         /* Lessons - Enhanced Design */
+        #lessons {
+            padding: 16px 20px;
+        }
+
         .lessons-header {
             display: flex;
             justify-content: space-between;
@@ -1817,10 +2191,10 @@
            ============================================ */
         .effects-panel {
             position: fixed;
-            top: 60px;
+            top: 16px;
             right: -360px;
             width: 340px;
-            max-height: calc(100vh - 80px);
+            max-height: calc(100vh - 32px);
             background: linear-gradient(180deg, rgba(19, 19, 26, 0.98), rgba(10, 10, 15, 0.98));
             border: 1px solid rgba(139, 92, 246, 0.3);
             border-radius: 16px 0 0 16px;
@@ -2852,19 +3226,136 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="logo"><span>🎵</span><span class="logo-text">Melovia</span><span class="version">v0.1</span></div>
-        <nav class="nav">
-            <button class="nav-btn active" onclick="showSection('guitar')">🎸 Gitar</button>
-            <button class="nav-btn" onclick="showSection('piano')">🎹 Piyano</button>
-            <button class="nav-btn" onclick="showSection('lessons')">📚 Dersler</button>
-        </nav>
-        <div class="header-right">
-            <button class="icon-btn" onclick="toggleEffectsPanel()" title="Efektler">⚙</button>
-            <button class="icon-btn" onclick="showHelp()">?</button>
-        </div>
-    </header>
+    <!-- Mobile hamburger -->
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileSidebar()" aria-label="Menü">☰</button>
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
 
+    <!-- Spotify-style Left Sidebar -->
+    <nav class="sidebar" id="sidebar" aria-label="Ana Navigasyon">
+
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <span class="logo-icon">🎵</span>
+            <span class="logo-text">Melovia</span>
+            <span class="version">v0.1</span>
+        </div>
+
+        <!-- KEŞFET -->
+        <div class="sidebar-section-label">Keşfet</div>
+        <button class="sidebar-item active" id="sidebarHome" onclick="showSidebarSection('guitar')">🏠 Ana Sayfa</button>
+        <button class="sidebar-item" id="sidebarDiscover" onclick="showComingSoon('Keşfet özelliği')">🔍 Keşfet</button>
+
+        <!-- MÜZİK ALETLERİ -->
+        <div class="sidebar-section-label">Müzik Aletleri</div>
+
+        <!-- Telli Çalgılar -->
+        <div class="sidebar-category">
+            <button class="sidebar-cat-header open" id="catTelli" onclick="toggleSidebarCat('catTelli','itemsTelli')">
+                🎸 Telli Çalgılar <span class="cat-arrow">▾</span>
+            </button>
+            <div class="sidebar-cat-items open" id="itemsTelli">
+                <button class="sidebar-subitem active" onclick="showSidebarSection('guitar')">Klasik Gitar <span class="badge-active">Aktif</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Elektro Gitar')">Elektro Gitar <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Bas Gitar')">Bas Gitar <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Ukulele')">Ukulele <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Banjo')">Banjo <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Mandolin')">Mandolin <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Bağlama / Saz')">Bağlama / Saz <span class="badge-turk">🇹🇷 Türk</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Ud')">Ud <span class="badge-turk">🇹🇷 Türk</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Keman')">Keman / Violin <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Viyola')">Viyola <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Çello')">Çello <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Kontrbas')">Kontrbas <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Harp')">Harp <span class="badge-soon">Yakında</span></button>
+            </div>
+        </div>
+
+        <!-- Nefesli Çalgılar -->
+        <div class="sidebar-category">
+            <button class="sidebar-cat-header" id="catNefesli" onclick="toggleSidebarCat('catNefesli','itemsNefesli')">
+                🎷 Nefesli Çalgılar <span class="cat-arrow">▾</span>
+            </button>
+            <div class="sidebar-cat-items" id="itemsNefesli">
+                <button class="sidebar-subitem" onclick="showComingSoon('Flüt')">Flüt <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Klarnet')">Klarnet <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Saksofon Alto')">Saksofon (Alto) <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Saksofon Tenor')">Saksofon (Tenor) <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Oboe')">Oboe <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Fagot')">Fagot <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Trompet')">Trompet <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Trombon')">Trombon <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Tuba')">Tuba <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Korno')">Korno <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Blokflüt')">Recorder / Blokflüt <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Kaval')">Kaval <span class="badge-turk">🇹🇷 Türk</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Ney')">Ney <span class="badge-turk">🇹🇷 Türk</span></button>
+            </div>
+        </div>
+
+        <!-- Vurmalı Çalgılar -->
+        <div class="sidebar-category">
+            <button class="sidebar-cat-header" id="catVurma" onclick="toggleSidebarCat('catVurma','itemsVurma')">
+                🥁 Vurmalı Çalgılar <span class="cat-arrow">▾</span>
+            </button>
+            <div class="sidebar-cat-items" id="itemsVurma">
+                <button class="sidebar-subitem" onclick="showComingSoon('Davul Seti')">Davul Seti <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Bongo')">Bongo <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Congas')">Congas <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Cajon')">Cajon <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Xylophone')">Xylophone <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Marimba')">Marimba <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Timpani')">Timpani <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Zil')">Zil / Cymbal <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Darbuka')">Darbuka <span class="badge-turk">🇹🇷 Türk</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Def')">Def / Frame Drum <span class="badge-turk">🇹🇷 Türk</span></button>
+            </div>
+        </div>
+
+        <!-- Tuşlu Çalgılar -->
+        <div class="sidebar-category">
+            <button class="sidebar-cat-header" id="catTuslu" onclick="toggleSidebarCat('catTuslu','itemsTuslu')">
+                🎹 Tuşlu Çalgılar <span class="cat-arrow">▾</span>
+            </button>
+            <div class="sidebar-cat-items" id="itemsTuslu">
+                <button class="sidebar-subitem" onclick="showSidebarSection('piano')">Piyano (88 tuş) <span class="badge-active">Aktif</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Org')">Org / Organ <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Akordeon')">Akordeon <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Synthesizer')">Synthesizer <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Harpsichord')">Harpsichord <span class="badge-soon">Yakında</span></button>
+            </div>
+        </div>
+
+        <!-- Vokal & Diğer -->
+        <div class="sidebar-category">
+            <button class="sidebar-cat-header" id="catVokal" onclick="toggleSidebarCat('catVokal','itemsVokal')">
+                🎤 Vokal & Diğer <span class="cat-arrow">▾</span>
+            </button>
+            <div class="sidebar-cat-items" id="itemsVokal">
+                <button class="sidebar-subitem" onclick="showComingSoon('Vokal / Şan')">Vokal / Şan <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Theremin')">Theremin <span class="badge-soon">Yakında</span></button>
+                <button class="sidebar-subitem" onclick="showComingSoon('Hang Drum')">Hang Drum <span class="badge-soon">Yakında</span></button>
+            </div>
+        </div>
+
+        <!-- ÇALIŞMA -->
+        <div class="sidebar-section-label">Çalışma</div>
+        <button class="sidebar-item" id="sidebarLessons" onclick="showSidebarModule('lessons')">📚 Dersler</button>
+        <button class="sidebar-item" id="sidebarPractice" onclick="showSidebarModule('practice')">🎯 Practice</button>
+        <button class="sidebar-item" id="sidebarTab" onclick="showSidebarModule('tablature')">📋 Tablature</button>
+        <button class="sidebar-item" id="sidebarBacking" onclick="showSidebarModule('backing')">🎵 Backing Track</button>
+        <button class="sidebar-item" id="sidebarRec" onclick="showSidebarModule('recording')">🎙️ Kayıt</button>
+        <button class="sidebar-item" id="sidebarEffects" onclick="toggleEffectsPanel()">🎛️ Efektler</button>
+
+        <!-- AYARLAR -->
+        <div class="sidebar-section-label">Ayarlar</div>
+        <button class="sidebar-item" onclick="showHelp()">❓ Yardım</button>
+        <button class="sidebar-item" onclick="toggleEffectsPanel()">⚙️ Ayarlar</button>
+
+    </nav>
+
+    <!-- App content (shifts right for sidebar) -->
+    <div class="app-content" id="appContent">
     <main class="main">
         <section class="section active" id="guitar">
             <!-- Fretboard FIRST (EN ÜSTTE) -->
@@ -2980,6 +3471,9 @@
                     <div class="fretboard" id="fretboard"></div>
                 </div>
             </div>
+
+            <!-- Scrollable module area -->
+            <div class="guitar-modules">
 
             <!-- Note Bar -->
             <div class="note-bar">
@@ -3209,6 +3703,8 @@
                     <button class="tab-control-btn" onclick="clearTablature()">🗑️ Temizle</button>
                 </div>
             </div>
+
+            </div><!-- /.guitar-modules -->
         </section>
 
         <section class="section" id="piano">
@@ -3728,6 +4224,10 @@
             </div>
         </section>
     </main>
+    </div><!-- /.app-content -->
+
+    <!-- Toast notification -->
+    <div class="toast-notification" id="toastNotification"></div>
 
     <!-- Lesson Detail Modal -->
     <div class="lesson-modal" id="lessonModal">
@@ -4961,16 +5461,25 @@
         }
 
         function showSection(id) {
+            currentMode = id;
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
 
-            // Nav butonlarını güncelle
-            document.querySelectorAll('.nav-item').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.target === id) btn.classList.add('active');
-            });
+            // Update sidebar active states
+            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
+            if (id === 'guitar') {
+                const homeBtn = document.getElementById('sidebarHome');
+                if (homeBtn) homeBtn.classList.add('active');
+            } else if (id === 'piano') {
+                document.querySelectorAll('.sidebar-subitem').forEach(el => {
+                    if (el.textContent.includes('Piyano (88')) el.classList.add('active');
+                });
+            } else if (id === 'lessons') {
+                const lBtn = document.getElementById('sidebarLessons');
+                if (lBtn) lBtn.classList.add('active');
+            }
 
-            // Her section geçişinde sayfa başına scroll
+            // Scroll to top on section change
             window.scrollTo(0, 0);
         }
 
@@ -5525,12 +6034,7 @@
             document.getElementById('lessonsGrid').innerHTML = h;
         }
 
-        function showSection(id) {
-            currentMode = id;
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach((b, i) => b.classList.toggle('active', ['guitar', 'piano', 'lessons'][i] === id));
-        }
+        // showSection defined above handles all section switching
 
         // ============================================
         // EFFECTS PANEL CONTROLS
@@ -6847,6 +7351,121 @@
         window.addEventListener('beforeunload', () => {
             window.scrollTo(0, 0);
         });
+
+        // ============================================
+        // SIDEBAR NAVIGATION
+        // ============================================
+
+        function toggleSidebarCat(headerId, itemsId) {
+            const header = document.getElementById(headerId);
+            const items = document.getElementById(itemsId);
+            if (!header || !items) return;
+            const isOpen = items.classList.contains('open');
+            items.classList.toggle('open', !isOpen);
+            header.classList.toggle('open', !isOpen);
+        }
+
+        function showSidebarSection(section) {
+            // Hide sidebar on mobile after navigation
+            closeMobileSidebar();
+
+            // Clear all active states
+            document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
+
+            if (section === 'guitar') {
+                showSection('guitar');
+                document.getElementById('sidebarHome').classList.add('active');
+                document.querySelector('.sidebar-subitem:first-child').classList.add('active');
+            } else if (section === 'piano') {
+                showSection('piano');
+                // Activate the piano subitem
+                document.querySelectorAll('.sidebar-subitem').forEach(el => {
+                    if (el.textContent.includes('Piyano (88')) el.classList.add('active');
+                });
+            } else if (section === 'lessons') {
+                showSection('lessons');
+                document.getElementById('sidebarLessons').classList.add('active');
+            }
+        }
+
+        function showSidebarModule(moduleName) {
+            closeMobileSidebar();
+            // Make sure guitar section is active
+            showSection('guitar');
+
+            // Map module to the inner panel IDs / functions
+            const moduleMap = {
+                'lessons': () => {
+                    showSection('lessons');
+                    document.getElementById('sidebarLessons').classList.add('active');
+                },
+                'practice': () => {
+                    // Scroll to tablature panel and click practice mode
+                    const tabPanel = document.getElementById('tablaturePanel');
+                    if (tabPanel) tabPanel.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('sidebarPractice').classList.add('active');
+                },
+                'tablature': () => {
+                    const tabPanel = document.getElementById('tablaturePanel');
+                    if (tabPanel) tabPanel.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('sidebarTab').classList.add('active');
+                },
+                'backing': () => {
+                    const panel = document.querySelector('.backing-track-panel');
+                    if (panel) panel.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('sidebarBacking').classList.add('active');
+                },
+                'recording': () => {
+                    const panel = document.querySelector('.recording-panel');
+                    if (panel) panel.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('sidebarRec').classList.add('active');
+                }
+            };
+
+            // Clear other active states
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+
+            if (moduleMap[moduleName]) moduleMap[moduleName]();
+        }
+
+        // Toast notification for "Coming Soon" items
+        let toastTimer = null;
+        function showComingSoon(instrumentName) {
+            closeMobileSidebar();
+            const toast = document.getElementById('toastNotification');
+            if (!toast) return;
+
+            // Check if it's a Turkish instrument
+            const turkishInstruments = ['Bağlama', 'Saz', 'Ud', 'Darbuka', 'Ney', 'Kaval', 'Def'];
+            const isTurkish = turkishInstruments.some(t => instrumentName.includes(t));
+
+            if (isTurkish) {
+                toast.textContent = `🇹🇷 ${instrumentName} — Türk Müziği • Çok Yakında!`;
+            } else {
+                toast.textContent = `🔒 ${instrumentName} — Yakında eklenecek!`;
+            }
+
+            toast.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Mobile sidebar controls
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('mobile-open');
+            sidebar.classList.toggle('mobile-open', !isOpen);
+            overlay.classList.toggle('show', !isOpen);
+        }
+
+        function closeMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('show');
+        }
+
     </script>
     <script src="js/fullSongData.js"></script>
 </body>

@@ -142,17 +142,19 @@ const GuitarModule = {
             el.classList.remove('chord-highlight');
         });
 
-        // Highlight chord positions
+        // Highlight chord positions — use data-s/data-f (primary attrs set by buildFretboard)
         chord.frets.forEach((fret, i) => {
             if (fret >= 0) {
                 const stringNum = 6 - i;
                 const actualFret = fret + this.capoPosition;
-                const cell = document.querySelector(`.string-cell[data-string="${stringNum}"][data-fret="${actualFret}"]`);
+                // Try data-s/data-f first (inline fretboard), fallback to data-string/data-fret
+                const cell = document.querySelector(`.string-cell[data-s="${stringNum}"][data-f="${actualFret}"]`)
+                    || document.querySelector(`.string-cell[data-string="${stringNum}"][data-fret="${actualFret}"]`);
                 if (cell) {
                     cell.classList.add('chord-highlight', 'active');
                     setTimeout(() => {
                         cell.classList.remove('active');
-                    }, 500);
+                    }, 600);
                 }
             }
         });
@@ -327,7 +329,8 @@ const GuitarModule = {
 
     showActive(string, fret) {
         document.querySelectorAll('.string-cell.active').forEach(el => el.classList.remove('active'));
-        const cell = document.querySelector(`.string-cell[data-string="${string}"][data-fret="${fret}"]`);
+        const cell = document.querySelector(`.string-cell[data-s="${string}"][data-f="${fret}"]`)
+            || document.querySelector(`.string-cell[data-string="${string}"][data-fret="${fret}"]`);
         if (cell) {
             cell.classList.add('active');
             setTimeout(() => cell.classList.remove('active'), 400);
