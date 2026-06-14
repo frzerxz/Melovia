@@ -3686,7 +3686,7 @@
                 🎸 Telli Çalgılar <span class="cat-arrow">▾</span>
             </button>
             <div class="sidebar-cat-items" id="itemsTelli">
-                <button class="sidebar-subitem active" onclick="showSidebarSection('guitar')">Klasik Gitar <span class="badge-active">Aktif</span></button>
+                <button class="sidebar-subitem" onclick="showSidebarSection('guitar')">Klasik Gitar <span class="badge-active">Aktif</span></button>
                 <button class="sidebar-subitem" onclick="showComingSoon('Elektro Gitar')">Elektro Gitar <span class="badge-soon">Yakında</span></button>
                 <button class="sidebar-subitem" onclick="showComingSoon('Bas Gitar')">Bas Gitar <span class="badge-soon">Yakında</span></button>
                 <button class="sidebar-subitem" onclick="showComingSoon('Ukulele')">Ukulele <span class="badge-soon">Yakında</span></button>
@@ -3776,7 +3776,7 @@
         <button class="sidebar-item" id="sidebarTab" onclick="showSidebarModule('tablature')">📋 Tablature</button>
         <button class="sidebar-item" id="sidebarBacking" onclick="showSidebarModule('backing')">🎵 Backing Track</button>
         <button class="sidebar-item" id="sidebarRec" onclick="showSidebarModule('recording')">🎙️ Kayıt</button>
-        <button class="sidebar-item" id="sidebarEffects" onclick="toggleEffectsPanel(); event.stopPropagation();">🎛️ Efektler</button>
+        <button class="sidebar-item" id="sidebarEffects" onclick="toggleEffectsPanel(event)">🎛️ Efektler</button>
         <button class="sidebar-item" onclick="showComingSoon('Hedefler')">🎯 Hedefler <span class="badge-soon">Yakında</span></button>
         <button class="sidebar-item" onclick="showComingSoon('İstatistikler')">📊 İstatistikler <span class="badge-soon">Yakında</span></button>
 
@@ -4908,7 +4908,7 @@
     <!-- Toast notification -->
     <div class="toast-notification" id="toastNotification" onclick="dismissToast()">
         <span id="toastMessage"></span>
-        <button class="toast-close-btn" onclick="dismissToast(); event.stopPropagation();" aria-label="Kapat">✕</button>
+        <button class="toast-close-btn" onclick="dismissToast(event)" aria-label="Kapat">✕</button>
     </div>
 
     <!-- Lesson Detail Modal -->
@@ -5705,7 +5705,7 @@
                     // Main riff: E-E-G-E-D-C-B
                     { note: 'Mİ (E3)', s: 5, f: 7, key: '.' },
                     { note: 'Mİ (E3)', s: 5, f: 7, key: '.' },
-                    { note: 'SOL (G3)', s: 3, f: 0, key: '3' },
+                    { note: 'SOL (G3)', s: 5, f: 10, key: 'G' },
                     { note: 'Mİ (E3)', s: 5, f: 7, key: '.' },
                     { note: 'RE (D3)', s: 5, f: 5, key: 'Ğ' },
                     { note: 'DO (C3)', s: 5, f: 3, key: 'V' },
@@ -5713,7 +5713,7 @@
                     // Repeat
                     { note: 'Mİ (E3)', s: 5, f: 7, key: '.' },
                     { note: 'Mİ (E3)', s: 5, f: 7, key: '.' },
-                    { note: 'SOL (G3)', s: 3, f: 0, key: '3' },
+                    { note: 'SOL (G3)', s: 5, f: 10, key: 'G' },
                     { note: 'Mİ (E3)', s: 5, f: 7, key: '.' },
                     { note: 'RE (D3)', s: 5, f: 5, key: 'Ğ' },
                     { note: 'DO (C3)', s: 5, f: 3, key: 'V' },
@@ -6807,6 +6807,7 @@
         // ============================================
 
         let savedSidebarActives = [];
+        let effectsOpenGuard = false;
 
         function closeEffectsPanel(restoreNav = true) {
             const panel = document.getElementById('effectsPanel');
@@ -6815,12 +6816,21 @@
             const btn = document.getElementById('sidebarEffects');
             if (btn) btn.classList.remove('active');
             if (restoreNav && savedSidebarActives.length) {
-                savedSidebarActives.forEach(el => el.classList.add('active'));
+                savedSidebarActives.forEach(el => {
+                    if (el && el.isConnected) el.classList.add('active');
+                });
                 savedSidebarActives = [];
             }
         }
 
-        function toggleEffectsPanel() {
+        function toggleEffectsPanel(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            effectsOpenGuard = true;
+            setTimeout(() => { effectsOpenGuard = false; }, 0);
+
             const panel = document.getElementById('effectsPanel');
             if (!panel) return;
             const willOpen = !panel.classList.contains('active');
@@ -6990,8 +7000,9 @@
             }
         }
 
-        // Click outside to close effects panel
+        // Click outside to close effects panel (guard prevents same-click close on toggle)
         document.addEventListener('click', (e) => {
+            if (effectsOpenGuard) return;
             const panel = document.getElementById('effectsPanel');
             if (!panel || !panel.classList.contains('active')) return;
             if (panel.contains(e.target)) return;
@@ -7716,6 +7727,12 @@
 
         let currentTab = 'smoke';
 
+        // Standard tab cell: 2 chars, e.g. "-7", "10", "--"
+        function formatTabCell(fret) {
+            const s = String(fret);
+            return s.length >= 2 ? s : '-' + s;
+        }
+
         function loadTablature(tabKey) {
             currentTab = tabKey;
             const tab = tablatures[tabKey];
@@ -7725,17 +7742,14 @@
             const stringLabels = ['e', 'B', 'G', 'D', 'A', 'E'];
             const noteCount = tab.notes.length;
 
-            // Her tel için nota span'ları oluştur
-            let rows = [[], [], [], [], [], []]; // 6 string row
+            // Her tel için nota span'ları oluştur (s=1 high e → row 0, s=6 low E → row 5)
+            let rows = [[], [], [], [], [], []];
 
             tab.notes.forEach((note, idx) => {
-                const sIdx = note.s - 1; // tel indexi (0-based, e=0 B=1 G=2 D=3 A=4 E=5)
+                const sIdx = note.s - 1;
                 for (let t = 0; t < 6; t++) {
-                    if (t === sIdx) {
-                        rows[t].push(`<span class="tn" data-ni="${idx}" data-s="${t}">${String(note.f).padStart(2,' ')}</span>`);
-                    } else {
-                        rows[t].push(`<span class="tn" data-ni="${idx}" data-s="${t}">--</span>`);
-                    }
+                    const cell = t === sIdx ? formatTabCell(note.f) : '--';
+                    rows[t].push(`<span class="tn" data-ni="${idx}" data-s="${t}">${cell}</span>`);
                 }
             });
 
@@ -7752,7 +7766,7 @@
             display.innerHTML = headerHtml + rows.map((spans, i) => `
                 <div class="tab-line">
                     <span class="tab-string-label">${stringLabels[i]}|</span>
-                    <span class="tab-notes">${spans.join('-')}</span>
+                    <span class="tab-notes">${spans.join('')}</span>
                 </div>
             `).join('');
         }
@@ -8277,7 +8291,11 @@
                 showGuitarPanel(config.panelId);
             }
 
-            // Activate sidebar button
+            // Guitar tool modules: only the tool button stays active (not Klasik Gitar subitem)
+            if (config.section === 'guitar' && config.sidebarId) {
+                document.querySelectorAll('.sidebar-subitem').forEach(el => el.classList.remove('active'));
+            }
+
             if (config.sidebarId) {
                 const btn = document.getElementById(config.sidebarId);
                 if (btn) btn.classList.add('active');
@@ -8286,7 +8304,8 @@
 
         // Toast notification for "Coming Soon" items
         let toastTimer = null;
-        function dismissToast() {
+        function dismissToast(e) {
+            if (e) e.stopPropagation();
             const toast = document.getElementById('toastNotification');
             if (!toast) return;
             if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; }
@@ -8298,7 +8317,6 @@
             const msgEl = document.getElementById('toastMessage');
             if (!toast || !msgEl) return;
 
-            // Check if it's a Turkish instrument
             const turkishInstruments = ['Bağlama', 'Saz', 'Ud', 'Darbuka', 'Ney', 'Kaval', 'Def'];
             const isTurkish = turkishInstruments.some(t => instrumentName.includes(t));
 
@@ -8312,8 +8330,13 @@
             toast.classList.remove('show');
             void toast.offsetWidth;
             toast.classList.add('show');
-            toastTimer = setTimeout(dismissToast, 3000);
+            toastTimer = setTimeout(() => dismissToast(), 3000);
         }
+
+        document.addEventListener('keydown', () => {
+            const toast = document.getElementById('toastNotification');
+            if (toast && toast.classList.contains('show')) dismissToast();
+        }, true);
 
         // Mobile sidebar controls
         function toggleMobileSidebar() {
