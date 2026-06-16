@@ -649,6 +649,9 @@
                     console.log('🎵 Full tab loaded:', key, '→', fullTablatureNotes[key].length, 'notes');
                 }
             });
+            if (typeof loadTablature === 'function' && typeof currentTab !== 'undefined') {
+                loadTablature(currentTab);
+            }
         }
 
         // Expand lesson songData

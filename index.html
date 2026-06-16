@@ -3410,10 +3410,12 @@
             height: 1.6em;
             line-height: 1.6em;
             margin-bottom: 0;
+            border-bottom: 1px dashed rgba(6, 182, 212, 0.22);
         }
 
         .tab-string-label {
             width: 24px;
+            flex-shrink: 0;
             color: var(--dim);
             font-weight: bold;
         }
@@ -3422,6 +3424,16 @@
             color: var(--cyan);
             letter-spacing: 2px;
             white-space: nowrap;
+            flex: 1;
+            min-width: calc(var(--tab-cols, 32) * 1.35em);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .tab-rail {
+            color: rgba(6, 182, 212, 0.28);
+            letter-spacing: 2px;
+            user-select: none;
         }
 
         .tab-notes .highlight {
@@ -3435,10 +3447,21 @@
             transition: color 0.1s, text-shadow 0.1s;
         }
 
+        .tn.active-column {
+            background: rgba(139, 92, 246, 0.14);
+            border-radius: 2px;
+        }
+
         .tn.active-note {
             color: #c084fc !important;
             text-shadow: 0 0 8px rgba(192, 132, 252, 0.8);
             font-weight: bold;
+            background: rgba(192, 132, 252, 0.25);
+            border-radius: 2px;
+        }
+
+        .tn.played-note {
+            opacity: 0.45;
         }
 
         .tab-info-bar {
@@ -3473,6 +3496,11 @@
         .tab-control-btn.active {
             background: var(--accent);
             border-color: var(--accent);
+        }
+
+        .tab-control-btn.stop-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
         }
 
         /* === PRACTICE MODE === */
@@ -4166,6 +4194,7 @@
                         style="background: rgba(139, 92, 246, 0.25); border-color: rgba(139, 92, 246, 0.5);">🎯 Practice
                         Mode</button>
                     <button class="tab-control-btn" onclick="playTablature()">▶ Çal</button>
+                    <button class="tab-control-btn stop-btn" onclick="stopTablature()">⏹ Durdur</button>
                     <button class="tab-control-btn" onclick="showTablatureFromRecording()">📝 Son Kaydı Göster</button>
                     <button class="tab-control-btn" onclick="clearTablature()">🗑️ Temizle</button>
                 </div>
@@ -7753,6 +7782,13 @@
                 }
             });
 
+            const minCols = Math.max(noteCount, 36);
+            const railLen = Math.max(0, (minCols - noteCount) * 2);
+            const railHtml = railLen ? `<span class="tab-rail">${'-'.repeat(railLen)}</span>` : '';
+            rows.forEach(row => row.push(railHtml));
+
+            display.style.setProperty('--tab-cols', minCols);
+
             let headerHtml = '';
             if (tab.artist) {
                 headerHtml = `<div class="tab-info-bar">
@@ -7773,6 +7809,48 @@
 
         let tabPlayingTimeout = [];
         let tabIsPlaying = false;
+        let practiceTabKey = null;
+
+        /** Tablature playhead: vurgulu sütun (6 tel) + aktif perde hücresi */
+        function setTabPlayhead(noteIndex, stringNum) {
+            const display = document.getElementById('tablatureDisplay');
+            if (!display) return;
+
+            display.querySelectorAll('.tn').forEach(el => {
+                const ni = parseInt(el.dataset.ni, 10);
+                el.classList.remove('active-column', 'active-note');
+                if (!isNaN(ni) && ni < noteIndex) {
+                    el.classList.add('played-note');
+                } else {
+                    el.classList.remove('played-note');
+                }
+            });
+
+            display.querySelectorAll(`.tn[data-ni="${noteIndex}"]`).forEach(el => {
+                el.classList.add('active-column');
+            });
+
+            const fretCell = display.querySelector(`.tn[data-ni="${noteIndex}"][data-s="${stringNum - 1}"]`);
+            if (fretCell && fretCell.textContent.trim() !== '--') {
+                fretCell.classList.add('active-note');
+            }
+
+            const colAnchor = display.querySelector(`.tn[data-ni="${noteIndex}"]`);
+            if (colAnchor) {
+                const displayRect = display.getBoundingClientRect();
+                const spanRect = colAnchor.getBoundingClientRect();
+                const scrollTarget = display.scrollLeft + (spanRect.left - displayRect.left) - (displayRect.width / 3);
+                display.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
+            }
+        }
+
+        function clearTabPlayhead() {
+            const display = document.getElementById('tablatureDisplay');
+            if (!display) return;
+            display.querySelectorAll('.tn').forEach(el => {
+                el.classList.remove('active-column', 'active-note', 'played-note');
+            });
+        }
 
         function ensureFretVisible(fret) {
             if (fret === 0) return; // open string, always visible
@@ -7851,27 +7929,8 @@
                         }
                     }
 
-                    // === TABLATURE NOTA HIGHLIGHT ===
-                    // Önceki aktif notaları temizle
-                    display.querySelectorAll('.tn.active-note').forEach(el => el.classList.remove('active-note'));
-
-                    // Yalnızca çalınan telin span'ını vurgula
-                    const noteSpans = display.querySelectorAll(`.tn[data-ni="${i}"][data-s="${note.s - 1}"]`);
-                    noteSpans.forEach(span => {
-                        span.classList.add('active-note');
-                    });
-
-                    // === YATAY AUTO-SCROLL: aktif notayı merkezde tut ===
-                    const activeSpan = display.querySelector(`.tab-notes .tn[data-ni="${i}"][data-s="${note.s - 1}"]`);
-                    if (activeSpan) {
-                        const spanRect = activeSpan.getBoundingClientRect();
-                        const displayRect = display.getBoundingClientRect();
-                        const scrollTarget = display.scrollLeft + (spanRect.left - displayRect.left) - (displayRect.width / 3);
-                        display.scrollTo({
-                            left: Math.max(0, scrollTarget),
-                            behavior: 'smooth'
-                        });
-                    }
+                    // === TABLATURE: sütun playhead (tüm tellerde) + aktif perde ===
+                    setTabPlayhead(i, note.s);
 
                     // === İLERLEME ÇUBUĞU ===
                     const pct = ((i + 1) / tab.notes.length) * 100;
@@ -7885,7 +7944,7 @@
             const endTid = setTimeout(() => {
                 tabIsPlaying = false;
                 display.style.borderColor = '';
-                display.querySelectorAll('.tn.active-note').forEach(el => el.classList.remove('active-note'));
+                clearTabPlayhead();
                 progressBar.style.width = '0%';
                 display.scrollTo({ left: 0, behavior: 'smooth' });
             }, tab.notes.length * beatMs + 500);
@@ -7896,13 +7955,19 @@
             tabIsPlaying = false;
             tabPlayingTimeout.forEach(t => clearTimeout(t));
             tabPlayingTimeout = [];
+            if (typeof audioEngine !== 'undefined') audioEngine.stopAll();
+            document.querySelectorAll('.string-cell.active, .string-label.active').forEach(el => el.classList.remove('active'));
             const display = document.getElementById('tablatureDisplay');
             if (display) {
                 display.style.borderColor = '';
-                display.querySelectorAll('.tn.active-note').forEach(el => el.classList.remove('active-note'));
+                clearTabPlayhead();
                 const pb = display.querySelector('.tab-progress');
                 if (pb) pb.style.width = '0%';
             }
+        }
+
+        function stopTablature() {
+            stopTabPlayback();
         }
 
         function showTablatureFromRecording() {
@@ -7963,20 +8028,21 @@
 
             // Activate practice mode
             practiceActive = true;
+            practiceTabKey = tabKey;
             practiceNotes = [...tab.notes];
             practiceCurrentIndex = 0;
             practiceCorrectCount = 0;
             practiceStartTime = Date.now();
 
+            loadTablature(tabKey);
             setPair(getRequiredPairForLesson(practiceNotes));
 
             // Show practice bar
             document.getElementById('practiceBar').classList.add('active');
             document.getElementById('practiceSongName').textContent = tab.name || tabKey;
 
-            // Switch to pair/zone panel so keyboard is visible during practice
             showSection('guitar');
-            showGuitarPanel('panelPairZone');
+            showGuitarPanel('panelTablature');
 
             // Scroll to fretboard
             document.querySelector('.fretboard-wrap').scrollIntoView({ behavior: 'smooth' });
@@ -8007,6 +8073,8 @@
 
             practiceNotes = [];
             practiceCurrentIndex = 0;
+            practiceTabKey = null;
+            clearTabPlayhead();
         }
 
         function showPracticeTarget() {
@@ -8052,6 +8120,11 @@
                         nextCell.classList.add('practice-next');
                     }
                 }
+            }
+
+            // Tablature playhead (practice)
+            if (practiceTabKey === currentTab) {
+                setTabPlayhead(practiceCurrentIndex, currentNote.s);
             }
 
             // Update UI
@@ -8258,11 +8331,13 @@
         // ============================================
 
         function showGuitarPanel(panelId) {
-            // Hide all guitar module panels
             document.querySelectorAll('.guitar-module-panel').forEach(p => p.classList.remove('active'));
-            // Show the requested panel
             const panel = document.getElementById(panelId);
             if (panel) panel.classList.add('active');
+            // Tablature / Practice: klavye pair-zone paneli de görünsün
+            if (panelId === 'panelTablature') {
+                document.getElementById('panelPairZone')?.classList.add('active');
+            }
         }
 
         function showSidebarModule(moduleName) {
@@ -8289,6 +8364,9 @@
             // If a guitar panel is specified, switch to it exclusively
             if (config.panelId) {
                 showGuitarPanel(config.panelId);
+                if (config.panelId === 'panelTablature' && typeof loadTablature === 'function') {
+                    loadTablature(currentTab);
+                }
             }
 
             // Guitar tool modules: only the tool button stays active (not Klasik Gitar subitem)
