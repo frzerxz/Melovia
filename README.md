@@ -1,143 +1,105 @@
-# 🎸 Melovia - Dijital Enstrüman Simülatörü
+# 🎸 Melovia - Dijital Müzik Eğitim Platformu
 
-**Melovia**, bilgisayar klavyesi kullanarak gitar ve piyano çalmayı öğreten interaktif bir müzik eğitim platformudur. Web tabanlı arayüz ve **Unreal Engine 5** C++ altyapısı ile profesyonel düzeyde ses sentezi ve 3D görselleştirme sunar.
+**Melovia**, bilgisayar klavyesini enstrüman perdesine eşleyerek gitar ve piyano çalmayı öğreten web tabanlı interaktif bir müzik eğitim platformudur.
 
 🔗 **Canlı Demo:** [https://frzerxz.github.io/Melovia/](https://frzerxz.github.io/Melovia/)  
-📋 **TÜBİTAK 2209-A Projesi** | Balıkesir Üniversitesi Mühendislik Fakültesi
+📋 **TÜBİTAK 2209-A Projesi** | Balıkesir Üniversitesi Mühendislik Fakültesi  
+📄 **Bitirme tezi rehberi:** [docs/THESIS_GUIDE.md](docs/THESIS_GUIDE.md)
 
-## ✨ Özellikler
+## ✨ Özellikler (v0.3)
 
-### 🎸 Gitar Modülü v4
-- **6 Telli Gitar Simülasyonu:** Klasik, Elektro ve Bas gitar modları
-- **20+ Akor Kütüphanesi:** Major, Minor, 7th, Maj7 akorları (C, D, E, F, G, A, B ve varyasyonları)
-- **Alternatif Akortlar:** Standard, Drop D, Open G, Open D, DADGAD, Half Step Down
-- **Sanal Capo:** 1-12 perde arası capo desteği
-- **Strum Modu:** Yukarı/aşağı strum yönü
+### 🎸 Klasik Gitar (öncelikli geliştirme)
+- **Pair Zone klavye eşlemesi:** QWERTY tuşları → tel/perde
+- **Akor sistemi:** Diyagram, tel tel görünüm, otomatik susturma (×)
+- **Sol el / sağ el:** Perde tuşları sessiz; **Strum** ile ses
+- **Tablature oynatıcı:** 8+ şarkı, playhead, scroll senkronu
+- **Loop:** Seçili nota aralığını tekrar (ders + practice + tab)
+- **Tab hızı:** 0.5× – 1.5× (yavaş pratik)
 
-### 🔊 Gelişmiş Ses Motoru v4
-- **Karplus-Strong Sentezi:** Gerçekçi gitar tını simülasyonu
-- **6 Amplifikatör Preset'i:** Clean, Crunch, High Gain, Acoustic, Jazz, Metal
-- **Efekt Zinciri:**
-  - 💫 Chorus (Rate, Depth, Mix kontrolleri)
-  - 🔁 Delay/Echo (Time, Feedback, Mix)
-  - 📊 3-Band EQ (Low, Mid, High)
-  - 🌊 Reverb
-  - ⚡ Distortion/Overdrive
-- **🥁 Metronom:** 40-220 BPM arası ayarlanabilir tempo
-- **Palm Mute:** Bastırılmış tel sesi
+### 🔊 Ses Motoru
+- **Karplus-Strong** gitar sentezi
+- 6 amp preset, reverb, chorus, delay, EQ, metronom
 
-### 🎹 Piyano Modu
-- 88 tuşlu piyano simülasyonu
-- Klavye ile çalma desteği
-- Velocity (basma şiddeti) desteği
-- Sustain pedal fonksiyonu
+### 🎓 Eğitim
+- İnteraktif dersler (HUD + timeline)
+- Practice mode (fretboard hedefli)
+- Tamamlama overlay (istatistik + tekrar)
 
-### 🎓 İnteraktif Dersler & Şarkı Pratikleri
-- **5 Temel Ders + 3 Şarkı Pratiği:** Toplam 8 interaktif öğrenme modülü
-- **HUD (Heads-Up Display):** Kayan nota şeridi (Timeline) ve anlık geri bildirim
-- **Tamamlama Overlay:** Animasyonlu sonuç ekranı - istatistikler, Tekrar Çal / Kapat butonları
-- **İlerleme Takibi:** Doğru/Toplam, %Başarı, Süre gösterimi
-
-### 🎨 Modern UI/UX
-- **Efekt Kontrol Paneli:** Sağdan kayarak açılan floating panel
-- **Görsel Geri Bildirim:** Nota çalındığında dalga efekti animasyonu
-- **Glassmorphism Tasarım:** Blur arka plan, gradient renkler, animasyonlar
-- **Responsive Tasarım:** Farklı ekran boyutlarına uyumlu
-- **Koyu Tema:** Göz yormayan karanlık arayüz
+### 🎹 Diğer
+- Piyano modu
+- Kayıt & playback, backing track paneli
+- Elektro / bas gitar modları (temel; akor entegrasyonu sırada)
 
 ## 🚀 Kurulum
 
-Projeyi yerel makinenizde çalıştırmak için:
+```bash
+git clone https://github.com/frzerxz/Melovia.git
+cd Melovia
+npx http-server -p 8080 -c-1
+```
 
-1. Repoyu klonlayın:
-   ```bash
-   git clone https://github.com/frzerxz/Melovia.git
-   ```
-2. Klasöre girin:
-   ```bash
-   cd Melovia
-   ```
-3. Bir yerel sunucu başlatın (Örn: VS Code Live Server veya http-server):
-   ```bash
-   npx http-server -p 8080 -c-1
-   ```
-4. Tarayıcıda açın: `http://localhost:8080`
+Tarayıcı: `http://localhost:8080`
 
-## 🎮 Nasıl Oynanır?
+## 🎮 Hızlı kullanım
 
-### Gitar Modu
-- Klavye tuşları (1-6, Q-Y, A-H, Z-N) gitar tellerine ve perdelere haritalanmıştır
-- **Space:** Tüm sesleri durdur
-- **+ / -:** Zone değiştir
-- **← / →:** Perde görünümünü kaydır
+### Gitar
+- **Klasik Gitar** seçili olsun (üst menü)
+- Pair Zone tuşları ile tek nota çal
+- **Am** → mor tuşları bas → **Strum**
+- Tablature: loop + hız → **▶ Çal**
 
-### Efekt Paneli
-- Sağ üstteki ⚙️ butonuna tıklayarak efekt panelini açın
-- Amp preset'lerini, EQ'yu ve efektleri ayarlayın
-- Metronom ile tempo tutun
-
-### Dersler
-- "Dersler" sekmesinden bir ders seçin
-- HUD üzerindeki yönergeleri takip edin
-- Doğru tuşlara basarak ilerleyin
+### Kısayollar
+- **Space:** Sesi durdur
+- **+ / -:** Pair değiştir
+- **[ / ]:** Zone kaydır
 
 ## 🛠️ Teknolojiler
 
-### Web (Frontend)
-- **HTML5 / CSS3 / Vanilla JavaScript**
-- **Web Audio API:** Gerçek zamanlı ses sentezi
-- **Karplus-Strong Algoritması:** Fiziksel modelleme ile gitar sesi
-
-### C++ / Unreal Engine 5.7.1
-- **Universal Note Core:** 12-TET frekans hesaplama sistemi
-- **GuitarModule:** 6 telli gitar simülasyonu (6 akort tipi, capo desteği)
-- **PianoModule:** 88 tuşlu piyano (velocity + sustain pedal)
-- **ChordLibrary:** 29 akor veritabanı (Major, Minor, 7th, Maj7, Power Chord)
-- **MeloviaGameMode:** Blueprint-erişilebilir oyun modu
-- **GuitarActor:** 3D gitar aktörü (6 procedural mesh tel, titreşim animasyonu)
-- **MeloviaSceneManager:** Kamera sistemi (5 preset) + 3-point ışıklandırma
-- **MeloviaPlayerController:** Klavye girdi yönetimi (13 perde + 6 tel)
+| Katman | Teknoloji |
+|--------|-----------|
+| Frontend | HTML5, CSS3, Vanilla JavaScript |
+| Ses | Web Audio API, Karplus-Strong |
+| Dağıtım | GitHub Pages |
+| Veri | `noteMapping.js`, `fullSongData.js`, `guitarModule.js` |
+| Deneysel | Unreal Engine 5 (`unreal/` — arşiv prototip) |
 
 ## 📁 Proje Yapısı
 
 ```
 Melovia/
-├── index.html              # Ana web uygulaması
-├── css/                    # Web stilleri
-│   ├── styles.css, guitar.css, lessons.css, piano.css
-├── js/                     # Web JavaScript modülleri
-│   ├── app.js, audioEngine.js, guitarModule.js
-│   ├── lessonsModule.js, noteMapping.js, pianoModule.js
-├── docs/                   # Dokümantasyon
-│   └── PROJECT_REPORT.md
-├── unreal/MeloviaUE5/      # Unreal Engine 5 Projesi
-│   ├── MeloviaUE5.uproject
-│   ├── Source/
-│   │   ├── MeloviaCore/    # C++ Universal Note Core
-│   │   │   ├── Public/     # UniversalNoteCore.h, GuitarModule.h, PianoModule.h, ChordLibrary.h
-│   │   │   └── Private/    # .cpp implementasyonlar
-│   │   └── MeloviaUE5/     # Ana oyun modülü
-│   │       ├── MeloviaGameMode.h/.cpp
-│   │       ├── GuitarActor.h/.cpp          # 3D gitar aktörü
-│   │       ├── MeloviaSceneManager.h/.cpp  # Kamera + ışık
-│   │       └── MeloviaPlayerController.h/.cpp  # Girdi
-│   └── Config/             # UE5 konfigürasyonları
-├── DOCUMENTATION.md        # Kapsamlı teknik dokümantasyon
-└── README.md               # Bu dosya
+├── index.html              # Ana uygulama (UI + mantık)
+├── js/
+│   ├── audioEngine.js      # Ses sentezi ve efektler
+│   ├── guitarModule.js     # Akor kütüphanesi, akort
+│   ├── noteMapping.js      # Nota frekans / Türkçe ad
+│   ├── fullSongData.js     # Tam şarkı tab verileri
+│   └── lessonsModule.js    # Ders modülü
+├── docs/
+│   ├── PROJECT_REPORT.md   # Proje raporu
+│   └── THESIS_GUIDE.md     # Bitirme tezi yazım rehberi
+├── DOCUMENTATION.md        # Teknik dokümantasyon
+├── unreal/MeloviaUE5/      # UE5 prototip (aktif geliştirme dışı)
+└── README.md
 ```
+
+## 📚 Dokümantasyon
+
+| Dosya | İçerik |
+|-------|--------|
+| [DOCUMENTATION.md](DOCUMENTATION.md) | Modül modül teknik açıklama |
+| [docs/PROJECT_REPORT.md](docs/PROJECT_REPORT.md) | Proje raporu, sürüm notları |
+| [docs/THESIS_GUIDE.md](docs/THESIS_GUIDE.md) | Tez yapısı, sayfa sayısı, Melovia iskeleti |
 
 ## 🗺️ Yol Haritası
 
-- [x] Web uygulaması (Gitar, Piyano, Dersler)
-- [x] Ses motoru v4 (Karplus-Strong + Efektler)
-- [x] C++ Universal Note Core (UE5)
-- [x] UE5 proje entegrasyonu ve derleme
-- [x] 3D gitar görselleri (GuitarActor + procedural mesh)
-- [x] Kamera ve ışık sistemi (SceneManager)
-- [x] Oyuncu girdi sistemi (PlayerController)
-- [ ] VR desteği (OpenXR)
-- [ ] AI analiz modülü
-- [ ] Mobil uyumluluk
+- [x] Web platform (gitar, piyano, dersler)
+- [x] Tablature + loop + tab hızı
+- [x] Klasik gitar akor–klavye entegrasyonu
+- [x] GitHub Pages dağıtımı
+- [ ] Elektro/bas akor entegrasyonu
+- [ ] Kullanılabilirlik testi (tez bölümü)
+- [ ] Mobil / PWA
+- [ ] UE5 arşiv (opsiyonel VR)
 
 ---
-*TÜBİTAK 2209-A Projesi - Melovia v0.2 | Geliştirici: Firuze Eroğlu | Balıkesir Üniversitesi*
+*Melovia v0.3 | Firuze Eroğlu | Balıkesir Üniversitesi*

@@ -1202,6 +1202,33 @@
             transform: scale(0.92);
         }
 
+        .key-btn.chord-key-highlight {
+            background: rgba(139, 92, 246, 0.35) !important;
+            border-color: #c084fc !important;
+            color: #fff !important;
+            box-shadow: 0 0 12px rgba(192, 132, 252, 0.55);
+        }
+
+        .key-btn.chord-key-held {
+            background: rgba(74, 222, 128, 0.28) !important;
+            border-color: #4ade80 !important;
+            color: #fff !important;
+            box-shadow: 0 0 10px rgba(74, 222, 128, 0.45);
+            transform: scale(0.94);
+        }
+
+        .chord-hand-hint {
+            font-size: 11px;
+            color: var(--dim);
+            margin-top: 6px;
+            line-height: 1.45;
+        }
+
+        .chord-hand-hint strong {
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
         /* String 1 (e) - Pink - Soft but Vibrant */
         .key-btn.s1 {
             background: rgba(236, 72, 153, 0.12);
@@ -3004,8 +3031,277 @@
             background: rgba(6, 182, 212, 0.3);
         }
 
+        /* Klasik gitar — akor diyagramı */
+        .classic-guitar-feature.feature-disabled {
+            opacity: 0.45;
+            pointer-events: none;
+            filter: grayscale(0.35);
+        }
+
+        .classic-feature-hint {
+            display: none;
+            font-size: 11px;
+            color: #f59e0b;
+            margin-top: 6px;
+        }
+
+        .classic-guitar-feature.feature-disabled + .classic-feature-hint,
+        .chord-strum-panel:has(.classic-guitar-feature.feature-disabled) .classic-feature-hint,
+        .tablature-panel:has(.classic-guitar-feature.feature-disabled) .classic-feature-hint {
+            display: block;
+        }
+
+        .chord-diagram-panel {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px dashed rgba(139, 92, 246, 0.25);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .chord-diagram-visual {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 10px;
+            padding: 8px 10px;
+            min-width: 110px;
+        }
+
+        .chord-diagram-title {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+        }
+
+        .chord-diagram-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .chord-diagram-svg {
+            display: block;
+        }
+
+        .chord-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            font-size: 10px;
+            color: var(--dim);
+        }
+
+        .chord-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chord-legend .sym {
+            font-weight: 700;
+            min-width: 14px;
+            text-align: center;
+        }
+
+        .chord-legend .sym.mute { color: #f87171; }
+        .chord-legend .sym.open { color: #4ade80; }
+        .chord-legend .sym.fret { color: #c084fc; }
+
+        .chord-string-strip {
+            margin-top: 10px;
+        }
+
+        .chord-string-strip-title {
+            font-size: 10px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+
+        .chord-string-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+
+        .chord-string-head {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--muted);
+            padding-bottom: 2px;
+        }
+
+        .chord-string-cell {
+            padding: 6px 2px;
+            border-radius: 8px;
+            font-size: 10px;
+            line-height: 1.25;
+            border: 1px solid transparent;
+        }
+
+        .chord-string-cell.mute {
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.35);
+            color: #fca5a5;
+        }
+
+        .chord-string-cell.open {
+            background: rgba(74, 222, 128, 0.1);
+            border-color: rgba(74, 222, 128, 0.35);
+            color: #86efac;
+        }
+
+        .chord-string-cell.fret {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(192, 132, 252, 0.4);
+            color: #e9d5ff;
+        }
+
+        .chord-string-cell .cell-main {
+            font-size: 13px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .chord-string-cell .cell-sub {
+            font-size: 9px;
+            opacity: 0.85;
+        }
+
+        .chord-diagram-meta {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .chord-diagram-meta p {
+            font-size: 12px;
+            color: var(--dim);
+            line-height: 1.5;
+            margin: 0 0 6px;
+        }
+
+        .chord-diagram-fingers {
+            font-size: 11px;
+            color: var(--cyan);
+            font-family: 'Courier New', monospace;
+        }
+
+        .chord-keyboard-map {
+            margin-top: 8px;
+            padding: 10px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.22);
+            border-radius: 8px;
+        }
+
+        .chord-keyboard-map-title {
+            font-size: 10px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+
+        .chord-key-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            padding: 4px 8px;
+            margin: 2px 4px 2px 0;
+            background: rgba(0, 0, 0, 0.35);
+            border: 2px solid #c084fc;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #e9d5ff;
+        }
+
+        .chord-key-plus {
+            color: var(--dim);
+            margin: 0 2px;
+            font-size: 11px;
+        }
+
+        .chord-btn.active-chord {
+            background: rgba(139, 92, 246, 0.35);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.35);
+        }
+
+        /* Tab player hız (klasik gitar) */
+        .tab-speed-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.22);
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .tab-speed-bar label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dim);
+        }
+
+        .tab-speed-bar input[type="range"] {
+            width: 120px;
+            accent-color: var(--cyan);
+        }
+
+        .tab-speed-label {
+            min-width: 36px;
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .tab-speed-bpm {
+            color: var(--dim);
+            font-size: 11px;
+        }
+
+        .tab-speed-presets {
+            display: flex;
+            gap: 4px;
+        }
+
+        .tab-speed-preset {
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(100, 100, 120, 0.12);
+            color: var(--dim);
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .tab-speed-preset:hover,
+        .tab-speed-preset.active {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            background: rgba(6, 182, 212, 0.12);
+        }
+
         .strum-controls {
             display: flex;
+            align-items: center;
             gap: 8px;
             margin-top: 12px;
             padding-top: 12px;
@@ -4107,25 +4403,60 @@
                         </select>
                     </div>
                 </div>
+                <div class="classic-guitar-feature" id="classicChordTools">
                 <div class="chord-buttons">
                     <!-- Major Chords -->
-                    <button class="chord-btn" onclick="playChord('C')">C</button>
-                    <button class="chord-btn" onclick="playChord('D')">D</button>
-                    <button class="chord-btn" onclick="playChord('E')">E</button>
-                    <button class="chord-btn" onclick="playChord('F')">F</button>
-                    <button class="chord-btn" onclick="playChord('G')">G</button>
-                    <button class="chord-btn" onclick="playChord('A')">A</button>
+                    <button class="chord-btn" onclick="selectChord('C')">C</button>
+                    <button class="chord-btn" onclick="selectChord('D')">D</button>
+                    <button class="chord-btn" onclick="selectChord('E')">E</button>
+                    <button class="chord-btn" onclick="selectChord('F')">F</button>
+                    <button class="chord-btn" onclick="selectChord('G')">G</button>
+                    <button class="chord-btn" onclick="selectChord('A')">A</button>
                     <!-- Minor Chords -->
-                    <button class="chord-btn minor" onclick="playChord('Am')">Am</button>
-                    <button class="chord-btn minor" onclick="playChord('Dm')">Dm</button>
-                    <button class="chord-btn minor" onclick="playChord('Em')">Em</button>
+                    <button class="chord-btn minor" onclick="selectChord('Am')">Am</button>
+                    <button class="chord-btn minor" onclick="selectChord('Dm')">Dm</button>
+                    <button class="chord-btn minor" onclick="selectChord('Em')">Em</button>
                 </div>
                 <div class="strum-controls">
-                    <button class="strum-btn" onclick="strumDown()" title="Aşağı Strum">⬇️ Strum</button>
-                    <button class="strum-btn" onclick="strumUp()" title="Yukarı Strum">⬆️ Strum</button>
-                    <span style="color: var(--dim); font-size: 12px; margin-left: 8px;">Son akor: <span
+                    <button class="strum-btn" onclick="strumDown()" title="Sağ el — aşağı strum">⬇️ Strum</button>
+                    <button class="strum-btn" onclick="strumUp()" title="Sağ el — yukarı strum">⬆️ Strum</button>
+                    <span style="color: var(--dim); font-size: 12px; margin-left: 8px;">Seçili akor: <span
                             id="lastChord">-</span></span>
                 </div>
+                <p class="chord-hand-hint" id="chordHandHint">
+                    <strong>Sol el:</strong> mor tuşları basılı tut (sessiz) ·
+                    <strong>Sağ el:</strong> Strum ile çal ·
+                    <strong>×</strong> susturulan teller otomatik atlanır
+                </p>
+                <div class="chord-diagram-panel" id="chordDiagramPanel">
+                    <div class="chord-diagram-visual">
+                        <div class="chord-diagram-title">Akor diyagramı</div>
+                        <div class="chord-diagram-name" id="chordDiagramName">—</div>
+                        <div id="chordDiagramMount"><span style="color:var(--dim);font-size:11px;">Bir akor seçin</span></div>
+                        <div class="chord-legend" id="chordLegend" hidden>
+                            <span><span class="sym mute">×</span> Otomatik sustur — sen vurmazsın</span>
+                            <span><span class="sym open">○</span> Açık tel</span>
+                            <span><span class="sym fret">●</span> Perde + parmak</span>
+                        </div>
+                    </div>
+                    <div class="chord-diagram-meta">
+                        <p id="chordDiagramDesc">Klasik gitar: akor = aynı anda birkaç klavye tuşu (Pair Zone).</p>
+                        <div class="chord-string-strip" id="chordStringStripWrap" hidden>
+                            <div class="chord-string-strip-title">Tel tel görünüm (kalın → ince)</div>
+                            <div class="chord-string-row chord-string-head">
+                                <span>6·E</span><span>5·A</span><span>4·D</span><span>3·G</span><span>2·B</span><span>1·e</span>
+                            </div>
+                            <div class="chord-string-row" id="chordStringStrip"></div>
+                        </div>
+                        <div class="chord-diagram-fingers" id="chordDiagramFingers"></div>
+                        <div class="chord-keyboard-map" id="chordKeyboardMap" hidden>
+                            <div class="chord-keyboard-map-title">Pair Zone klavye tuşları</div>
+                            <div id="chordKeyboardKeys"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <p class="classic-feature-hint">🎸 Akor diyagramı, strum ve tab hızı şu an yalnızca <strong>Klasik Gitar</strong> modunda aktif.</p>
             </div><!-- /.chord-strum-panel -->
 
             </div><!-- /#panelPairZone -->
@@ -4272,6 +4603,23 @@
                     <div class="tab-line"><span class="tab-string-label">E|</span><span
                             class="tab-notes">----------------------------------</span></div>
                 </div>
+                <div class="tab-speed-bar classic-guitar-feature" id="tabSpeedBar">
+                    <label>
+                        Tab hızı
+                        <input type="range" id="tabSpeedSlider" min="50" max="150" step="5" value="100"
+                            oninput="setTabPlaybackSpeed(this.value)">
+                        <span class="tab-speed-label" id="tabSpeedLabel">1×</span>
+                    </label>
+                    <div class="tab-speed-presets">
+                        <button type="button" class="tab-speed-preset" onclick="setTabPlaybackSpeed(50)">0.5×</button>
+                        <button type="button" class="tab-speed-preset" onclick="setTabPlaybackSpeed(75)">0.75×</button>
+                        <button type="button" class="tab-speed-preset active" onclick="setTabPlaybackSpeed(100)">1×</button>
+                        <button type="button" class="tab-speed-preset" onclick="setTabPlaybackSpeed(125)">1.25×</button>
+                        <button type="button" class="tab-speed-preset" onclick="setTabPlaybackSpeed(150)">1.5×</button>
+                    </div>
+                    <span class="tab-speed-bpm" id="tabEffectiveBpm">—</span>
+                </div>
+                <p class="classic-feature-hint tab-speed-hint">🎸 Tab hız ayarı şu an yalnızca <strong>Klasik Gitar</strong> modunda aktif.</p>
                 <div class="loop-bar">
                     <label><input type="checkbox" class="loop-input-enabled"> 🔁 Loop</label>
                     <label>Başlangıç <input type="number" class="loop-input-start" min="1" value="1"></label>
@@ -6576,7 +6924,22 @@
 
             const config = guitarTypes[type];
             console.log('Guitar type changed to:', config.name, '- Frets:', config.frets, '- Strings:', config.strings);
-            // Future: update fretboard based on guitar type
+            updateClassicGuitarFeatures();
+        }
+
+        function isClassicGuitarMode() {
+            return currentGuitarType === 'classic';
+        }
+
+        function updateClassicGuitarFeatures() {
+            const enabled = isClassicGuitarMode();
+            document.querySelectorAll('.classic-guitar-feature').forEach(el => {
+                el.classList.toggle('feature-disabled', !enabled);
+            });
+            updateTabEffectiveBpmDisplay();
+            if (lastPlayedChord && enabled) {
+                renderClassicChordDiagram(lastPlayedChord);
+            }
         }
 
         // Close dropdown when clicking outside
@@ -6642,6 +7005,9 @@
             document.querySelectorAll('.pair-card').forEach(c => c.classList.toggle('active', parseInt(c.dataset.pair) === pair));
             buildZoneGrids();
             updateZoneTags();
+            if (lastPlayedChord && isClassicGuitarMode()) {
+                applyChordKeyMapping(lastPlayedChord);
+            }
         }
 
         function updateZoneTags() {
@@ -6744,9 +7110,23 @@
 
         async function playKeyBtn(btn) {
             await ensureAudio();
+            const s = parseInt(btn.dataset.s, 10);
+            const f = parseInt(btn.dataset.f, 10);
+
+            // Akor modu — sol el: perde bas (sessiz), sağ el strum ile ses
+            if (lastPlayedChord && isClassicGuitarMode() && !practiceActive
+                && !(currentLessonState && currentLessonState.active)) {
+                const inChord = activeChordMapping.some(m => m.s === s && m.f === f);
+                if (inChord) {
+                    btn.classList.toggle('chord-key-held');
+                    updateChordHoldStatus();
+                    return;
+                }
+            }
+
             btn.classList.add('active');
             setTimeout(() => btn.classList.remove('active'), 300);
-            playNote(parseInt(btn.dataset.s), parseInt(btn.dataset.f), null);
+            playNote(s, f, null);
 
             // Ders Aktivite Kontrolü
             if (currentLessonState && currentLessonState.active) {
@@ -7135,23 +7515,341 @@
 
         // === CHORD & STRUM FUNCTIONS ===
         let lastPlayedChord = null;
+        let tabPlaybackSpeed = 1;
+        let activeChordMapping = [];
 
-        async function playChord(chordName) {
+        /** Akor → tel/perde pozisyonları (klasik gitar, GuitarModule verisi) */
+        function getClassicChordPositions(chordName) {
+            if (typeof GuitarModule === 'undefined' || !GuitarModule.getChord) return [];
+            const chord = GuitarModule.getChord(chordName);
+            if (!chord) return [];
+            const capo = GuitarModule.capoPosition || 0;
+            const positions = [];
+            chord.frets.forEach((fret, i) => {
+                if (fret >= 0) {
+                    positions.push({ s: 6 - i, f: fret + capo });
+                }
+            });
+            return positions;
+        }
+
+        function ensurePairForChord(positions) {
+            if (!positions.length) return;
+            const maxF = positions.reduce((m, p) => Math.max(m, p.f), 0);
+            const needed = maxF <= 7 ? 1 : maxF <= 15 ? 2 : 3;
+            if (needed !== currentPair) setPair(needed);
+        }
+
+        function clearChordKeyMapping() {
+            document.querySelectorAll('.key-btn.chord-key-highlight, .key-btn.chord-key-held').forEach(el => {
+                el.classList.remove('chord-key-highlight', 'chord-key-held');
+            });
+            document.querySelectorAll('.string-cell.chord-highlight').forEach(el => {
+                el.classList.remove('chord-highlight');
+            });
+            activeChordMapping = [];
+        }
+
+        /** Akor notalarını Pair Zone tuşları + fretboard ile eşle */
+        function applyChordKeyMapping(chordName) {
+            clearChordKeyMapping();
+            const positions = getClassicChordPositions(chordName);
+            if (!positions.length) return [];
+
+            ensurePairForChord(positions);
+            positions.forEach(p => ensureFretVisible(p.f));
+
+            const mapping = [];
+            positions.forEach(({ s, f }) => {
+                const key = getKeyForNote(s, f);
+                mapping.push({ s, f, key });
+
+                const cell = findFretboardCell(s, f);
+                if (cell) cell.classList.add('chord-highlight');
+
+                const btn = document.querySelector(`.key-btn[data-s="${s}"][data-f="${f}"]`);
+                if (btn) btn.classList.add('chord-key-highlight');
+            });
+
+            activeChordMapping = mapping;
+            return mapping;
+        }
+
+        function renderChordKeyboardMap(mapping) {
+            const wrap = document.getElementById('chordKeyboardMap');
+            const keysEl = document.getElementById('chordKeyboardKeys');
+            if (!wrap || !keysEl) return;
+
+            const valid = mapping.filter(m => m.key && m.key !== '?');
+            if (!valid.length) {
+                wrap.hidden = true;
+                return;
+            }
+
+            wrap.hidden = false;
+            keysEl.innerHTML = valid.map((m, i) => {
+                const plus = i > 0 ? '<span class="chord-key-plus">+</span>' : '';
+                return `${plus}<span class="chord-key-chip" title="Tel ${m.s}, perde ${m.f}">${m.key}</span>`;
+            }).join('');
+        }
+
+        function clearChordKeyHeld() {
+            document.querySelectorAll('.key-btn.chord-key-held').forEach(el => {
+                el.classList.remove('chord-key-held');
+            });
+        }
+
+        function updateChordHoldStatus() {
+            const hint = document.getElementById('chordHandHint');
+            if (!hint || !lastPlayedChord) return;
+            const total = activeChordMapping.length;
+            const held = document.querySelectorAll('.key-btn.chord-key-held').length;
+            if (total > 0 && held > 0) {
+                hint.innerHTML = `<strong>Sol el:</strong> ${held}/${total} tuş basılı · <strong>Sağ el:</strong> Strum ile çal · susturulan teller otomatik atlanır`;
+            }
+        }
+
+        /** Sağ el — tel titreşimi + ses (susturulan teller yok) */
+        function playStrumNote(stringNum, fret) {
+            if (typeof audioEngine !== 'undefined') {
+                audioEngine.playGuitarString(stringNum, fret);
+            }
+            document.querySelectorAll(`.string-cell[data-s="${stringNum}"]`).forEach(cell => {
+                cell.classList.add('vibrating');
+                setTimeout(() => cell.classList.remove('vibrating'), 380);
+            });
+            if (fret === 0) {
+                const label = document.querySelector(`.string-label[data-s="${stringNum}"]`);
+                if (label) {
+                    label.classList.add('active');
+                    setTimeout(() => label.classList.remove('active'), 380);
+                }
+            }
+            const fretCell = document.querySelector(`.string-cell[data-s="${stringNum}"][data-f="${fret}"]`);
+            if (fretCell) {
+                fretCell.classList.add('active');
+                setTimeout(() => fretCell.classList.remove('active'), 380);
+            }
+            const btn = document.querySelector(`.key-btn[data-s="${stringNum}"][data-f="${fret}"]`);
+            if (btn) {
+                btn.classList.add('active');
+                setTimeout(() => btn.classList.remove('active'), 220);
+            }
+        }
+
+        async function strumActiveChord(direction) {
+            if (!lastPlayedChord || !isClassicGuitarMode()) return;
             await ensureAudio();
+            const positions = getClassicChordPositions(lastPlayedChord);
+            if (!positions.length) return;
+
+            const ordered = direction === 'up' ? [...positions].reverse() : positions;
+            ordered.forEach(({ s, f }, i) => {
+                setTimeout(() => playStrumNote(s, f), i * 42);
+            });
+        }
+
+        function selectChord(chordName) {
+            if (!isClassicGuitarMode()) return;
             lastPlayedChord = chordName;
             document.getElementById('lastChord').textContent = chordName;
+            clearChordKeyHeld();
+            renderClassicChordDiagram(chordName);
+            updateChordHoldStatus();
+        }
 
-            if (typeof GuitarModule !== 'undefined' && GuitarModule.playChord) {
-                GuitarModule.playChord(chordName, 'down');
-            } else if (typeof audioEngine !== 'undefined') {
-                // Fallback: play chord notes directly
-                const chordNotes = getChordNotes(chordName);
-                chordNotes.forEach((note, i) => {
-                    setTimeout(() => {
-                        audioEngine.playNoteName(note, 2.5, 'guitar');
-                    }, i * 30);
-                });
+        async function playClassicChordStrum(positions, direction) {
+            await ensureAudio();
+            const ordered = direction === 'up' ? [...positions].reverse() : positions;
+            ordered.forEach(({ s, f }, i) => {
+                setTimeout(() => playStrumNote(s, f), i * 42);
+            });
+        }
+
+        function buildClassicChordDiagramSvg(chord) {
+            const frets = chord.frets;
+            const fingers = chord.fingers || frets;
+            const played = frets.filter(f => f > 0);
+            const minFret = played.length ? Math.min(...played) : 0;
+            const maxFret = played.length ? Math.max(...played) : 0;
+            const baseFret = chord.barre ? chord.barre : (maxFret > 3 ? minFret : 0);
+            const stringXs = [18, 32, 46, 60, 74, 88];
+            const fretYs = [28, 48, 68, 88];
+            const nutY = 18;
+
+            let svg = `<svg class="chord-diagram-svg" viewBox="0 0 106 102" width="106" height="102" aria-hidden="true">`;
+            if (baseFret > 0) {
+                svg += `<text x="6" y="42" fill="#888" font-size="9" font-family="sans-serif">${baseFret}</text>`;
+            } else {
+                svg += `<line x1="14" y1="${nutY}" x2="92" y2="${nutY}" stroke="#ccc" stroke-width="3"/>`;
             }
+            fretYs.forEach(y => {
+                svg += `<line x1="14" y1="${y}" x2="92" y2="${y}" stroke="#555" stroke-width="1"/>`;
+            });
+            stringXs.forEach((x, i) => {
+                svg += `<line x1="${x}" y1="${nutY - 2}" x2="${x}" y2="92" stroke="#777" stroke-width="1"/>`;
+                const labels = ['E', 'A', 'D', 'G', 'B', 'e'];
+                svg += `<text x="${x}" y="99" fill="#666" font-size="8" text-anchor="middle">${labels[i]}</text>`;
+            });
+            if (chord.barre) {
+                const barreRow = Math.min(3, Math.max(0, chord.barre - baseFret));
+                const y = fretYs[barreRow] - 10;
+                svg += `<line x1="18" y1="${y}" x2="88" y2="${y}" stroke="#c084fc" stroke-width="4" stroke-linecap="round" opacity="0.85"/>`;
+            }
+            frets.forEach((fret, i) => {
+                const x = stringXs[i];
+                if (fret === -1) {
+                    svg += `<text x="${x - 3}" y="12" fill="#888" font-size="10">×</text>`;
+                } else if (fret === 0) {
+                    svg += `<circle cx="${x}" cy="10" r="4" fill="none" stroke="#4ade80" stroke-width="1.5"/>`;
+                } else {
+                    const row = Math.min(3, Math.max(0, fret - baseFret));
+                    const y = fretYs[row] - 10;
+                    const finger = fingers[i];
+                    svg += `<circle cx="${x}" cy="${y}" r="7" fill="#8b5cf6" opacity="0.9"/>`;
+                    if (finger > 0) {
+                        svg += `<text x="${x}" y="${y + 3}" fill="#fff" font-size="8" text-anchor="middle" font-weight="bold">${finger}</text>`;
+                    }
+                }
+            });
+            svg += '</svg>';
+            return svg;
+        }
+
+        function buildChordStringStrip(chord) {
+            const labels = ['6·E', '5·A', '4·D', '3·G', '2·B', '1·e'];
+            const fingers = chord.fingers || [];
+            return chord.frets.map((fret, i) => {
+                let cls = 'fret';
+                let main = '';
+                let sub = labels[i];
+                if (fret === -1) {
+                    cls = 'mute';
+                    main = '×';
+                    sub = 'Sustur';
+                } else if (fret === 0) {
+                    cls = 'open';
+                    main = '○';
+                    sub = 'Açık';
+                } else {
+                    main = String(fret);
+                    sub = fingers[i] > 0 ? `P${fingers[i]}` : 'Perde';
+                }
+                return `<div class="chord-string-cell ${cls}"><span class="cell-main">${main}</span><span class="cell-sub">${sub}</span></div>`;
+            }).join('');
+        }
+
+        function describeClassicChord(chord, mapping) {
+            const stringNames = ['6(E)', '5(A)', '4(D)', '3(G)', '2(B)', '1(e)'];
+            const parts = [];
+            chord.frets.forEach((fret, i) => {
+                const s = 6 - i;
+                if (fret === -1) {
+                    parts.push(`${stringNames[i]} sustur (çalma)`);
+                    return;
+                }
+                const mapEntry = mapping.find(m => m.s === s && m.f === (fret + (GuitarModule.capoPosition || 0)));
+                const keyHint = mapEntry && mapEntry.key !== '?' ? ` → tuş ${mapEntry.key}` : '';
+                const finger = chord.fingers && chord.fingers[i] > 0 ? `, parmak ${chord.fingers[i]}` : '';
+                parts.push(`${stringNames[i]} ${fret === 0 ? 'açık' : `perde ${fret}`}${finger}${keyHint}`);
+            });
+            return parts.join(' · ');
+        }
+
+        function clearChordVisuals() {
+            const legend = document.getElementById('chordLegend');
+            const stripWrap = document.getElementById('chordStringStripWrap');
+            const strip = document.getElementById('chordStringStrip');
+            if (legend) legend.hidden = true;
+            if (stripWrap) stripWrap.hidden = true;
+            if (strip) strip.innerHTML = '';
+            renderChordKeyboardMap([]);
+        }
+
+        function renderClassicChordDiagram(chordName) {
+            const mount = document.getElementById('chordDiagramMount');
+            const nameEl = document.getElementById('chordDiagramName');
+            const fingersEl = document.getElementById('chordDiagramFingers');
+            const descEl = document.getElementById('chordDiagramDesc');
+            if (!mount || !isClassicGuitarMode()) return;
+
+            const chord = (typeof GuitarModule !== 'undefined' && GuitarModule.getChord)
+                ? GuitarModule.getChord(chordName)
+                : null;
+
+            document.querySelectorAll('.chord-btn').forEach(btn => {
+                btn.classList.toggle('active-chord', btn.textContent.trim() === chordName);
+            });
+
+            if (!chord) {
+                if (nameEl) nameEl.textContent = '—';
+                mount.innerHTML = '<span style="color:var(--dim);font-size:11px;">Akor bulunamadı</span>';
+                if (fingersEl) fingersEl.textContent = '';
+                clearChordVisuals();
+                return;
+            }
+
+            const mapping = applyChordKeyMapping(chordName);
+
+            if (nameEl) nameEl.textContent = chord.name || chordName;
+            mount.innerHTML = buildClassicChordDiagramSvg(chord);
+
+            const legend = document.getElementById('chordLegend');
+            const stripWrap = document.getElementById('chordStringStripWrap');
+            const strip = document.getElementById('chordStringStrip');
+            if (legend) legend.hidden = false;
+            if (stripWrap) stripWrap.hidden = false;
+            if (strip) strip.innerHTML = buildChordStringStrip(chord);
+
+            if (descEl) {
+                const keyCount = mapping.filter(m => m.key && m.key !== '?').length;
+                const muteCount = chord.frets.filter(f => f === -1).length;
+                let desc = keyCount
+                    ? `Bu akor ${keyCount} telden oluşur — Pair Zone’da vurgulu tuşlara basın.`
+                    : 'Bu akor için doğru Pair seçin (üstteki Pair kartları).';
+                if (muteCount) desc += ` Susturulan ${muteCount} tel otomatik atlanır.`;
+                descEl.textContent = desc;
+            }
+            if (fingersEl) fingersEl.textContent = describeClassicChord(chord, mapping);
+            renderChordKeyboardMap(mapping);
+        }
+
+        function setTabPlaybackSpeed(value) {
+            const pct = parseInt(value, 10);
+            tabPlaybackSpeed = pct / 100;
+            const slider = document.getElementById('tabSpeedSlider');
+            if (slider) slider.value = pct;
+            const label = document.getElementById('tabSpeedLabel');
+            if (label) label.textContent = (tabPlaybackSpeed % 1 === 0 ? tabPlaybackSpeed : tabPlaybackSpeed.toFixed(2)) + '×';
+            document.querySelectorAll('.tab-speed-preset').forEach(btn => {
+                const preset = parseFloat(btn.textContent);
+                btn.classList.toggle('active', Math.abs(preset - tabPlaybackSpeed) < 0.01);
+            });
+            updateTabEffectiveBpmDisplay();
+        }
+
+        function getTabBeatMs(tab) {
+            const base = (60 / tab.bpm) * 500;
+            const speed = isClassicGuitarMode() ? tabPlaybackSpeed : 1;
+            return base / speed;
+        }
+
+        function updateTabEffectiveBpmDisplay() {
+            const el = document.getElementById('tabEffectiveBpm');
+            if (!el) return;
+            const tab = tablatures[currentTab];
+            if (!tab || !tab.bpm) {
+                el.textContent = '—';
+                return;
+            }
+            const effective = Math.round(tab.bpm * (isClassicGuitarMode() ? tabPlaybackSpeed : 1));
+            el.textContent = isClassicGuitarMode()
+                ? `Etkin tempo: ${effective} BPM (orijinal ${tab.bpm})`
+                : `Tempo: ${tab.bpm} BPM — hız ayarı klasik gitar modunda`;
+        }
+
+        async function playChord(chordName) {
+            selectChord(chordName);
         }
 
         function getChordNotes(chordName) {
@@ -7169,23 +7867,14 @@
             return chords[chordName] || ['C3', 'E3', 'G3'];
         }
 
-        function strumDown() {
-            if (lastPlayedChord) {
-                playChord(lastPlayedChord);
-            }
+        async function strumDown() {
+            if (!isClassicGuitarMode() || !lastPlayedChord) return;
+            await strumActiveChord('down');
         }
 
-        function strumUp() {
-            if (lastPlayedChord && typeof GuitarModule !== 'undefined') {
-                GuitarModule.playChord(lastPlayedChord, 'up');
-            } else if (lastPlayedChord) {
-                const notes = getChordNotes(lastPlayedChord).reverse();
-                notes.forEach((note, i) => {
-                    setTimeout(() => {
-                        audioEngine.playNoteName(note, 2.5, 'guitar');
-                    }, i * 30);
-                });
-            }
+        async function strumUp() {
+            if (!isClassicGuitarMode() || !lastPlayedChord) return;
+            await strumActiveChord('up');
         }
 
         // === RECORDING FUNCTIONS ===
@@ -7900,6 +8589,7 @@
 
             display.scrollLeft = 0;
             syncLoopInputs(noteCount);
+            updateTabEffectiveBpmDisplay();
         }
 
         // === LOOP (aralık tekrarı) ===
@@ -8118,7 +8808,7 @@
             }
 
             await ensureAudio();
-            const beatMs = (60 / tab.bpm) * 500;
+            const beatMs = getTabBeatMs(tab);
             const totalNotes = tab.notes.length;
             const range = getLoopRange(totalNotes);
             const loopStart = loopState.enabled ? range.start : 0;
@@ -8499,6 +9189,8 @@
         updateZoneTags();
         buildPiano();
         buildLessons();
+        updateClassicGuitarFeatures();
+        updateTabEffectiveBpmDisplay();
 
         // Sayfa yüklendiğinde sıfırla
         window.scrollTo(0, 0);

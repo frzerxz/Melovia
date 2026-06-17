@@ -14,18 +14,21 @@ Bu doküman, Melovia projesindeki tüm kavramları, teknolojileri ve yapıları 
 6. [Piyano Modülü](#piyano-modülü)
 7. [Ders Sistemi](#ders-sistemi)
 8. [Practice Mode (Şarkı Pratikleri)](#practice-mode-şarkı-pratikleri)
-9. [Tamamlama Overlay](#tamamlama-overlay)
-10. [Sayfa Davranışları](#sayfa-davranışları)
-11. [Kullanıcı Arayüzü (UI)](#kullanıcı-arayüzü-ui)
-12. [Klavye Haritalama](#klavye-haritalama)
-13. [Dosya Yapısı](#dosya-yapısı)
-14. [Unreal Engine 5 Entegrasyonu](#unreal-engine-5-entegrasyonu)
+9. [Tablature, Loop ve Tab Hızı](#tablature-loop-ve-tab-hızı)
+10. [Klasik Gitar Akor Sistemi](#klasik-gitar-akor-sistemi)
+11. [Tamamlama Overlay](#tamamlama-overlay)
+12. [Sayfa Davranışları](#sayfa-davranışları)
+13. [Kullanıcı Arayüzü (UI)](#kullanıcı-arayüzü-ui)
+14. [Klavye Haritalama](#klavye-haritalama)
+15. [Dosya Yapısı](#dosya-yapısı)
+16. [Unreal Engine 5 (Deneysel)](#unreal-engine-5-deneysel)
+17. [Bitirme Tezi Rehberi](#bitirme-tezi-rehberi)
 
 ---
 
 ## 🎯 Proje Nedir?
 
-**Melovia**, bilgisayar klavyesi kullanarak sanal gitar ve piyano çalmayı öğreten bir web uygulamasıdır. Ayrıca **Unreal Engine 5** C++ altyapısı ile 3D görselleştirme ve VR entegrasyonu için temel oluşturulmuştur.
+**Melovia**, bilgisayar klavyesi kullanarak sanal gitar ve piyano çalmayı öğreten bir web uygulamasıdır. Ana platform **web (HTML/CSS/JavaScript + Web Audio API)** üzerindedir. `unreal/` klasöründeki UE5 çalışması deneysel bir prototiptir; aktif geliştirme web sürümündedir.
 
 ### Ne Yapar?
 - Klavye tuşlarına bastığınızda gerçekçi gitar/piyano sesi çıkarır
@@ -409,6 +412,54 @@ Her kart şunları gösterir:
 
 ---
 
+## 📜 Tablature, Loop ve Tab Hızı
+
+### Tablature oynatıcı
+- Şarkı listesi (`fullSongData.js` ile genişletilmiş nota dizileri)
+- **▶ Çal / ⏹ Durdur** ile sıralı çalma
+- Playhead: aktif sütun vurgusu (6 tel)
+- Kaydırma çubuğu nota ilerlemesiyle senkron
+
+### Loop (bölüm tekrarı)
+- **Başlangıç / Bitiş** nota numarası (1 tabanlı)
+- Loop açıkken: çalma, ders ve practice seçili aralıkta döner
+- Turuncu vurgu: loop bölgesi
+
+### Tab hızı (klasik gitar)
+- **0.5× – 1.5×** hız çarpanı
+- Etkin BPM gösterimi
+- Yavaş tempoda pratik için
+
+---
+
+## 🎸 Klasik Gitar Akor Sistemi
+
+> Şu an **klasik gitar modunda** tam entegre. Elektro/bas modunda akor araçları devre dışı (ileride genişletilecek).
+
+### Akor verisi
+`guitarModule.js` içinde tel/perde dizisi: `[6. tel … 1. tel]`, `-1` = sustur (otomatik).
+
+### Sol el / sağ el modeli
+| El | Eylem | Ses |
+|----|--------|-----|
+| **Sol el** | Pair Zone’da mor tuşlara basılı tut | Sessiz (perde pozisyonu) |
+| **Sağ el** | ⬇️ / ⬆️ Strum | Akor telleri sırayla çalar |
+
+**Susturma:** Kullanıcı ekstra işlem yapmaz; `×` ile işaretli teller ne klavyede ne strum’da çalmaz.
+
+### Görsel bileşenler
+- SVG akor diyagramı (açık ○, sustur ×, parmak numarası)
+- Tel tel şerit (6→1, Türkçe etiketler)
+- Klavye chip listesi (Pair Zone tuşları)
+- Fretboard + Pair Zone eşzamanlı vurgu
+
+### Akor seçimi akışı
+1. `Am` vb. butona tıkla → `selectChord()` (ses yok)
+2. Mor tuşları basılı tut (sol el)
+3. Strum → `strumActiveChord()` → sadece aktif teller
+
+---
+
 ## 🔄 Sayfa Davranışları
 
 ### Scroll Sıfırlama (Page Load Reset)
@@ -601,7 +652,15 @@ Tek dosyada tüm uygulama bulunur:
 
 ---
 
-*Bu doküman Melovia projesi için hazırlanmıştır. Son güncelleme: 14 Şubat 2026 - v0.1*
+*Bu doküman Melovia projesi için hazırlanmıştır. Son güncelleme: Haziran 2026 — v0.3*
+
+---
+
+## 📄 Bitirme Tezi Rehberi
+
+Lisans bitirme tezi / proje raporu için sayfa yapısı, bölüm iskeleti ve Melovia’ya özel taslak:
+
+👉 **[docs/THESIS_GUIDE.md](docs/THESIS_GUIDE.md)**
 
 ---
 
@@ -635,9 +694,11 @@ showCompletionOverlay(mode, {
 
 ---
 
-## 🎮 Unreal Engine 5 Entegrasyonu
+## 🎮 Unreal Engine 5 (Deneysel)
 
-Melovia'nın C++ altyapısı **Unreal Engine 5.7.1** üzerine inşa edilmiştir.
+> **Durum:** Arşiv / prototip. Ana ürün web uygulamasıdır. UE5 derleme ve bakım maliyeti yüksek olduğu için aktif geliştirme durdurulmuştur; tezde “gelecek çalışma” veya kısa prototip notu olarak anılabilir.
+
+Melovia'nın `unreal/MeloviaUE5/` klasöründe C++ prototip bulunur:
 
 ### Neden UE5?
 - **3D Görselleştirme:** Gitar ve piyano modellerinin 3D ortamda görüntülenmesi

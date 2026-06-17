@@ -2,17 +2,19 @@
 ## Proje Raporu v0.1
 
 **Tarih:** 13 Nisan 2026  
-**Versiyon:** 0.2  
+**Versiyon:** 0.3  
 **GitHub:** https://github.com/frzerxz/Melovia  
 **Canlı Demo:** https://frzerxz.github.io/Melovia/  
-**Proje:** TÜBİTAK 2209-A | Balıkesir Üniversitesi Mühendislik Fakültesi
+**Proje:** TÜBİTAK 2209-A | Balıkesir Üniversitesi Mühendislik Fakültesi  
+**Bitirme tezi rehberi:** [THESIS_GUIDE.md](./THESIS_GUIDE.md)
 
 ---
 
 ## 📋 İçindekiler
 
 1. [Proje Genel Bakış](#proje-genel-bakış)
-2. [Son Güncelleme Özeti (v0.1)](#son-güncelleme-özeti-v01)
+2. [Son Güncelleme Özeti (v0.3)](#son-güncelleme-özeti-v03)
+3. [Son Güncelleme Özeti (v0.2)](#son-güncelleme-özeti-v02)
 3. [Unreal Engine 5 Entegrasyonu](#unreal-engine-5-entegrasyonu)
 4. [Teknoloji Stack](#teknoloji-stack)
 5. [Dosya Yapısı](#dosya-yapısı)
@@ -54,6 +56,28 @@
 - Hobi müzisyenler
 - Gitar öğrenmek isteyenler
 - Müzik eğitmenleri
+
+---
+
+## 🆕 Son Güncelleme Özeti (v0.3)
+
+**Tarih:** Haziran 2026 | **Odak:** Web platform, klasik gitar
+
+### Tablature ve pratik
+- Tab scroll ↔ playback senkronu (tüm şarkılar)
+- **Loop:** Ders, practice ve tab çalma için aralık tekrarı
+- **Tab hızı:** 0.5×–1.5× (klasik gitar modu)
+
+### Klasik gitar akor entegrasyonu
+- Pair Zone klavye eşlemesi (akor → tuş listesi)
+- SVG diyagram + tel tel görünüm (× sustur otomatik)
+- Sol el (sessiz perde) + sağ el (strum) modeli
+- `selectChord()` / `strumActiveChord()` ayrımı
+
+### Dokümantasyon
+- [THESIS_GUIDE.md](./THESIS_GUIDE.md) — bitirme tezi iskeleti
+- README ve DOCUMENTATION güncellendi
+- UE5: deneysel/arşiv olarak işaretlendi
 
 ---
 
