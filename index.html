@@ -3432,7 +3432,7 @@
             letter-spacing: 2px;
             white-space: nowrap;
             flex: 1;
-            min-width: calc(var(--tab-cols, 32) * 1.35em);
+            min-width: calc(var(--tab-cols, 0) * 1.35em);
             display: inline-flex;
             align-items: center;
         }
@@ -3469,6 +3469,70 @@
 
         .tn.played-note {
             opacity: 0.45;
+        }
+
+        .tn.loop-region {
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 2px;
+        }
+
+        .tn.loop-start,
+        .tn.loop-end {
+            box-shadow: inset 0 -2px 0 #f59e0b;
+        }
+
+        .loop-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.22);
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .loop-bar label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--dim);
+        }
+
+        .loop-bar input[type="number"] {
+            width: 58px;
+            padding: 4px 6px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.35);
+            color: var(--text);
+            font-size: 12px;
+        }
+
+        .loop-bar .loop-hint {
+            color: #f59e0b;
+            font-size: 11px;
+            opacity: 0.85;
+        }
+
+        .practice-mode-bar .loop-bar {
+            margin-top: 8px;
+        }
+
+        .lesson-hud .loop-bar {
+            margin: 8px 12px 0;
+        }
+
+        .timeline-note.loop-region {
+            border-color: rgba(245, 158, 11, 0.55);
+            background: rgba(245, 158, 11, 0.12);
+        }
+
+        .timeline-note.loop-start,
+        .timeline-note.loop-end {
+            box-shadow: 0 0 0 1px #f59e0b;
         }
 
         .tab-info-bar {
@@ -3862,6 +3926,12 @@
                             <span>⏱️ <span id="practiceTime">0:00</span></span>
                         </div>
                     </div>
+                    <div class="loop-bar">
+                        <label><input type="checkbox" class="loop-input-enabled"> 🔁 Loop</label>
+                        <label>Başlangıç <input type="number" class="loop-input-start" min="1" value="1"></label>
+                        <label>Bitiş <input type="number" class="loop-input-end" min="1" value="1"></label>
+                        <span class="loop-hint">Seçili aralığı tekrar et</span>
+                    </div>
                 </div>
 
                 <div class="fretboard-toolbar">
@@ -3946,6 +4016,12 @@
                         <div class="hud-timeline" id="hudTimeline">
                             <!-- Timeline items will be injected here -->
                         </div>
+                    </div>
+                    <div class="loop-bar">
+                        <label><input type="checkbox" class="loop-input-enabled"> 🔁 Loop</label>
+                        <label>Başlangıç <input type="number" class="loop-input-start" min="1" value="1"></label>
+                        <label>Bitiş <input type="number" class="loop-input-end" min="1" value="1"></label>
+                        <span class="loop-hint">Parçayı bölerek çalış</span>
                     </div>
                 </div>
                 <div class="fretboard-container">
@@ -4195,6 +4271,12 @@
                             class="tab-notes">----------------------------------</span></div>
                     <div class="tab-line"><span class="tab-string-label">E|</span><span
                             class="tab-notes">----------------------------------</span></div>
+                </div>
+                <div class="loop-bar">
+                    <label><input type="checkbox" class="loop-input-enabled"> 🔁 Loop</label>
+                    <label>Başlangıç <input type="number" class="loop-input-start" min="1" value="1"></label>
+                    <label>Bitiş <input type="number" class="loop-input-end" min="1" value="1"></label>
+                    <span class="loop-hint">Seçili aralığı tekrar et</span>
                 </div>
                 <div class="tablature-controls">
                     <button class="tab-control-btn" onclick="startPractice(currentTab)"
@@ -6314,10 +6396,12 @@
             // State'i sıfırla
             currentLessonState = {
                 active: true,
-                step: 0,
+                step: getLoopStartIndex(lesson.songData.length),
                 total: lesson.songData.length,
                 data: lesson.songData
             };
+
+            syncLoopInputs(lesson.songData.length);
 
             setPair(getRequiredPairForLesson(lesson.songData));
 
@@ -6370,7 +6454,10 @@
 
             // Sayaç ve Progress
             document.getElementById('hudCounter').textContent = `${stepIndex + 1} / ${total}`;
-            const progressPct = (stepIndex / total) * 100;
+            const { start: loopStart, end: loopEnd } = getLoopRange(total);
+            const progressPct = loopState.enabled
+                ? Math.max(0, Math.min(100, ((stepIndex - loopStart) / (loopEnd - loopStart + 1)) * 100))
+                : (stepIndex / total) * 100;
             document.getElementById('hudProgress').style.width = `${progressPct}%`;
 
             // Ana Gösterge (HUD Ortası)
@@ -6389,6 +6476,7 @@
 
             // Timeline Kaydırma
             updateTimelineScroll(stepIndex);
+            updateLoopHighlight(total);
         }
 
         function updateTimelineScroll(index) {
@@ -6669,7 +6757,7 @@
                 const playedFret = parseInt(btn.dataset.f);
 
                 if (playedString === currentStep.s && playedFret === currentStep.f) {
-                    currentLessonState.step++;
+                    currentLessonState.step = advanceLoopIndex(currentLessonState.step, currentLessonState.total);
                     updateHudStep();
                 }
             }
@@ -7788,12 +7876,10 @@
                 }
             });
 
-            const minCols = Math.max(noteCount, 36);
-            const railLen = Math.max(0, (minCols - noteCount) * 2);
-            const railHtml = railLen ? `<span class="tab-rail">${'-'.repeat(railLen)}</span>` : '';
-            rows.forEach(row => row.push(railHtml));
-
-            display.style.setProperty('--tab-cols', minCols);
+            const minCols = noteCount < 16 ? 16 : 0;
+            if (minCols) display.style.setProperty('--tab-cols', String(minCols));
+            else display.style.removeProperty('--tab-cols');
+            display.dataset.tabNoteCount = String(noteCount);
 
             let headerHtml = '';
             if (tab.artist) {
@@ -7811,16 +7897,163 @@
                     <span class="tab-notes">${spans.join('')}</span>
                 </div>
             `).join('');
+
+            display.scrollLeft = 0;
+            syncLoopInputs(noteCount);
         }
+
+        // === LOOP (aralık tekrarı) ===
+        let loopState = { enabled: false, start: 0, end: null };
+
+        function getLoopRange(totalNotes) {
+            if (!totalNotes || totalNotes < 1) return { start: 0, end: 0 };
+            let end = loopState.end;
+            if (end === null || end >= totalNotes) end = totalNotes - 1;
+            let start = loopState.start;
+            if (start < 0) start = 0;
+            if (start > end) start = end;
+            return { start, end };
+        }
+
+        function syncLoopInputs(totalNotes) {
+            if (!totalNotes || totalNotes < 1) return;
+
+            const startVal = Math.min(loopState.start + 1, totalNotes);
+            const endVal = Math.min((loopState.end === null ? totalNotes - 1 : loopState.end) + 1, totalNotes);
+            loopState.start = startVal - 1;
+            loopState.end = endVal - 1;
+
+            document.querySelectorAll('.loop-input-start').forEach(el => {
+                el.min = 1;
+                el.max = totalNotes;
+                el.value = startVal;
+            });
+            document.querySelectorAll('.loop-input-end').forEach(el => {
+                el.min = 1;
+                el.max = totalNotes;
+                el.value = endVal;
+            });
+            document.querySelectorAll('.loop-input-enabled').forEach(el => {
+                el.checked = loopState.enabled;
+            });
+
+            updateLoopHighlight(totalNotes);
+        }
+
+        function setLoopEnabled(enabled) {
+            loopState.enabled = enabled;
+            document.querySelectorAll('.loop-input-enabled').forEach(el => { el.checked = enabled; });
+            const total = parseInt(document.getElementById('tablatureDisplay')?.dataset.tabNoteCount, 10)
+                || currentLessonState.total
+                || practiceNotes.length
+                || 0;
+            updateLoopHighlight(total);
+        }
+
+        function updateLoopRange() {
+            const startEl = document.querySelector('.loop-input-start');
+            const endEl = document.querySelector('.loop-input-end');
+            if (!startEl || !endEl) return;
+
+            const total = parseInt(document.getElementById('tablatureDisplay')?.dataset.tabNoteCount, 10)
+                || currentLessonState.total
+                || practiceNotes.length
+                || parseInt(endEl.max, 10)
+                || 1;
+
+            let start = parseInt(startEl.value, 10) || 1;
+            let end = parseInt(endEl.value, 10) || total;
+            start = Math.max(1, Math.min(start, total));
+            end = Math.max(start, Math.min(end, total));
+
+            loopState.start = start - 1;
+            loopState.end = end - 1;
+
+            document.querySelectorAll('.loop-input-start').forEach(el => { el.value = start; });
+            document.querySelectorAll('.loop-input-end').forEach(el => { el.value = end; });
+
+            updateLoopHighlight(total);
+        }
+
+        function updateLoopHighlight(totalNotes) {
+            if (!totalNotes) return;
+            const { start, end } = getLoopRange(totalNotes);
+            const on = loopState.enabled;
+
+            const display = document.getElementById('tablatureDisplay');
+            if (display) {
+                display.querySelectorAll('.tn').forEach(el => {
+                    const ni = parseInt(el.dataset.ni, 10);
+                    if (isNaN(ni)) return;
+                    el.classList.toggle('loop-region', on && ni >= start && ni <= end);
+                    el.classList.toggle('loop-start', on && ni === start);
+                    el.classList.toggle('loop-end', on && ni === end);
+                });
+            }
+
+            document.querySelectorAll('.timeline-note').forEach((el, idx) => {
+                el.classList.toggle('loop-region', on && idx >= start && idx <= end);
+                el.classList.toggle('loop-start', on && idx === start);
+                el.classList.toggle('loop-end', on && idx === end);
+            });
+        }
+
+        function getLoopStartIndex(totalNotes) {
+            return loopState.enabled ? getLoopRange(totalNotes).start : 0;
+        }
+
+        function advanceLoopIndex(index, totalNotes) {
+            if (!loopState.enabled || totalNotes < 1) {
+                return index + 1;
+            }
+            const { start, end } = getLoopRange(totalNotes);
+            if (index >= end) return start;
+            return index + 1;
+        }
+
+        document.addEventListener('change', e => {
+            if (e.target.classList.contains('loop-input-enabled')) {
+                setLoopEnabled(e.target.checked);
+            }
+            if (e.target.classList.contains('loop-input-start') || e.target.classList.contains('loop-input-end')) {
+                updateLoopRange();
+            }
+        });
 
         let tabPlayingTimeout = [];
         let tabIsPlaying = false;
         let practiceTabKey = null;
 
+        /** Tab scroll: kaydırma çubuğu = nota ilerlemesi (tüm şarkılar) */
+        function syncTabScroll(display, noteIndex, totalNotes) {
+            if (!display || totalNotes <= 1) return;
+
+            const first = display.querySelector('.tn[data-ni="0"]');
+            const last = display.querySelector(`.tn[data-ni="${totalNotes - 1}"]`);
+            if (!first || !last) return;
+
+            const displayLeft = display.getBoundingClientRect().left;
+            const startX = display.scrollLeft + first.getBoundingClientRect().left - displayLeft;
+            const endX = display.scrollLeft + last.getBoundingClientRect().left - displayLeft + last.offsetWidth;
+            const notesWidth = endX - startX;
+            if (notesWidth <= 0) return;
+
+            const ratio = noteIndex / (totalNotes - 1);
+            const playheadX = startX + ratio * notesWidth;
+            const viewLead = display.clientWidth / 3;
+            let target = playheadX - viewLead;
+
+            const notesMaxScroll = Math.max(0, endX - display.clientWidth + 16);
+            target = Math.max(0, Math.min(notesMaxScroll, target));
+            display.scrollLeft = target;
+        }
+
         /** Tablature playhead: vurgulu sütun (6 tel) + aktif perde hücresi */
-        function setTabPlayhead(noteIndex, stringNum) {
+        function setTabPlayhead(noteIndex, stringNum, totalNotes) {
             const display = document.getElementById('tablatureDisplay');
             if (!display) return;
+
+            const total = totalNotes || parseInt(display.dataset.tabNoteCount, 10) || noteIndex + 1;
 
             display.querySelectorAll('.tn').forEach(el => {
                 const ni = parseInt(el.dataset.ni, 10);
@@ -7841,13 +8074,7 @@
                 fretCell.classList.add('active-note');
             }
 
-            const colAnchor = display.querySelector(`.tn[data-ni="${noteIndex}"]`);
-            if (colAnchor) {
-                const displayRect = display.getBoundingClientRect();
-                const spanRect = colAnchor.getBoundingClientRect();
-                const scrollTarget = display.scrollLeft + (spanRect.left - displayRect.left) - (displayRect.width / 3);
-                display.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
-            }
+            syncTabScroll(display, noteIndex, total);
         }
 
         function clearTabPlayhead() {
@@ -7892,12 +8119,15 @@
 
             await ensureAudio();
             const beatMs = (60 / tab.bpm) * 500;
+            const totalNotes = tab.notes.length;
+            const range = getLoopRange(totalNotes);
+            const loopStart = loopState.enabled ? range.start : 0;
+            const loopEnd = loopState.enabled ? range.end : totalNotes - 1;
 
             const display = document.getElementById('tablatureDisplay');
             display.style.borderColor = '#8b5cf6';
             display.style.transition = 'border-color 0.3s';
 
-            // İlerleme çubuğu oluştur
             let progressBar = display.querySelector('.tab-progress');
             if (!progressBar) {
                 progressBar = document.createElement('div');
@@ -7906,55 +8136,71 @@
                 display.insertBefore(progressBar, display.querySelector('.tab-line'));
             }
 
-            for (let i = 0; i < tab.notes.length; i++) {
+            let noteIndex = loopStart;
+
+            function playTabNoteAt(i) {
+                if (!tabIsPlaying) return;
+
                 const note = tab.notes[i];
-                const tid = setTimeout(() => {
-                    if (!tabIsPlaying) return;
+                if (typeof audioEngine !== 'undefined') {
+                    audioEngine.playGuitarString(note.s, note.f);
+                }
 
-                    // === SES ===
-                    if (typeof audioEngine !== 'undefined') {
-                        audioEngine.playGuitarString(note.s, note.f);
+                ensureFretVisible(note.f);
+
+                const fretCell = document.querySelector(`.string-cell[data-s="${note.s}"][data-f="${note.f}"]`);
+                if (fretCell) {
+                    document.querySelectorAll('.string-cell.active').forEach(e => e.classList.remove('active'));
+                    fretCell.classList.add('active');
+                    setTimeout(() => fretCell.classList.remove('active'), 350);
+                }
+                if (note.f === 0) {
+                    const label = document.querySelector(`.string-label[data-s="${note.s}"]`);
+                    if (label) {
+                        label.classList.add('active');
+                        setTimeout(() => label.classList.remove('active'), 350);
                     }
+                }
 
-                    // === FRETBOARD VISIBLE RANGE ===
-                    ensureFretVisible(note.f);
+                setTabPlayhead(i, note.s, totalNotes);
 
-                    // === FRETBOARD HIGHLIGHT (visual only, no double audio) ===
-                    const fretCell = document.querySelector(`.string-cell[data-s="${note.s}"][data-f="${note.f}"]`);
-                    if (fretCell) {
-                        document.querySelectorAll('.string-cell.active').forEach(e => e.classList.remove('active'));
-                        fretCell.classList.add('active');
-                        setTimeout(() => fretCell.classList.remove('active'), 350);
-                    }
-                    // Also highlight string label for open strings (f=0)
-                    if (note.f === 0) {
-                        const label = document.querySelector(`.string-label[data-s="${note.s}"]`);
-                        if (label) {
-                            label.classList.add('active');
-                            setTimeout(() => label.classList.remove('active'), 350);
-                        }
-                    }
-
-                    // === TABLATURE: sütun playhead (tüm tellerde) + aktif perde ===
-                    setTabPlayhead(i, note.s);
-
-                    // === İLERLEME ÇUBUĞU ===
-                    const pct = ((i + 1) / tab.notes.length) * 100;
-                    progressBar.style.width = pct + '%';
-
-                }, i * beatMs);
-                tabPlayingTimeout.push(tid);
+                const segmentLen = loopEnd - loopStart + 1;
+                const pct = loopState.enabled
+                    ? ((i - loopStart + 1) / segmentLen) * 100
+                    : ((i + 1) / totalNotes) * 100;
+                progressBar.style.width = pct + '%';
             }
 
-            // Çalma bitince temizle
-            const endTid = setTimeout(() => {
-                tabIsPlaying = false;
-                display.style.borderColor = '';
-                clearTabPlayhead();
-                progressBar.style.width = '0%';
-                display.scrollTo({ left: 0, behavior: 'smooth' });
-            }, tab.notes.length * beatMs + 500);
-            tabPlayingTimeout.push(endTid);
+            function scheduleNextTabNote() {
+                if (!tabIsPlaying) return;
+
+                playTabNoteAt(noteIndex);
+
+                const isLastInPass = noteIndex >= (loopState.enabled ? loopEnd : totalNotes - 1);
+
+                if (isLastInPass) {
+                    if (loopState.enabled) {
+                        noteIndex = loopStart;
+                        const tid = setTimeout(scheduleNextTabNote, beatMs);
+                        tabPlayingTimeout.push(tid);
+                    } else {
+                        const endTid = setTimeout(() => {
+                            tabIsPlaying = false;
+                            display.style.borderColor = '';
+                            clearTabPlayhead();
+                            progressBar.style.width = '0%';
+                            display.scrollTo({ left: 0, behavior: 'smooth' });
+                        }, beatMs + 200);
+                        tabPlayingTimeout.push(endTid);
+                    }
+                } else {
+                    noteIndex++;
+                    const tid = setTimeout(scheduleNextTabNote, beatMs);
+                    tabPlayingTimeout.push(tid);
+                }
+            }
+
+            scheduleNextTabNote();
         }
 
         function stopTabPlayback() {
@@ -8036,11 +8282,12 @@
             practiceActive = true;
             practiceTabKey = tabKey;
             practiceNotes = [...tab.notes];
-            practiceCurrentIndex = 0;
+            practiceCurrentIndex = getLoopStartIndex(tab.notes.length);
             practiceCorrectCount = 0;
             practiceStartTime = Date.now();
 
             loadTablature(tabKey);
+            syncLoopInputs(tab.notes.length);
             setPair(getRequiredPairForLesson(practiceNotes));
 
             // Show practice bar
@@ -8084,10 +8331,16 @@
         }
 
         function showPracticeTarget() {
-            if (!practiceActive || practiceCurrentIndex >= practiceNotes.length) {
-                if (practiceActive) {
-                    completePractice();
+            if (!practiceActive) return;
+
+            const total = practiceNotes.length;
+            if (loopState.enabled) {
+                const { start, end } = getLoopRange(total);
+                if (practiceCurrentIndex > end || practiceCurrentIndex >= total) {
+                    practiceCurrentIndex = start;
                 }
+            } else if (practiceCurrentIndex >= total) {
+                completePractice();
                 return;
             }
 
@@ -8130,7 +8383,7 @@
 
             // Tablature playhead (practice)
             if (practiceTabKey === currentTab) {
-                setTabPlayhead(practiceCurrentIndex, currentNote.s);
+                setTabPlayhead(practiceCurrentIndex, currentNote.s, practiceNotes.length);
             }
 
             // Update UI
@@ -8173,10 +8426,15 @@
 
         function updatePracticeUI() {
             const total = practiceNotes.length;
+            const { start: loopStart, end: loopEnd } = getLoopRange(total);
             const current = practiceCurrentIndex + 1;
-            const progress = (practiceCurrentIndex / total) * 100;
+            const progress = loopState.enabled
+                ? Math.max(0, Math.min(100, ((practiceCurrentIndex - loopStart) / (loopEnd - loopStart + 1)) * 100))
+                : (practiceCurrentIndex / total) * 100;
 
-            document.getElementById('practiceCurrentNote').textContent = `${current}/${total}`;
+            document.getElementById('practiceCurrentNote').textContent = loopState.enabled
+                ? `${current}/${total} (🔁 ${loopStart + 1}-${loopEnd + 1})`
+                : `${current}/${total}`;
             document.getElementById('practiceCorrect').textContent = practiceCorrectCount;
             document.getElementById('practiceProgressFill').style.width = progress + '%';
         }
