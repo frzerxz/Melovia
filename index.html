@@ -3699,28 +3699,51 @@
             color: var(--text);
         }
 
+        .tab-scroll-shell {
+            width: 100%;
+        }
+
         .tablature-display {
             background: #0a0a0f;
             border-radius: 12px;
             padding: 16px;
             font-family: 'Courier New', monospace;
             overflow-x: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(139, 92, 246, 0.5) rgba(255, 255, 255, 0.06);
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
         .tablature-display::-webkit-scrollbar {
-            height: 6px;
+            display: none;
         }
 
-        .tablature-display::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 999px;
+        .tab-scroll-rail-wrap {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0 4px;
         }
 
-        .tablature-display::-webkit-scrollbar-thumb {
-            background: linear-gradient(90deg, rgba(139, 92, 246, 0.55), rgba(6, 182, 212, 0.45));
+        .tab-scroll-rail {
+            position: relative;
+            width: min(280px, 48%);
+            height: 8px;
+            background: rgba(255, 255, 255, 0.07);
             border-radius: 999px;
+            cursor: pointer;
+        }
+
+        .tab-scroll-thumb {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.85), rgba(6, 182, 212, 0.75));
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.35);
+            pointer-events: none;
+            transition: left 0.08s linear;
         }
 
         .tab-lines-track {
@@ -3775,6 +3798,9 @@
         }
 
         .tn {
+            display: inline-block;
+            width: 1.35em;
+            text-align: center;
             transition: color 0.1s, text-shadow 0.1s;
         }
 
@@ -4719,6 +4745,7 @@
                         <option value="custom">📝 Çaldığın Notalar</option>
                     </select>
                 </div>
+                <div class="tab-scroll-shell">
                 <div class="tablature-display" id="tablatureDisplay">
                     <div class="tab-line"><span class="tab-string-label">e|</span><span
                             class="tab-notes">----------------------------------</span></div>
@@ -4732,6 +4759,12 @@
                             class="tab-notes">----------------------------------</span></div>
                     <div class="tab-line"><span class="tab-string-label">E|</span><span
                             class="tab-notes">----------------------------------</span></div>
+                </div>
+                <div class="tab-scroll-rail-wrap">
+                    <div class="tab-scroll-rail" id="tabScrollRail" onclick="seekTabScroll(event)">
+                        <div class="tab-scroll-thumb" id="tabScrollThumb"></div>
+                    </div>
+                </div>
                 </div>
                 <div class="tab-speed-bar classic-guitar-feature" id="tabSpeedBar">
                     <label>
@@ -8780,6 +8813,46 @@
             display.scrollLeft = 0;
             resetLoopState(noteCount);
             updateTabEffectiveBpmDisplay();
+            requestAnimationFrame(() => updateTabScrollRail(display, 0, noteCount));
+        }
+
+        const TAB_SCROLL_THUMB_PX = 24;
+
+        function getTabScrollMetrics(display) {
+            if (!display) return { maxScroll: 0, ratio: 0 };
+            const maxScroll = Math.max(0, display.scrollWidth - display.clientWidth);
+            const ratio = maxScroll > 0 ? display.scrollLeft / maxScroll : 0;
+            return { maxScroll, ratio };
+        }
+
+        function updateTabScrollRail(display, noteIndex, totalNotes) {
+            if (!display) display = document.getElementById('tablatureDisplay');
+            const rail = document.getElementById('tabScrollRail');
+            const thumb = document.getElementById('tabScrollThumb');
+            if (!display || !rail || !thumb) return;
+
+            let ratio;
+            if (typeof noteIndex === 'number' && totalNotes > 1) {
+                ratio = noteIndex / (totalNotes - 1);
+            } else {
+                ratio = getTabScrollMetrics(display).ratio;
+            }
+
+            const railWidth = rail.clientWidth;
+            const travel = Math.max(0, railWidth - TAB_SCROLL_THUMB_PX);
+            thumb.style.left = `${ratio * travel}px`;
+        }
+
+        function seekTabScroll(event) {
+            const display = document.getElementById('tablatureDisplay');
+            const rail = document.getElementById('tabScrollRail');
+            if (!display || !rail) return;
+            const maxScroll = Math.max(0, display.scrollWidth - display.clientWidth);
+            if (maxScroll <= 0) return;
+            const rect = rail.getBoundingClientRect();
+            const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+            display.scrollLeft = ratio * maxScroll;
+            updateTabScrollRail(display);
         }
 
         // === LOOP (aralık tekrarı) ===
@@ -8967,32 +9040,19 @@
         let tabIsPlaying = false;
         let practiceTabKey = null;
 
-        function getTabContentX(display, el) {
-            const dRect = display.getBoundingClientRect();
-            const eRect = el.getBoundingClientRect();
-            return display.scrollLeft + (eRect.left - dRect.left);
-        }
-
-        /** Tab scroll: playhead pozisyonu = nota indeksine orantılı kaydırma */
+        /** Tab scroll: nota indeksi ile lineer eşzamanlı kaydırma */
         function syncTabScroll(display, noteIndex, totalNotes) {
             if (!display || totalNotes <= 1) return;
 
-            const first = display.querySelector('.tn[data-ni="0"]');
-            const last = display.querySelector(`.tn[data-ni="${totalNotes - 1}"]`);
-            if (!first || !last) return;
-
-            const startX = getTabContentX(display, first);
-            const endX = getTabContentX(display, last) + last.offsetWidth;
-            const notesWidth = endX - startX;
-            if (notesWidth <= 0) return;
+            const maxScroll = Math.max(0, display.scrollWidth - display.clientWidth);
+            if (maxScroll <= 0) {
+                updateTabScrollRail(display, noteIndex, totalNotes);
+                return;
+            }
 
             const ratio = noteIndex / (totalNotes - 1);
-            const playheadX = startX + ratio * notesWidth;
-            const viewLead = display.clientWidth * 0.32;
-            const maxScroll = Math.max(0, display.scrollWidth - display.clientWidth);
-            let target = playheadX - viewLead;
-            target = Math.max(0, Math.min(maxScroll, target));
-            display.scrollLeft = target;
+            display.scrollLeft = ratio * maxScroll;
+            updateTabScrollRail(display, noteIndex, totalNotes);
         }
 
         /** Tablature playhead: vurgulu sütun (6 tel) + aktif perde hücresi */
