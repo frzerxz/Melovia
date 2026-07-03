@@ -3705,11 +3705,35 @@
             padding: 16px;
             font-family: 'Courier New', monospace;
             overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(139, 92, 246, 0.5) rgba(255, 255, 255, 0.06);
+        }
+
+        .tablature-display::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .tablature-display::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 999px;
+        }
+
+        .tablature-display::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.55), rgba(6, 182, 212, 0.45));
+            border-radius: 999px;
+        }
+
+        .tab-lines-track {
+            display: inline-block;
+            min-width: 100%;
+            vertical-align: top;
         }
 
         .tab-line {
             display: flex;
             align-items: center;
+            width: max-content;
+            min-width: 100%;
             height: 1.6em;
             line-height: 1.6em;
             margin-bottom: 0;
@@ -3727,10 +3751,14 @@
             color: var(--cyan);
             letter-spacing: 2px;
             white-space: nowrap;
-            flex: 1;
-            min-width: calc(var(--tab-cols, 0) * 1.35em);
             display: inline-flex;
             align-items: center;
+            flex: 0 0 auto;
+            width: max-content;
+        }
+
+        .tab-notes.pad-short {
+            min-width: calc(16 * 1.35em);
         }
 
         .tab-rail {
@@ -8729,8 +8757,7 @@
             });
 
             const minCols = noteCount < 16 ? 16 : 0;
-            if (minCols) display.style.setProperty('--tab-cols', String(minCols));
-            else display.style.removeProperty('--tab-cols');
+            const padClass = minCols ? ' pad-short' : '';
             display.dataset.tabNoteCount = String(noteCount);
 
             let headerHtml = '';
@@ -8743,12 +8770,12 @@
                 </div>`;
             }
 
-            display.innerHTML = headerHtml + rows.map((spans, i) => `
+            display.innerHTML = headerHtml + `<div class="tab-lines-track">` + rows.map((spans, i) => `
                 <div class="tab-line">
                     <span class="tab-string-label">${stringLabels[i]}|</span>
-                    <span class="tab-notes">${spans.join('')}</span>
+                    <span class="tab-notes${padClass}">${spans.join('')}</span>
                 </div>
-            `).join('');
+            `).join('') + `</div>`;
 
             display.scrollLeft = 0;
             resetLoopState(noteCount);
@@ -8940,7 +8967,13 @@
         let tabIsPlaying = false;
         let practiceTabKey = null;
 
-        /** Tab scroll: kaydırma çubuğu = nota ilerlemesi (tüm şarkılar) */
+        function getTabContentX(display, el) {
+            const dRect = display.getBoundingClientRect();
+            const eRect = el.getBoundingClientRect();
+            return display.scrollLeft + (eRect.left - dRect.left);
+        }
+
+        /** Tab scroll: playhead pozisyonu = nota indeksine orantılı kaydırma */
         function syncTabScroll(display, noteIndex, totalNotes) {
             if (!display || totalNotes <= 1) return;
 
@@ -8948,19 +8981,17 @@
             const last = display.querySelector(`.tn[data-ni="${totalNotes - 1}"]`);
             if (!first || !last) return;
 
-            const displayLeft = display.getBoundingClientRect().left;
-            const startX = display.scrollLeft + first.getBoundingClientRect().left - displayLeft;
-            const endX = display.scrollLeft + last.getBoundingClientRect().left - displayLeft + last.offsetWidth;
+            const startX = getTabContentX(display, first);
+            const endX = getTabContentX(display, last) + last.offsetWidth;
             const notesWidth = endX - startX;
             if (notesWidth <= 0) return;
 
             const ratio = noteIndex / (totalNotes - 1);
             const playheadX = startX + ratio * notesWidth;
-            const viewLead = display.clientWidth / 3;
+            const viewLead = display.clientWidth * 0.32;
+            const maxScroll = Math.max(0, display.scrollWidth - display.clientWidth);
             let target = playheadX - viewLead;
-
-            const notesMaxScroll = Math.max(0, endX - display.clientWidth + 16);
-            target = Math.max(0, Math.min(notesMaxScroll, target));
+            target = Math.max(0, Math.min(maxScroll, target));
             display.scrollLeft = target;
         }
 
@@ -9049,7 +9080,7 @@
                 progressBar = document.createElement('div');
                 progressBar.className = 'tab-progress';
                 progressBar.style.cssText = 'height:3px;background:linear-gradient(90deg,#8b5cf6,#06b6d4);border-radius:2px;margin:4px 0 8px;width:0%;transition:width 0.3s;';
-                display.insertBefore(progressBar, display.querySelector('.tab-line'));
+                display.insertBefore(progressBar, display.querySelector('.tab-lines-track') || display.querySelector('.tab-line'));
             }
 
             let noteIndex = loopStart;
