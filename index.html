@@ -6742,15 +6742,19 @@
                 timeline.appendChild(el);
             });
 
-            // State'i sıfırla
+            // State'i sıfırla — önceki loop/akor ayarlarını taşıma
+            resetModeSessionState({
+                totalNotes: lesson.songData.length,
+                clearChords: true,
+                stopAudio: true
+            });
+
             currentLessonState = {
                 active: true,
                 step: getLoopStartIndex(lesson.songData.length),
                 total: lesson.songData.length,
                 data: lesson.songData
             };
-
-            syncLoopInputs(lesson.songData.length);
 
             setPair(getRequiredPairForLesson(lesson.songData));
 
@@ -6841,8 +6845,8 @@
         function stopLesson() {
             currentLessonState.active = false;
             document.getElementById('lessonHud').classList.remove('active');
-            // Completion overlay'i de kapat
             document.getElementById('completionOverlay').classList.remove('active');
+            resetModeSessionState({ clearChords: true, stopAudio: true, resetPair: true });
         }
 
         // Tamamlama Overlay sistemi
@@ -7767,6 +7771,42 @@
             renderChordKeyboardMap([]);
         }
 
+        function resetChordSelection() {
+            lastPlayedChord = null;
+            clearChordKeyMapping();
+            clearChordKeyHeld();
+            document.querySelectorAll('.chord-btn.active-chord').forEach(btn => btn.classList.remove('active-chord'));
+            const lastChordEl = document.getElementById('lastChord');
+            if (lastChordEl) lastChordEl.textContent = '—';
+            const mount = document.getElementById('chordDiagramMount');
+            const nameEl = document.getElementById('chordDiagramName');
+            const fingersEl = document.getElementById('chordDiagramFingers');
+            const descEl = document.getElementById('chordDiagramDesc');
+            const hint = document.getElementById('chordHandHint');
+            if (nameEl) nameEl.textContent = '—';
+            if (mount) mount.innerHTML = '<span style="color:var(--dim);font-size:11px;">Bir akor seçin</span>';
+            if (fingersEl) fingersEl.textContent = '';
+            if (descEl) descEl.textContent = 'Klasik gitar: akor = aynı anda birkaç klavye tuşu (Pair Zone).';
+            if (hint) hint.innerHTML = '';
+            clearChordVisuals();
+            const scaleSel = document.getElementById('scaleSelect');
+            if (scaleSel) scaleSel.value = '';
+            if (typeof toggleScaleOverlay === 'function') toggleScaleOverlay('');
+        }
+
+        function resetModeSessionState(options = {}) {
+            const { totalNotes = 0, clearChords = true, stopAudio = true, resetPair = false } = options;
+            if (stopAudio) {
+                if (typeof stopTabPlayback === 'function') stopTabPlayback();
+                if (typeof audioEngine !== 'undefined') audioEngine.stopAll?.();
+            }
+            if (typeof resetLoopState === 'function') {
+                resetLoopState(totalNotes);
+            }
+            if (clearChords) resetChordSelection();
+            if (resetPair && typeof setPair === 'function') setPair(1);
+        }
+
         function renderClassicChordDiagram(chordName) {
             const mount = document.getElementById('chordDiagramMount');
             const nameEl = document.getElementById('chordDiagramName');
@@ -8551,6 +8591,14 @@
             const tab = tablatures[tabKey];
             if (!tab) return;
 
+            if (!practiceActive && !(currentLessonState && currentLessonState.active)) {
+                resetChordSelection();
+                if (typeof stopTabPlayback === 'function') stopTabPlayback();
+                if (typeof audioEngine !== 'undefined') audioEngine.stopAll?.();
+            } else if (typeof stopTabPlayback === 'function') {
+                stopTabPlayback();
+            }
+
             const display = document.getElementById('tablatureDisplay');
             const stringLabels = ['e', 'B', 'G', 'D', 'A', 'E'];
             const noteCount = tab.notes.length;
@@ -8589,7 +8637,7 @@
             `).join('');
 
             display.scrollLeft = 0;
-            syncLoopInputs(noteCount);
+            resetLoopState(noteCount);
             updateTabEffectiveBpmDisplay();
         }
 
@@ -8629,6 +8677,28 @@
             });
 
             updateLoopHighlight(totalNotes);
+        }
+
+        function resetLoopState(totalNotes) {
+            loopState.enabled = false;
+            loopState.start = 0;
+            loopState.end = null;
+            if (totalNotes && totalNotes > 0) {
+                syncLoopInputs(totalNotes);
+            } else {
+                document.querySelectorAll('.loop-input-enabled').forEach(el => { el.checked = false; });
+                document.querySelectorAll('.loop-input-start').forEach(el => {
+                    el.value = 1;
+                    el.min = 1;
+                    el.max = 1;
+                });
+                document.querySelectorAll('.loop-input-end').forEach(el => {
+                    el.value = 1;
+                    el.min = 1;
+                    el.max = 1;
+                });
+                updateLoopHighlight(0);
+            }
         }
 
         function setLoopEnabled(enabled) {
@@ -8977,8 +9047,13 @@
             practiceCorrectCount = 0;
             practiceStartTime = Date.now();
 
+            resetModeSessionState({
+                totalNotes: tab.notes.length,
+                clearChords: true,
+                stopAudio: true
+            });
+
             loadTablature(tabKey);
-            syncLoopInputs(tab.notes.length);
             setPair(getRequiredPairForLesson(practiceNotes));
 
             // Show practice bar
@@ -9019,6 +9094,7 @@
             practiceCurrentIndex = 0;
             practiceTabKey = null;
             clearTabPlayhead();
+            resetModeSessionState({ clearChords: true, stopAudio: false, resetPair: true });
         }
 
         function showPracticeTarget() {
@@ -9257,26 +9333,42 @@
             closeEffectsPanel(false);
             document.querySelectorAll('.sidebar-item, .sidebar-subitem').forEach(el => el.classList.remove('active'));
 
+            if (section !== 'guitar' || !currentLessonState.active) {
+                if (currentLessonState.active) stopLesson();
+                else if (practiceActive) stopPractice();
+            }
+
             if (section === 'home') {
+                if (practiceActive) stopPractice();
+                resetModeSessionState({ clearChords: true, stopAudio: true, resetPair: true });
                 showSection('home');
                 const homeBtn = document.getElementById('sidebarHome');
                 if (homeBtn) homeBtn.classList.add('active');
             } else if (section === 'guitar') {
+                if (!currentLessonState.active && !practiceActive) {
+                    resetModeSessionState({ clearChords: true, stopAudio: true, resetPair: true });
+                }
                 showSection('guitar');
                 showGuitarPanel('panelPairZone');
                 document.querySelectorAll('.sidebar-subitem').forEach(el => {
                     if (el.textContent.includes('Klasik Gitar')) el.classList.add('active');
                 });
             } else if (section === 'piano') {
+                if (practiceActive) stopPractice();
+                resetModeSessionState({ clearChords: true, stopAudio: true, resetPair: true });
                 showSection('piano');
                 document.querySelectorAll('.sidebar-subitem').forEach(el => {
                     if (el.textContent.includes('Piyano (88')) el.classList.add('active');
                 });
             } else if (section === 'lessons') {
+                if (practiceActive) stopPractice();
+                resetModeSessionState({ clearChords: true, stopAudio: true, resetPair: true });
                 showSection('lessons');
                 const lBtn = document.getElementById('sidebarLessons');
                 if (lBtn) lBtn.classList.add('active');
             } else if (section === 'kesfet') {
+                if (practiceActive) stopPractice();
+                resetModeSessionState({ clearChords: true, stopAudio: true, resetPair: true });
                 showSection('kesfet');
                 const dBtn = document.getElementById('sidebarDiscover');
                 if (dBtn) dBtn.classList.add('active');
@@ -9288,11 +9380,16 @@
         // ============================================
 
         function showGuitarPanel(panelId) {
+            const wasLesson = currentLessonState.active;
+            const wasPractice = practiceActive;
             document.querySelectorAll('.guitar-module-panel').forEach(p => p.classList.remove('active'));
             const panel = document.getElementById(panelId);
             if (panel) panel.classList.add('active');
             if (panelId === 'panelTablature') {
                 document.getElementById('panelPairZone')?.classList.add('active');
+            }
+            if (!wasLesson && !wasPractice && panelId === 'panelPairZone') {
+                resetChordSelection();
             }
         }
 
@@ -9313,6 +9410,22 @@
 
             const config = moduleMap[moduleName];
             if (!config) return;
+
+            if (moduleName !== 'lessons' && currentLessonState.active) {
+                stopLesson();
+            }
+            if (moduleName === 'lessons' && practiceActive) {
+                stopPractice();
+            }
+            if (moduleName === 'practice' || moduleName === 'tablature' || moduleName === 'backing' || moduleName === 'recording') {
+                if (practiceActive && moduleName !== 'practice') stopPractice();
+                if (!practiceActive) {
+                    resetModeSessionState({ clearChords: true, stopAudio: true, resetPair: true });
+                }
+            }
+            if (moduleName === 'lessons') {
+                resetModeSessionState({ clearChords: true, stopAudio: true, resetPair: true });
+            }
 
             // Show the correct section
             showSection(config.section);
