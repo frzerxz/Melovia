@@ -3781,36 +3781,114 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             margin-top: 10px;
-            padding: 8px 12px;
-            background: rgba(245, 158, 11, 0.08);
-            border: 1px solid rgba(245, 158, 11, 0.22);
-            border-radius: 8px;
+            padding: 10px 14px;
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(139, 92, 246, 0.18);
+            border-radius: 12px;
             font-size: 12px;
         }
 
-        .loop-bar label {
+        .loop-toggle {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            padding: 7px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            background: rgba(0, 0, 0, 0.28);
             color: var(--dim);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
-        .loop-bar input[type="number"] {
-            width: 58px;
-            padding: 4px 6px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: rgba(0, 0, 0, 0.35);
+        .loop-toggle:hover {
+            border-color: rgba(139, 92, 246, 0.55);
             color: var(--text);
+        }
+
+        .loop-toggle.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(6, 182, 212, 0.28));
+            border-color: rgba(167, 139, 250, 0.65);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(139, 92, 246, 0.35);
+        }
+
+        .loop-sliders {
+            display: flex;
+            flex: 1;
+            flex-wrap: wrap;
+            gap: 14px 20px;
+            min-width: 220px;
+        }
+
+        .loop-slider-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .loop-slider-label {
+            color: var(--dim);
+            font-size: 11px;
+            min-width: 58px;
+        }
+
+        .loop-slider-group input[type="range"] {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .loop-slider-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a78bfa, #22d3ee);
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.55);
+            cursor: grab;
+        }
+
+        .loop-slider-group input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a78bfa, #22d3ee);
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.55);
+            cursor: grab;
+        }
+
+        .loop-range-val {
+            min-width: 28px;
+            text-align: center;
+            font-weight: 700;
             font-size: 12px;
+            color: #c4b5fd;
         }
 
         .loop-bar .loop-hint {
-            color: #f59e0b;
+            color: #a78bfa;
             font-size: 11px;
-            opacity: 0.85;
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+
+        .loop-bar.disabled-sliders .loop-sliders {
+            opacity: 0.55;
         }
 
         .practice-mode-bar .loop-bar {
@@ -4222,11 +4300,23 @@
                             <span>⏱️ <span id="practiceTime">0:00</span></span>
                         </div>
                     </div>
-                    <div class="loop-bar">
-                        <label><input type="checkbox" class="loop-input-enabled"> 🔁 Loop</label>
-                        <label>Başlangıç <input type="number" class="loop-input-start" min="1" value="1"></label>
-                        <label>Bitiş <input type="number" class="loop-input-end" min="1" value="1"></label>
-                        <span class="loop-hint">Seçili aralığı tekrar et</span>
+                    <div class="loop-bar disabled-sliders">
+                        <button type="button" class="loop-toggle" aria-pressed="false" onclick="toggleLoopEnabled(this)">
+                            <span>🔁</span> Loop
+                        </button>
+                        <div class="loop-sliders">
+                            <div class="loop-slider-group">
+                                <span class="loop-slider-label">Başlangıç</span>
+                                <input type="range" class="loop-range-start" min="1" max="1" value="1" step="1">
+                                <span class="loop-range-val loop-start-val">1</span>
+                            </div>
+                            <div class="loop-slider-group">
+                                <span class="loop-slider-label">Bitiş</span>
+                                <input type="range" class="loop-range-end" min="1" max="1" value="1" step="1">
+                                <span class="loop-range-val loop-end-val">1</span>
+                            </div>
+                        </div>
+                        <span class="loop-hint loop-range-summary">1–1</span>
                     </div>
                 </div>
 
@@ -4313,11 +4403,23 @@
                             <!-- Timeline items will be injected here -->
                         </div>
                     </div>
-                    <div class="loop-bar">
-                        <label><input type="checkbox" class="loop-input-enabled"> 🔁 Loop</label>
-                        <label>Başlangıç <input type="number" class="loop-input-start" min="1" value="1"></label>
-                        <label>Bitiş <input type="number" class="loop-input-end" min="1" value="1"></label>
-                        <span class="loop-hint">Parçayı bölerek çalış</span>
+                    <div class="loop-bar disabled-sliders">
+                        <button type="button" class="loop-toggle" aria-pressed="false" onclick="toggleLoopEnabled(this)">
+                            <span>🔁</span> Loop
+                        </button>
+                        <div class="loop-sliders">
+                            <div class="loop-slider-group">
+                                <span class="loop-slider-label">Başlangıç</span>
+                                <input type="range" class="loop-range-start" min="1" max="1" value="1" step="1">
+                                <span class="loop-range-val loop-start-val">1</span>
+                            </div>
+                            <div class="loop-slider-group">
+                                <span class="loop-slider-label">Bitiş</span>
+                                <input type="range" class="loop-range-end" min="1" max="1" value="1" step="1">
+                                <span class="loop-range-val loop-end-val">1</span>
+                            </div>
+                        </div>
+                        <span class="loop-hint loop-range-summary">1–1</span>
                     </div>
                 </div>
                 <div class="fretboard-container">
@@ -4620,11 +4722,23 @@
                     <span class="tab-speed-bpm" id="tabEffectiveBpm">—</span>
                 </div>
                 <p class="classic-feature-hint tab-speed-hint">🎸 Tab hız ayarı şu an yalnızca <strong>Klasik Gitar</strong> modunda aktif.</p>
-                <div class="loop-bar">
-                    <label><input type="checkbox" class="loop-input-enabled"> 🔁 Loop</label>
-                    <label>Başlangıç <input type="number" class="loop-input-start" min="1" value="1"></label>
-                    <label>Bitiş <input type="number" class="loop-input-end" min="1" value="1"></label>
-                    <span class="loop-hint">Seçili aralığı tekrar et</span>
+                <div class="loop-bar disabled-sliders">
+                    <button type="button" class="loop-toggle" aria-pressed="false" onclick="toggleLoopEnabled(this)">
+                        <span>🔁</span> Loop
+                    </button>
+                    <div class="loop-sliders">
+                        <div class="loop-slider-group">
+                            <span class="loop-slider-label">Başlangıç</span>
+                            <input type="range" class="loop-range-start" min="1" max="1" value="1" step="1">
+                            <span class="loop-range-val loop-start-val">1</span>
+                        </div>
+                        <div class="loop-slider-group">
+                            <span class="loop-slider-label">Bitiş</span>
+                            <input type="range" class="loop-range-end" min="1" max="1" value="1" step="1">
+                            <span class="loop-range-val loop-end-val">1</span>
+                        </div>
+                    </div>
+                    <span class="loop-hint loop-range-summary">1–1</span>
                 </div>
                 <div class="tablature-controls">
                     <button class="tab-control-btn" onclick="startPractice(currentTab)"
@@ -8644,6 +8758,13 @@
         // === LOOP (aralık tekrarı) ===
         let loopState = { enabled: false, start: 0, end: null };
 
+        function getLoopTotalNotes() {
+            return parseInt(document.getElementById('tablatureDisplay')?.dataset.tabNoteCount, 10)
+                || currentLessonState.total
+                || practiceNotes.length
+                || 0;
+        }
+
         function getLoopRange(totalNotes) {
             if (!totalNotes || totalNotes < 1) return { start: 0, end: 0 };
             let end = loopState.end;
@@ -8654,6 +8775,39 @@
             return { start, end };
         }
 
+        function updateLoopBarVisuals(bar, startVal, endVal, totalNotes) {
+            if (!bar) return;
+            const startEl = bar.querySelector('.loop-range-start');
+            const endEl = bar.querySelector('.loop-range-end');
+            const startValEl = bar.querySelector('.loop-start-val');
+            const endValEl = bar.querySelector('.loop-end-val');
+            const summaryEl = bar.querySelector('.loop-range-summary');
+            const toggle = bar.querySelector('.loop-toggle');
+
+            if (startEl) {
+                startEl.min = 1;
+                startEl.max = totalNotes || 1;
+                startEl.value = startVal;
+            }
+            if (endEl) {
+                endEl.min = 1;
+                endEl.max = totalNotes || 1;
+                endEl.value = endVal;
+            }
+            if (startValEl) startValEl.textContent = startVal;
+            if (endValEl) endValEl.textContent = endVal;
+            if (summaryEl) {
+                summaryEl.textContent = totalNotes
+                    ? `${startVal}–${endVal} / ${totalNotes}`
+                    : `${startVal}–${endVal}`;
+            }
+            if (toggle) {
+                toggle.classList.toggle('active', loopState.enabled);
+                toggle.setAttribute('aria-pressed', loopState.enabled ? 'true' : 'false');
+            }
+            bar.classList.toggle('disabled-sliders', !loopState.enabled);
+        }
+
         function syncLoopInputs(totalNotes) {
             if (!totalNotes || totalNotes < 1) return;
 
@@ -8662,18 +8816,8 @@
             loopState.start = startVal - 1;
             loopState.end = endVal - 1;
 
-            document.querySelectorAll('.loop-input-start').forEach(el => {
-                el.min = 1;
-                el.max = totalNotes;
-                el.value = startVal;
-            });
-            document.querySelectorAll('.loop-input-end').forEach(el => {
-                el.min = 1;
-                el.max = totalNotes;
-                el.value = endVal;
-            });
-            document.querySelectorAll('.loop-input-enabled').forEach(el => {
-                el.checked = loopState.enabled;
+            document.querySelectorAll('.loop-bar').forEach(bar => {
+                updateLoopBarVisuals(bar, startVal, endVal, totalNotes);
             });
 
             updateLoopHighlight(totalNotes);
@@ -8686,54 +8830,67 @@
             if (totalNotes && totalNotes > 0) {
                 syncLoopInputs(totalNotes);
             } else {
-                document.querySelectorAll('.loop-input-enabled').forEach(el => { el.checked = false; });
-                document.querySelectorAll('.loop-input-start').forEach(el => {
-                    el.value = 1;
-                    el.min = 1;
-                    el.max = 1;
-                });
-                document.querySelectorAll('.loop-input-end').forEach(el => {
-                    el.value = 1;
-                    el.min = 1;
-                    el.max = 1;
+                document.querySelectorAll('.loop-bar').forEach(bar => {
+                    updateLoopBarVisuals(bar, 1, 1, 1);
                 });
                 updateLoopHighlight(0);
             }
         }
 
-        function setLoopEnabled(enabled) {
-            loopState.enabled = enabled;
-            document.querySelectorAll('.loop-input-enabled').forEach(el => { el.checked = enabled; });
-            const total = parseInt(document.getElementById('tablatureDisplay')?.dataset.tabNoteCount, 10)
-                || currentLessonState.total
-                || practiceNotes.length
-                || 0;
-            updateLoopHighlight(total);
+        function toggleLoopEnabled(btn) {
+            setLoopEnabled(!loopState.enabled);
         }
 
-        function updateLoopRange() {
-            const startEl = document.querySelector('.loop-input-start');
-            const endEl = document.querySelector('.loop-input-end');
-            if (!startEl || !endEl) return;
+        function setLoopEnabled(enabled) {
+            loopState.enabled = enabled;
+            const total = getLoopTotalNotes();
+            if (total > 0) syncLoopInputs(total);
+            else {
+                document.querySelectorAll('.loop-bar').forEach(bar => {
+                    updateLoopBarVisuals(
+                        bar,
+                        parseInt(bar.querySelector('.loop-range-start')?.value, 10) || 1,
+                        parseInt(bar.querySelector('.loop-range-end')?.value, 10) || 1,
+                        1
+                    );
+                });
+            }
+        }
 
-            const total = parseInt(document.getElementById('tablatureDisplay')?.dataset.tabNoteCount, 10)
-                || currentLessonState.total
-                || practiceNotes.length
-                || parseInt(endEl.max, 10)
+        function updateLoopRangeFromElement(el) {
+            const bar = el.closest('.loop-bar');
+            if (!bar) return;
+
+            const total = getLoopTotalNotes()
+                || parseInt(bar.querySelector('.loop-range-end')?.max, 10)
                 || 1;
+
+            const startEl = bar.querySelector('.loop-range-start');
+            const endEl = bar.querySelector('.loop-range-end');
+            if (!startEl || !endEl) return;
 
             let start = parseInt(startEl.value, 10) || 1;
             let end = parseInt(endEl.value, 10) || total;
             start = Math.max(1, Math.min(start, total));
-            end = Math.max(start, Math.min(end, total));
+            end = Math.max(1, Math.min(end, total));
+
+            if (start > end) {
+                if (el.classList.contains('loop-range-start')) end = start;
+                else start = end;
+            }
 
             loopState.start = start - 1;
             loopState.end = end - 1;
+            syncLoopInputs(total);
+        }
 
-            document.querySelectorAll('.loop-input-start').forEach(el => { el.value = start; });
-            document.querySelectorAll('.loop-input-end').forEach(el => { el.value = end; });
-
-            updateLoopHighlight(total);
+        function updateLoopRange() {
+            const total = getLoopTotalNotes();
+            if (!total) return;
+            const { start, end } = getLoopRange(total);
+            loopState.start = start;
+            loopState.end = end;
+            syncLoopInputs(total);
         }
 
         function updateLoopHighlight(totalNotes) {
@@ -8772,12 +8929,10 @@
             return index + 1;
         }
 
-        document.addEventListener('change', e => {
-            if (e.target.classList.contains('loop-input-enabled')) {
-                setLoopEnabled(e.target.checked);
-            }
-            if (e.target.classList.contains('loop-input-start') || e.target.classList.contains('loop-input-end')) {
-                updateLoopRange();
+        document.addEventListener('input', e => {
+            if (e.target.classList.contains('loop-range-start') || e.target.classList.contains('loop-range-end')) {
+                if (!loopState.enabled) setLoopEnabled(true);
+                updateLoopRangeFromElement(e.target);
             }
         });
 
