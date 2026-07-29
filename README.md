@@ -3,9 +3,6 @@
 **Melovia**, bilgisayar klavyesini enstrüman perdesine eşleyerek gitar ve piyano çalmayı öğreten web tabanlı interaktif bir müzik eğitim platformudur.
 
 🔗 **Canlı Demo:** [https://frzerxz.github.io/Melovia/](https://frzerxz.github.io/Melovia/)  
-📋 **TÜBİTAK 2209-A Projesi** | Balıkesir Üniversitesi Mühendislik Fakültesi  
-📄 **Bitirme tezi rehberi:** [docs/THESIS_GUIDE.md](docs/THESIS_GUIDE.md)
-
 ## ✨ Özellikler (v0.3)
 
 ### 🎸 Klasik Gitar (öncelikli geliştirme)
@@ -75,8 +72,7 @@ Melovia/
 │   ├── fullSongData.js     # Tam şarkı tab verileri
 │   └── lessonsModule.js    # Ders modülü
 ├── docs/
-│   ├── PROJECT_REPORT.md   # Proje raporu
-│   └── THESIS_GUIDE.md     # Bitirme tezi yazım rehberi
+│   └── PROJECT_REPORT.md   # Proje ilerleme raporu
 ├── DOCUMENTATION.md        # Teknik dokümantasyon
 ├── unreal/MeloviaUE5/      # UE5 prototip (aktif geliştirme dışı)
 └── README.md
@@ -87,8 +83,7 @@ Melovia/
 | Dosya | İçerik |
 |-------|--------|
 | [DOCUMENTATION.md](DOCUMENTATION.md) | Modül modül teknik açıklama |
-| [docs/PROJECT_REPORT.md](docs/PROJECT_REPORT.md) | Proje raporu, sürüm notları |
-| [docs/THESIS_GUIDE.md](docs/THESIS_GUIDE.md) | Tez yapısı, sayfa sayısı, Melovia iskeleti |
+| [docs/PROJECT_REPORT.md](docs/PROJECT_REPORT.md) | Proje sürüm notları ve teknik rapor |
 
 ## 🗺️ Yol Haritası
 
@@ -97,9 +92,9 @@ Melovia/
 - [x] Klasik gitar akor–klavye entegrasyonu
 - [x] GitHub Pages dağıtımı
 - [ ] Elektro/bas akor entegrasyonu
-- [ ] Kullanılabilirlik testi (tez bölümü)
+- [ ] Kullanıcı validasyon testleri (Pilot Aşaması)
 - [ ] Mobil / PWA
 - [ ] UE5 arşiv (opsiyonel VR)
 
 ---
-*Melovia v0.3 | Firuze Eroğlu | Balıkesir Üniversitesi*
+*Melovia v0.3 | Firuze Eroğlu*
