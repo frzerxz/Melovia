@@ -2350,18 +2350,18 @@
             position: relative;
             overflow: hidden;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 24px;
+            gap: 16px;
         }
 
         .home-welcome-logo {
             flex-shrink: 0;
-            filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.4));
+            filter: drop-shadow(0 0 16px rgba(139, 92, 246, 0.45));
         }
 
         .home-welcome-content {
             text-align: center;
-            flex: 1;
         }
 
         .home-welcome-banner::before {
@@ -4288,7 +4288,7 @@
 
         <!-- Logo -->
         <div class="sidebar-logo" style="flex-direction: row; align-items: center; gap: 8px;">
-            <img src="logo.png" alt="Melovia" style="height: 30px; width: auto; object-fit: contain; filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.3)); flex-shrink: 0;">
+            <span class="logo-icon">🎵</span>
             <span class="logo-text">Melovia</span>
             <span class="version">v0.3</span>
             <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleDesktopSidebar()" aria-label="Menüyü Daralt">
