@@ -137,62 +137,12 @@
            DESKTOP SIDEBAR COLLAPSE
            ============================================ */
         .sidebar.collapsed {
-            width: 64px;
-        }
-
-        .sidebar.collapsed .sidebar-section-label,
-        .sidebar.collapsed .logo-text,
-        .sidebar.collapsed .version,
-        .sidebar.collapsed .cat-arrow,
-        .sidebar.collapsed .badge-soon,
-        .sidebar.collapsed .badge-active,
-        .sidebar.collapsed .badge-turk,
-        .sidebar.collapsed .np-text,
-        .sidebar.collapsed .np-eq {
-            opacity: 0;
             width: 0;
+            border-right: none;
             overflow: hidden;
-            display: none;
         }
 
-        .sidebar.collapsed .sidebar-item,
-        .sidebar.collapsed .sidebar-cat-header {
-            justify-content: center;
-            padding: 10px 0;
-            margin: 1px 4px;
-            width: calc(100% - 8px);
-            gap: 0;
-            font-size: 16px;
-        }
-
-        .sidebar.collapsed .sidebar-subitem {
-            justify-content: center;
-            padding: 6px 0;
-            padding-left: 0;
-            margin: 1px 4px;
-            width: calc(100% - 8px);
-            font-size: 0;
-        }
-
-        .sidebar.collapsed .sidebar-logo {
-            justify-content: center;
-            padding: 16px 8px 12px;
-            gap: 0;
-        }
-
-        .sidebar.collapsed .sidebar-now-playing {
-            padding: 10px 4px 12px;
-        }
-
-        .sidebar.collapsed .now-playing-inner {
-            justify-content: center;
-        }
-
-        .sidebar.collapsed .sidebar-cat-items {
-            padding-left: 0;
-        }
-
-        /* Toggle button */
+        /* Toggle button - inside sidebar logo area */
         .sidebar-toggle-btn {
             background: none;
             border: none;
@@ -214,8 +164,32 @@
             color: var(--text);
         }
 
-        .sidebar.collapsed .sidebar-toggle-btn {
-            margin: 0 auto;
+        /* Floating open button - visible when sidebar is hidden */
+        .sidebar-open-btn {
+            display: none;
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 300;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--dim);
+            transition: all 0.2s;
+        }
+
+        .sidebar-open-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .sidebar-open-btn.show {
+            display: flex;
         }
 
         .sidebar::-webkit-scrollbar { width: 4px; }
@@ -419,7 +393,7 @@
         }
 
         .sidebar.collapsed ~ .app-content {
-            margin-left: 64px;
+            margin-left: 0;
         }
 
         /* Fretboard always sticky at top */
@@ -4278,12 +4252,17 @@
     <!-- Mobile overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
 
+    <!-- Desktop sidebar open button (visible when sidebar is collapsed) -->
+    <button class="sidebar-open-btn" id="sidebarOpenBtn" onclick="toggleDesktopSidebar()" aria-label="Menüyü Aç">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+
     <!-- Spotify-style Left Sidebar -->
     <nav class="sidebar" id="sidebar" aria-label="Ana Navigasyon">
 
         <!-- Logo -->
         <div class="sidebar-logo">
-            <img src="logo.png" alt="Melovia" style="height: 28px; width: auto; object-fit: contain; filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.35)); flex-shrink: 0;">
+            <img src="logo.png" alt="Melovia" style="height: 38px; width: auto; object-fit: contain; filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.35)); flex-shrink: 0;">
             <span class="logo-text">Melovia</span>
             <span class="version">v0.3</span>
             <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleDesktopSidebar()" aria-label="Menüyü Daralt">
@@ -5439,7 +5418,7 @@
 
                 <!-- Welcome Banner -->
                 <div class="home-welcome-banner">
-                    <div class="home-welcome-title">🎵 Melovia'ya Hoş Geldiniz</div>
+                    <div class="home-welcome-title"><img src="logo.png" alt="" style="height: 32px; vertical-align: middle; margin-right: 6px; filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.3));">Melovia'ya Hoş Geldiniz</div>
                     <div class="home-welcome-sub">Dijital müzik enstrümanları ve interaktif derslerle müzik öğrenin</div>
                     <div class="home-welcome-cta">
                         <button class="home-cta-btn primary" onclick="showSidebarSection('guitar')">🎸 Gitara Başla</button>
@@ -9844,14 +9823,12 @@
         // Desktop sidebar collapse/expand
         function toggleDesktopSidebar() {
             const sidebar = document.getElementById('sidebar');
-            const toggleBtn = document.getElementById('sidebarToggleBtn');
-            const svg = toggleBtn.querySelector('svg');
+            const openBtn = document.getElementById('sidebarOpenBtn');
             sidebar.classList.toggle('collapsed');
-            // Rotate arrow icon
             if (sidebar.classList.contains('collapsed')) {
-                svg.style.transform = 'rotate(180deg)';
+                openBtn.classList.add('show');
             } else {
-                svg.style.transform = 'rotate(0deg)';
+                openBtn.classList.remove('show');
             }
         }
 
