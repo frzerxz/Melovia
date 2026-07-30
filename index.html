@@ -2349,7 +2349,19 @@
             margin-bottom: 24px;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .home-welcome-logo {
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.4));
+        }
+
+        .home-welcome-content {
             text-align: center;
+            flex: 1;
         }
 
         .home-welcome-banner::before {
@@ -4275,17 +4287,13 @@
     <nav class="sidebar" id="sidebar" aria-label="Ana Navigasyon">
 
         <!-- Logo -->
-        <div class="sidebar-logo">
-            <div class="sidebar-logo-top">
-                <img src="logo.png" alt="Melovia" style="height: 48px; width: auto; object-fit: contain; filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.35));">
-                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleDesktopSidebar()" aria-label="Menüyü Daralt">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                </button>
-            </div>
-            <div class="sidebar-logo-bottom">
-                <span class="logo-text">Melovia</span>
-                <span class="version">v0.3</span>
-            </div>
+        <div class="sidebar-logo" style="flex-direction: row; align-items: center; gap: 8px;">
+            <img src="logo.png" alt="Melovia" style="height: 30px; width: auto; object-fit: contain; filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.3)); flex-shrink: 0;">
+            <span class="logo-text">Melovia</span>
+            <span class="version">v0.3</span>
+            <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleDesktopSidebar()" aria-label="Menüyü Daralt">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
         </div>
 
         <!-- KEŞFET -->
@@ -5436,12 +5444,15 @@
 
                 <!-- Welcome Banner -->
                 <div class="home-welcome-banner">
-                    <div class="home-welcome-title"><img src="logo.png" alt="" style="height: 80px; vertical-align: middle; margin-right: 10px; filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.35));">Melovia'ya Hoş Geldiniz</div>
-                    <div class="home-welcome-sub">Dijital müzik enstrümanları ve interaktif derslerle müzik öğrenin</div>
-                    <div class="home-welcome-cta">
-                        <button class="home-cta-btn primary" onclick="showSidebarSection('guitar')">🎸 Gitara Başla</button>
-                        <button class="home-cta-btn secondary" onclick="showSidebarModule('lessons')">📚 Derslere Git</button>
-                        <button class="home-cta-btn secondary" onclick="showSidebarSection('kesfet')">🔍 Keşfet</button>
+                    <img src="logo.png" alt="Melovia" class="home-welcome-logo" style="height: 300px; width: auto;">
+                    <div class="home-welcome-content">
+                        <div class="home-welcome-title">Melovia'ya Hoş Geldiniz</div>
+                        <div class="home-welcome-sub">Dijital müzik enstrümanları ve interaktif derslerle müzik öğrenin</div>
+                        <div class="home-welcome-cta">
+                            <button class="home-cta-btn primary" onclick="showSidebarSection('guitar')">🎸 Gitara Başla</button>
+                            <button class="home-cta-btn secondary" onclick="showSidebarModule('lessons')">📚 Derslere Git</button>
+                            <button class="home-cta-btn secondary" onclick="showSidebarSection('kesfet')">🔍 Keşfet</button>
+                        </div>
                     </div>
                 </div>
 
