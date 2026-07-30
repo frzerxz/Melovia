@@ -2349,14 +2349,13 @@
             margin-bottom: 24px;
             position: relative;
             overflow: hidden;
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             align-items: center;
-            justify-content: center;
-            gap: 24px;
         }
 
         .home-welcome-logo {
-            flex-shrink: 0;
+            justify-self: center;
             filter: drop-shadow(0 0 16px rgba(139, 92, 246, 0.45));
         }
 
