@@ -144,23 +144,24 @@
 
         /* Toggle button - inside sidebar logo area */
         .sidebar-toggle-btn {
-            background: none;
-            border: none;
+            background: var(--card);
+            border: 1px solid var(--border);
             color: var(--dim);
             cursor: pointer;
             width: 28px;
             height: 28px;
-            border-radius: 50%;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
             flex-shrink: 0;
             margin-left: auto;
         }
 
         .sidebar-toggle-btn:hover {
-            background: var(--card);
+            background: var(--accent-dim);
+            border-color: var(--accent);
             color: var(--text);
         }
 
@@ -4262,7 +4263,7 @@
 
         <!-- Logo -->
         <div class="sidebar-logo">
-            <img src="logo.png" alt="Melovia" style="height: 38px; width: auto; object-fit: contain; filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.35)); flex-shrink: 0;">
+            <img src="logo.png" alt="Melovia" style="height: 50px; width: auto; object-fit: contain; filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.35)); flex-shrink: 0;">
             <span class="logo-text">Melovia</span>
             <span class="version">v0.3</span>
             <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleDesktopSidebar()" aria-label="Menüyü Daralt">
@@ -5418,7 +5419,7 @@
 
                 <!-- Welcome Banner -->
                 <div class="home-welcome-banner">
-                    <div class="home-welcome-title"><img src="logo.png" alt="" style="height: 32px; vertical-align: middle; margin-right: 6px; filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.3));">Melovia'ya Hoş Geldiniz</div>
+                    <div class="home-welcome-title"><img src="logo.png" alt="" style="height: 50px; vertical-align: middle; margin-right: 8px; filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.3));">Melovia'ya Hoş Geldiniz</div>
                     <div class="home-welcome-sub">Dijital müzik enstrümanları ve interaktif derslerle müzik öğrenin</div>
                     <div class="home-welcome-cta">
                         <button class="home-cta-btn primary" onclick="showSidebarSection('guitar')">🎸 Gitara Başla</button>
