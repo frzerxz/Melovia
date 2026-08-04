@@ -11,6 +11,11 @@ class MeloviaApp {
     async init() {
         console.log('🎵 Melovia starting...');
 
+        // Wait for auth to initialize
+        if (typeof auth !== 'undefined') {
+            console.log('🔐 Auth module loaded');
+        }
+
         GuitarModule.init();
         if (typeof PianoModule !== 'undefined') PianoModule.init();
         if (typeof LessonsModule !== 'undefined') LessonsModule.init();
