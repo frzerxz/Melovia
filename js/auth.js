@@ -70,7 +70,7 @@ class Auth {
     async login(email, password) {
         try {
             const formData = new FormData();
-            formData.append('username', email);
+            formData.append('username', email); // Can be email, phone, or username
             formData.append('password', password);
 
             const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -107,6 +107,61 @@ class Auth {
             // Network error handling
             if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
                 return { success: false, error: 'Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edip tekrar deneyin veya sorun devam ederse <a href="mailto:destek@melovia.com.tr" style="color: #a855f7; text-decoration: underline;">destek@melovia.com.tr</a> adresi üzerinden destek ekibimizle iletişime geçin.' };
+            }
+            return { success: false, error: error.message };
+        }
+    }
+
+    async forgotPassword(identifier) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ identifier })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || 'Sıfırlama isteği başarısız');
+            }
+
+            const data = await response.json();
+            return { success: true, data };
+        } catch (error) {
+            if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                return { success: false, error: 'Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edip tekrar deneyin veya sorun devam ederse <a href="mailto:destek@melovia.com.tr" style="color: #a855f7; text-decoration: underline;">destek@melovia.com.tr</a> adresi üzerinden destek ekibimizle iletişime geçin.' };
+            }
+            return { success: false, error: error.message };
+        }
+    }
+
+    async resetPassword(token, newPassword) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token, new_password: newPassword })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                
+                if (response.status === 400 || response.status === 422) {
+                    throw new Error(error.detail || 'Şifre gereksinimleri karşılanmıyor');
+                } else {
+                    throw new Error(error.detail || 'Şifre sıfırlama başarısız');
+                }
+            }
+
+            const data = await response.json();
+            return { success: true, data };
+        } catch (error) {
+            if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                return { success: false, error: 'Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edip tekrar deneyin veya sorun devam edirse <a href="mailto:destek@melovia.com.tr" style="color: #a855f7; text-decoration: underline;">destek@melovia.com.tr</a> adresi üzerinden destek ekibimizle iletişime geçin.' };
             }
             return { success: false, error: error.message };
         }

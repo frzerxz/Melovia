@@ -17,5 +17,7 @@ class User(Base):
     birth_date = Column(Date, nullable=True)
     xp = Column(Integer, default=0)
     completed_lessons = Column(Integer, default=0)
+    reset_token = Column(String, nullable=True)
+    reset_token_expiry = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
