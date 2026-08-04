@@ -29,8 +29,8 @@ allowed_origins.extend([
     "https://frzerxz.github.io",
     "https://*.vercel.app",
     "https://melovia.com.tr",
-    "https://api.melovia.com.tr",
-    "https://www.melovia.com.tr"
+    "https://www.melovia.com.tr",
+    "https://melovia-backend.onrender.com"
 ])
 
 app.add_middleware(
