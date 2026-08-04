@@ -4310,7 +4310,7 @@
                     </div>
                 </div>
                 <button onclick="handleAuthWallLogin()" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #8b5cf6, #a855f7); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 16px;">Giriş Yap</button>
-                <div id="authWallLoginError" style="color: #ef4444; font-size: 13px; text-align: center; display: none; margin-bottom: 12px;"></div>
+                <div id="authWallLoginError" style="color: #ef4444; font-size: 13px; text-align: center; display: none; margin-bottom: 12px; line-height: 1.4;"></div>
             </div>
 
             <!-- Register Form -->
@@ -4334,7 +4334,7 @@
                     </div>
                 </div>
                 <button onclick="handleAuthWallRegister()" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #8b5cf6, #a855f7); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 16px;">Kayıt Ol</button>
-                <div id="authWallRegisterError" style="color: #ef4444; font-size: 13px; text-align: center; display: none; margin-bottom: 12px;"></div>
+                <div id="authWallRegisterError" style="color: #ef4444; font-size: 13px; text-align: center; display: none; margin-bottom: 12px; line-height: 1.4;"></div>
                 <div id="authWallRegisterSuccess" style="color: #4ade80; font-size: 13px; text-align: center; display: none; margin-bottom: 12px;"></div>
             </div>
 
@@ -5873,7 +5873,7 @@
                 </div>
             </div>
 
-            <div id="profileError" style="color: #ef4444; font-size: 12px; margin-top: 12px; display: none;"></div>
+            <div id="profileError" style="color: #ef4444; font-size: 12px; margin-top: 12px; display: none; line-height: 1.4;"></div>
             <div id="profileSuccess" style="color: #4ade80; font-size: 12px; margin-top: 12px; display: none;"></div>
         </div>
     </div>
@@ -10253,13 +10253,13 @@
             });
 
             if (result.success) {
-                successDiv.textContent = 'Profil başarıyla güncellendi';
+                successDiv.innerHTML = 'Profil başarıyla güncellendi';
                 successDiv.style.display = 'block';
                 errorDiv.style.display = 'none';
                 updateProfileUI();
                 updateAuthButton();
             } else {
-                errorDiv.textContent = result.error;
+                errorDiv.innerHTML = result.error;
                 errorDiv.style.display = 'block';
                 successDiv.style.display = 'none';
             }
@@ -10273,7 +10273,7 @@
             const successDiv = document.getElementById('profileSuccess');
 
             if (!currentPassword || !newPassword || !confirmPassword) {
-                errorDiv.textContent = 'Lütfen tüm alanları doldurun';
+                errorDiv.innerHTML = 'Lütfen tüm alanları doldurun';
                 errorDiv.style.display = 'block';
                 return;
             }
@@ -10281,7 +10281,7 @@
             const result = await userManagement.changePassword(currentPassword, newPassword, confirmPassword);
 
             if (result.success) {
-                successDiv.textContent = 'Şifre başarıyla değiştirildi';
+                successDiv.innerHTML = 'Şifre başarıyla değiştirildi';
                 successDiv.style.display = 'block';
                 errorDiv.style.display = 'none';
                 // Clear password fields
@@ -10289,7 +10289,7 @@
                 document.getElementById('newPassword').value = '';
                 document.getElementById('confirmPassword').value = '';
             } else {
-                errorDiv.textContent = result.error;
+                errorDiv.innerHTML = result.error;
                 errorDiv.style.display = 'block';
                 successDiv.style.display = 'none';
             }
@@ -10545,13 +10545,13 @@
             });
 
             if (result.success) {
-                successDiv.textContent = 'Profil başarıyla güncellendi';
+                successDiv.innerHTML = 'Profil başarıyla güncellendi';
                 successDiv.style.display = 'block';
                 errorDiv.style.display = 'none';
                 updateProfileUI();
                 updateAuthButton();
             } else {
-                errorDiv.textContent = result.error;
+                errorDiv.innerHTML = result.error;
                 errorDiv.style.display = 'block';
                 successDiv.style.display = 'none';
             }
@@ -10565,7 +10565,7 @@
             const successDiv = document.getElementById('profileSuccess');
 
             if (!currentPassword || !newPassword || !confirmPassword) {
-                errorDiv.textContent = 'Lütfen tüm alanları doldurun';
+                errorDiv.innerHTML = 'Lütfen tüm alanları doldurun';
                 errorDiv.style.display = 'block';
                 return;
             }
@@ -10573,7 +10573,7 @@
             const result = await userManagement.changePassword(currentPassword, newPassword, confirmPassword);
 
             if (result.success) {
-                successDiv.textContent = 'Şifre başarıyla değiştirildi';
+                successDiv.innerHTML = 'Şifre başarıyla değiştirildi';
                 successDiv.style.display = 'block';
                 errorDiv.style.display = 'none';
                 // Clear password fields
@@ -10581,7 +10581,7 @@
                 document.getElementById('newPassword').value = '';
                 document.getElementById('confirmPassword').value = '';
             } else {
-                errorDiv.textContent = result.error;
+                errorDiv.innerHTML = result.error;
                 errorDiv.style.display = 'block';
                 successDiv.style.display = 'none';
             }
@@ -10669,7 +10669,7 @@
             const errorDiv = document.getElementById('authWallLoginError');
 
             if (!email || !password) {
-                errorDiv.textContent = 'Lütfen tüm alanları doldurun';
+                errorDiv.innerHTML = 'Lütfen tüm alanları doldurun';
                 errorDiv.style.display = 'block';
                 return;
             }
@@ -10684,7 +10684,7 @@
                 document.getElementById('mainAppContent').style.display = 'block';
                 updateAuthButton();
             } else {
-                errorDiv.textContent = result.error;
+                errorDiv.innerHTML = result.error;
                 errorDiv.style.display = 'block';
             }
         }
@@ -10697,7 +10697,7 @@
             const successDiv = document.getElementById('authWallRegisterSuccess');
 
             if (!username || !email || !password) {
-                errorDiv.textContent = 'Lütfen tüm alanları doldurun';
+                errorDiv.innerHTML = 'Lütfen tüm alanları doldurun';
                 errorDiv.style.display = 'block';
                 successDiv.style.display = 'none';
                 return;
@@ -10706,7 +10706,7 @@
             // Validate password strength
             const passwordValidation = validatePasswordStrength(password);
             if (!passwordValidation.isValid) {
-                errorDiv.textContent = passwordValidation.errors.join(', ');
+                errorDiv.innerHTML = passwordValidation.errors.join(', ');
                 errorDiv.style.display = 'block';
                 successDiv.style.display = 'none';
                 return;
@@ -10718,11 +10718,11 @@
             const result = await auth.register(username, email, password);
             
             if (result.success) {
-                successDiv.textContent = 'Kayıt başarılı! Şimdi giriş yapabilirsiniz.';
+                successDiv.innerHTML = 'Kayıt başarılı! Şimdi giriş yapabilirsiniz.';
                 successDiv.style.display = 'block';
                 switchAuthWallTab('login');
             } else {
-                errorDiv.textContent = result.error;
+                errorDiv.innerHTML = result.error;
                 errorDiv.style.display = 'block';
             }
         }

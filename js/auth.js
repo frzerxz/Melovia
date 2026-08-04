@@ -61,7 +61,7 @@ class Auth {
         } catch (error) {
             // Network error handling
             if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
-                return { success: false, error: 'Sunucuya bağlanılamadı, lütfen internet bağlantınızı veya backend durumunu kontrol edin' };
+                return { success: false, error: 'Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edip tekrar deneyin veya sorun devam ederse <a href="mailto:destek@melovia.com.tr" style="color: #a855f7; text-decoration: underline;">destek@melovia.com.tr</a> adresi üzerinden destek ekibimizle iletişime geçin.' };
             }
             return { success: false, error: error.message };
         }
@@ -106,7 +106,7 @@ class Auth {
         } catch (error) {
             // Network error handling
             if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
-                return { success: false, error: 'Sunucuya bağlanılamadı, lütfen internet bağlantınızı veya backend durumunu kontrol edin' };
+                return { success: false, error: 'Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edip tekrar deneyin veya sorun devam ederse <a href="mailto:destek@melovia.com.tr" style="color: #a855f7; text-decoration: underline;">destek@melovia.com.tr</a> adresi üzerinden destek ekibimizle iletişime geçin.' };
             }
             return { success: false, error: error.message };
         }
