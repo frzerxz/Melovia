@@ -3,12 +3,30 @@
  * Handles user authentication, registration, and session management
  */
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+// Dynamic API URL configuration
+const API_BASE_URL = window.API_BASE_URL || 
+                      'http://127.0.0.1:8000/api';
 
 class Auth {
     constructor() {
         this.token = localStorage.getItem('melovia_token');
         this.user = JSON.parse(localStorage.getItem('melovia_user') || 'null');
+        
+        // Verify token is still valid on page load
+        if (this.token) {
+            this.getCurrentUser().then(user => {
+                if (user) {
+                    this.user = user;
+                    localStorage.setItem('melovia_user', JSON.stringify(user));
+                } else {
+                    // Token invalid, clear it
+                    this.logout();
+                }
+            }).catch(() => {
+                // Network error or other issue, keep current state
+                console.warn('Could not verify token on page load');
+            });
+        }
     }
 
     async register(username, email, password) {
@@ -101,9 +119,13 @@ class Auth {
         localStorage.removeItem('melovia_token');
         localStorage.removeItem('melovia_user');
         
-        // Redirect to login
-        window.location.hash = '#login';
-        window.location.reload();
+        // Show auth wall
+        if (typeof checkAuthWall === 'function') {
+            checkAuthWall();
+        } else {
+            // Fallback: reload page
+            window.location.reload();
+        }
     }
 
     isAuthenticated() {

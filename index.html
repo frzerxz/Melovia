@@ -4270,10 +4270,77 @@
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
+
+        // API Configuration - Dynamic based on environment
+        window.API_BASE_URL = window.API_BASE_URL || 
+                              (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+                                  ? 'http://127.0.0.1:8000/api' 
+                                  : 'https://api.melovia.com.tr/api');
     </script>
 </head>
 
 <body>
+    <!-- AUTH WALL - Full Screen Login/Register -->
+    <div id="authWall" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div style="max-width: 420px; width: 90%; padding: 40px; background: var(--panel); border: 1px solid var(--border); border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+            <!-- Logo Section -->
+            <div style="text-align: center; margin-bottom: 32px;">
+                <div style="font-size: 48px; margin-bottom: 12px;">🎵</div>
+                <h1 style="font-size: 28px; font-weight: 700; background: linear-gradient(90deg, #c084fc, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;">Melovia</h1>
+                <p style="color: var(--dim); font-size: 14px;">Dijital Gitar Simülatörü</p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div style="display: flex; gap: 8px; margin-bottom: 24px; background: rgba(100,100,120,0.1); padding: 4px; border-radius: 12px;">
+                <button id="authWallLoginBtn" onclick="switchAuthWallTab('login')" style="flex: 1; padding: 12px; background: var(--accent); border: none; border-radius: 8px; color: white; font-size: 14px; font-weight: 600; cursor: pointer;">Giriş Yap</button>
+                <button id="authWallRegisterBtn" onclick="switchAuthWallTab('register')" style="flex: 1; padding: 12px; background: transparent; border: none; border-radius: 8px; color: var(--dim); font-size: 14px; font-weight: 600; cursor: pointer;">Kayıt Ol</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="authWallLoginForm">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim); font-weight: 600;">E-posta</label>
+                    <input type="email" id="authWallLoginEmail" style="width: 100%; padding: 14px; background: rgba(100,100,120,0.1); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;" placeholder="ornek@email.com">
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim); font-weight: 600;">Şifre</label>
+                    <input type="password" id="authWallLoginPassword" style="width: 100%; padding: 14px; background: rgba(100,100,120,0.1); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;" placeholder="••••••••">
+                </div>
+                <button onclick="handleAuthWallLogin()" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #8b5cf6, #a855f7); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 16px;">Giriş Yap</button>
+                <div id="authWallLoginError" style="color: #ef4444; font-size: 13px; text-align: center; display: none; margin-bottom: 12px;"></div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="authWallRegisterForm" style="display: none;">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim); font-weight: 600;">Kullanıcı Adı</label>
+                    <input type="text" id="authWallRegisterUsername" style="width: 100%; padding: 14px; background: rgba(100,100,120,0.1); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;" placeholder="melovia_user">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim); font-weight: 600;">E-posta</label>
+                    <input type="email" id="authWallRegisterEmail" style="width: 100%; padding: 14px; background: rgba(100,100,120,0.1); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;" placeholder="ornek@email.com">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim); font-weight: 600;">Şifre</label>
+                    <input type="password" id="authWallRegisterPassword" style="width: 100%; padding: 14px; background: rgba(100,100,120,0.1); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;" placeholder="••••••••">
+                    <div style="font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.4;">
+                        En az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam, 1 özel karakter
+                    </div>
+                </div>
+                <button onclick="handleAuthWallRegister()" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #8b5cf6, #a855f7); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 16px;">Kayıt Ol</button>
+                <div id="authWallRegisterError" style="color: #ef4444; font-size: 13px; text-align: center; display: none; margin-bottom: 12px;"></div>
+                <div id="authWallRegisterSuccess" style="color: #4ade80; font-size: 13px; text-align: center; display: none; margin-bottom: 12px;"></div>
+            </div>
+
+            <!-- Footer -->
+            <div style="text-align: center; color: var(--muted); font-size: 12px; margin-top: 24px;">
+                <p>Melovia v0.3 • Dijital Müzik Eğitim Platformu</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTENT (Hidden until authenticated) -->
+    <div id="mainAppContent" style="display: none;">
     <!-- Mobile hamburger -->
     <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileSidebar()" aria-label="Menü">☰</button>
     <!-- Mobile overlay -->
@@ -10288,7 +10355,10 @@
     <script>
         // Auth and Profile Functions (must be loaded after auth.js and userManagement.js)
         document.addEventListener('DOMContentLoaded', () => {
-            // Update auth button on page load
+            // Check auth wall first
+            checkAuthWall();
+            
+            // Update auth button on page load (if visible)
             if (typeof auth !== 'undefined') {
                 updateAuthButton();
                 
@@ -10309,7 +10379,7 @@
         // Auth Guard - Login Wall
         function checkAuth() {
             if (typeof auth === 'undefined' || !auth.isAuthenticated()) {
-                showAuthModal();
+                checkAuthWall();
                 return false;
             }
             return true;
@@ -10512,7 +10582,7 @@
             if (typeof auth !== 'undefined' && auth.isAuthenticated()) {
                 showProfileModal();
             } else {
-                showAuthModal();
+                checkAuthWall();
             }
         }
 
@@ -10553,8 +10623,117 @@
         window.handlePasswordChange = handlePasswordChange;
         window.handleLogout = handleLogout;
         window.handleAuthClick = handleAuthClick;
+
+        // AUTH WALL FUNCTIONS
+        function switchAuthWallTab(tab) {
+            const loginForm = document.getElementById('authWallLoginForm');
+            const registerForm = document.getElementById('authWallRegisterForm');
+            const loginBtn = document.getElementById('authWallLoginBtn');
+            const registerBtn = document.getElementById('authWallRegisterBtn');
+
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                loginBtn.style.background = 'var(--accent)';
+                loginBtn.style.color = 'white';
+                registerBtn.style.background = 'transparent';
+                registerBtn.style.color = 'var(--dim)';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                registerBtn.style.background = 'var(--accent)';
+                registerBtn.style.color = 'white';
+                loginBtn.style.background = 'transparent';
+                loginBtn.style.color = 'var(--dim)';
+            }
+        }
+
+        async function handleAuthWallLogin() {
+            const email = document.getElementById('authWallLoginEmail').value;
+            const password = document.getElementById('authWallLoginPassword').value;
+            const errorDiv = document.getElementById('authWallLoginError');
+
+            if (!email || !password) {
+                errorDiv.textContent = 'Lütfen tüm alanları doldurun';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            errorDiv.style.display = 'none';
+
+            const result = await auth.login(email, password);
+            
+            if (result.success) {
+                // Hide auth wall and show main app
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainAppContent').style.display = 'block';
+                updateAuthButton();
+            } else {
+                errorDiv.textContent = result.error;
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        async function handleAuthWallRegister() {
+            const username = document.getElementById('authWallRegisterUsername').value;
+            const email = document.getElementById('authWallRegisterEmail').value;
+            const password = document.getElementById('authWallRegisterPassword').value;
+            const errorDiv = document.getElementById('authWallRegisterError');
+            const successDiv = document.getElementById('authWallRegisterSuccess');
+
+            if (!username || !email || !password) {
+                errorDiv.textContent = 'Lütfen tüm alanları doldurun';
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                return;
+            }
+
+            // Validate password strength
+            const passwordValidation = validatePasswordStrength(password);
+            if (!passwordValidation.isValid) {
+                errorDiv.textContent = passwordValidation.errors.join(', ');
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                return;
+            }
+
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            const result = await auth.register(username, email, password);
+            
+            if (result.success) {
+                successDiv.textContent = 'Kayıt başarılı! Şimdi giriş yapabilirsiniz.';
+                successDiv.style.display = 'block';
+                switchAuthWallTab('login');
+            } else {
+                errorDiv.textContent = result.error;
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        // Check auth on page load and show/hide auth wall
+        function checkAuthWall() {
+            if (typeof auth !== 'undefined' && auth.isAuthenticated()) {
+                // User is authenticated, show main app
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainAppContent').style.display = 'block';
+                updateAuthButton();
+            } else {
+                // User is not authenticated, show auth wall
+                document.getElementById('authWall').style.display = 'flex';
+                document.getElementById('mainAppContent').style.display = 'none';
+            }
+        }
+
+        // Expose auth wall functions to window
+        window.switchAuthWallTab = switchAuthWallTab;
+        window.handleAuthWallLogin = handleAuthWallLogin;
+        window.handleAuthWallRegister = handleAuthWallRegister;
+        window.checkAuthWall = checkAuthWall;
     </script>
     <script src="js/fullSongData.js"></script>
+    </div><!-- /#mainAppContent -->
 </body>
 
 </html>
