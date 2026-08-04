@@ -13,6 +13,7 @@ from app.auth_utils import (
     check_rate_limit,
     record_login_attempt
 )
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -63,7 +64,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
         record_login_attempt(form_data.username, success=False)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
+            detail="E-posta veya şifre hatalı",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
@@ -77,3 +78,20 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     )
     
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/debug/users")
+async def debug_list_users(db: Session = Depends(get_db)):
+    """Debug endpoint to list all users (remove in production)"""
+    users = db.query(User).all()
+    return {
+        "total": len(users),
+        "users": [
+            {
+                "username": user.username,
+                "email": user.email,
+                "created_at": user.created_at.isoformat() if user.created_at else None,
+                "has_password": bool(user.hashed_password)
+            }
+            for user in users
+        ]
+    }
