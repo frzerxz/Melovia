@@ -29,7 +29,17 @@ class UserManagement {
 
             if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.detail || 'Profil güncelleme başarısız');
+                
+                // Custom error messages based on status code
+                if (response.status === 400 || response.status === 422) {
+                    throw new Error(error.detail || 'Kullanıcı adı veya tam ad geçersiz.');
+                } else if (response.status === 401) {
+                    throw new Error('Oturum süreniz doldu, lütfen tekrar giriş yapın.');
+                } else if (response.status === 409) {
+                    throw new Error('Bu kullanıcı adı zaten kullanımda.');
+                } else {
+                    throw new Error(error.detail || 'Profil güncelleme başarısız');
+                }
             }
 
             const data = await response.json();
@@ -40,6 +50,10 @@ class UserManagement {
 
             return { success: true, data };
         } catch (error) {
+            // Network error handling
+            if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                return { success: false, error: 'Sunucuya bağlanılamadı, lütfen internet bağlantınızı veya backend durumunu kontrol edin' };
+            }
             return { success: false, error: error.message };
         }
     }
@@ -76,11 +90,25 @@ class UserManagement {
 
             if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.detail || 'Şifre değiştirme başarısız');
+                
+                // Custom error messages based on status code
+                if (response.status === 400 || response.status === 422) {
+                    throw new Error(error.detail || 'Şifre geçersiz veya gereksinimleri karşılamıyor.');
+                } else if (response.status === 401) {
+                    throw new Error('Mevcut şifreniz hatalı.');
+                } else if (response.status === 429) {
+                    throw new Error('Çok fazla şifre değiştirme denemesi. Lütfen 15 dakika sonra tekrar deneyin.');
+                } else {
+                    throw new Error(error.detail || 'Şifre değiştirme başarısız');
+                }
             }
 
             return { success: true, data: await response.json() };
         } catch (error) {
+            // Network error handling
+            if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                return { success: false, error: 'Sunucuya bağlanılamadı, lütfen internet bağlantınızı veya backend durumunu kontrol edin' };
+            }
             return { success: false, error: error.message };
         }
     }

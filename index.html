@@ -4304,7 +4304,10 @@
                 </div>
                 <div style="margin-bottom: 24px;">
                     <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim); font-weight: 600;">Şifre</label>
-                    <input type="password" id="authWallLoginPassword" style="width: 100%; padding: 14px; background: rgba(100,100,120,0.1); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;" placeholder="••••••••">
+<div style="position: relative;">
+                        <input type="password" id="authWallLoginPassword" style="width: 100%; padding: 14px; padding-right: 44px; background: rgba(100,100,120,0.1); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;" placeholder="•••••••••">
+                        <button onclick="togglePasswordVisibility('authWallLoginPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--dim); cursor: pointer; font-size: 16px; padding: 4px;">👁️</button>
+                    </div>
                 </div>
                 <button onclick="handleAuthWallLogin()" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #8b5cf6, #a855f7); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 16px;">Giriş Yap</button>
                 <div id="authWallLoginError" style="color: #ef4444; font-size: 13px; text-align: center; display: none; margin-bottom: 12px;"></div>
@@ -4322,7 +4325,10 @@
                 </div>
                 <div style="margin-bottom: 16px;">
                     <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim); font-weight: 600;">Şifre</label>
-                    <input type="password" id="authWallRegisterPassword" style="width: 100%; padding: 14px; background: rgba(100,100,120,0.1); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;" placeholder="••••••••">
+<div style="position: relative;">
+                        <input type="password" id="authWallRegisterPassword" style="width: 100%; padding: 14px; padding-right: 44px; background: rgba(100,100,120,0.1); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;" placeholder="•••••••••">
+                        <button onclick="togglePasswordVisibility('authWallRegisterPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--dim); cursor: pointer; font-size: 16px; padding: 4px;">👁️</button>
+                    </div>
                     <div style="font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.4;">
                         En az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam, 1 özel karakter
                     </div>
@@ -5836,15 +5842,24 @@
                     <h4>Şifre Değiştir</h4>
                     <div style="margin-bottom: 12px;">
                         <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim);">Mevcut Şifre</label>
-                        <input type="password" id="currentPassword" style="width: 100%; padding: 12px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
+<div style="position: relative;">
+                        <input type="password" id="currentPassword" style="width: 100%; padding: 12px; padding-right: 44px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
+                        <button onclick="togglePasswordVisibility('currentPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--dim); cursor: pointer; font-size: 14px; padding: 4px;">👁️</button>
+                    </div>
                     </div>
                     <div style="margin-bottom: 12px;">
                         <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim);">Yeni Şifre</label>
-                        <input type="password" id="newPassword" style="width: 100%; padding: 12px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
+<div style="position: relative;">
+                        <input type="password" id="newPassword" style="width: 100%; padding: 12px; padding-right: 44px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
+                        <button onclick="togglePasswordVisibility('newPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--dim); cursor: pointer; font-size: 14px; padding: 4px;">👁️</button>
+                    </div>
                     </div>
                     <div style="margin-bottom: 12px;">
                         <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim);">Yeni Şifre Tekrar</label>
-                        <input type="password" id="confirmPassword" style="width: 100%; padding: 12px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
+<div style="position: relative;">
+                        <input type="password" id="confirmPassword" style="width: 100%; padding: 12px; padding-right: 44px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
+                        <button onclick="togglePasswordVisibility('confirmPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--dim); cursor: pointer; font-size: 14px; padding: 4px;">👁️</button>
+                    </div>
                     </div>
                     <div id="passwordRequirementsSettings" style="font-size: 10px; color: var(--muted); margin-bottom: 12px; line-height: 1.4;">
                         En az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam, 1 özel karakter
@@ -10731,6 +10746,23 @@
         window.handleAuthWallLogin = handleAuthWallLogin;
         window.handleAuthWallRegister = handleAuthWallRegister;
         window.checkAuthWall = checkAuthWall;
+
+        // Password visibility toggle function
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    event.target.textContent = '👁️‍🗨️';
+                } else {
+                    input.type = 'password';
+                    event.target.textContent = '👁️';
+                }
+            }
+        }
+
+        // Expose password toggle to window
+        window.togglePasswordVisibility = togglePasswordVisibility;
     </script>
     <script src="js/fullSongData.js"></script>
     </div><!-- /#mainAppContent -->
