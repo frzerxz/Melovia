@@ -16,3 +16,15 @@ unreal/MeloviaUE5/.vs/
 # Temp files
 *.log
 git_log_temp.txt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
