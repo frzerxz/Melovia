@@ -5880,6 +5880,36 @@
                         <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim);">Tam Ad</label>
                         <input type="text" id="editFullName" style="width: 100%; padding: 12px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
                     </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim);">Telefon Numarası</label>
+                        <input type="text" id="editPhone" style="width: 100%; padding: 12px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);" placeholder="5XX XXX XX XX">
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 12px; color: var(--dim);">Doğum Tarihi</label>
+                        <div style="display: flex; gap: 8px;">
+                            <select id="editBirthDay" style="flex: 1; padding: 12px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
+                                <option value="">Gün</option>
+                            </select>
+                            <select id="editBirthMonth" style="flex: 1; padding: 12px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
+                                <option value="">Ay</option>
+                                <option value="1">Ocak</option>
+                                <option value="2">Şubat</option>
+                                <option value="3">Mart</option>
+                                <option value="4">Nisan</option>
+                                <option value="5">Mayıs</option>
+                                <option value="6">Haziran</option>
+                                <option value="7">Temmuz</option>
+                                <option value="8">Ağustos</option>
+                                <option value="9">Eylül</option>
+                                <option value="10">Ekim</option>
+                                <option value="11">Kasım</option>
+                                <option value="12">Aralık</option>
+                            </select>
+                            <select id="editBirthYear" style="flex: 1; padding: 12px; background: rgba(100,100,120,0.1); border: 1px solid rgba(100,100,120,0.3); border-radius: 8px; color: var(--text);">
+                                <option value="">Yıl</option>
+                            </select>
+                        </div>
+                    </div>
                     <button class="modal-btn" onclick="handleProfileUpdate()">Bilgileri Kaydet</button>
                 </div>
 
@@ -10284,21 +10314,69 @@
             // Settings tab
             document.getElementById('editUsername').value = user.username || '';
             document.getElementById('editFullName').value = user.full_name || '';
+            document.getElementById('editPhone').value = user.phone || '';
+
+            // Initialize birth date dropdowns
+            initializeBirthDateDropdowns();
+
+            // Pre-fill birth date if available
+            if (user.birth_date) {
+                const birthDate = new Date(user.birth_date);
+                document.getElementById('editBirthDay').value = birthDate.getDate();
+                document.getElementById('editBirthMonth').value = birthDate.getMonth() + 1;
+                document.getElementById('editBirthYear').value = birthDate.getFullYear();
+            }
+        }
+
+        function initializeBirthDateDropdowns() {
+            // Initialize day dropdown (1-31)
+            const daySelect = document.getElementById('editBirthDay');
+            if (daySelect.options.length <= 1) { // Only has default option
+                for (let i = 1; i <= 31; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    daySelect.appendChild(option);
+                }
+            }
+
+            // Initialize year dropdown (1950-2026)
+            const yearSelect = document.getElementById('editBirthYear');
+            if (yearSelect.options.length <= 1) { // Only has default option
+                for (let year = 2026; year >= 1950; year--) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearSelect.appendChild(option);
+                }
+            }
         }
 
         async function handleProfileUpdate() {
             const username = document.getElementById('editUsername').value;
             const fullName = document.getElementById('editFullName').value;
+            const phone = document.getElementById('editPhone').value;
+            const birthDay = document.getElementById('editBirthDay').value;
+            const birthMonth = document.getElementById('editBirthMonth').value;
+            const birthYear = document.getElementById('editBirthYear').value;
             const errorDiv = document.getElementById('profileError');
             const successDiv = document.getElementById('profileSuccess');
 
+            // Construct birth date from dropdowns
+            let birthDate = null;
+            if (birthDay && birthMonth && birthYear) {
+                birthDate = `${birthYear}-${birthMonth}-${birthDay}`;
+            }
+
             const result = await userManagement.updateProfile({
                 username: username,
-                full_name: fullName
+                full_name: fullName,
+                phone: phone,
+                birth_date: birthDate
             });
 
             if (result.success) {
-                successDiv.innerHTML = 'Profil başarıyla güncellendi';
+                successDiv.innerHTML = 'Profil bilgileriniz başarıyla güncellendi';
                 successDiv.style.display = 'block';
                 errorDiv.style.display = 'none';
                 updateProfileUI();
@@ -10320,6 +10398,7 @@
             if (!currentPassword || !newPassword || !confirmPassword) {
                 errorDiv.innerHTML = 'Lütfen tüm alanları doldurun';
                 errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
                 return;
             }
 
@@ -10341,9 +10420,8 @@
         }
 
         function handleLogout() {
-            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                auth.logout();
-            }
+            auth.logout();
+            closeProfileModal();
         }
 
         function handleAuthClick() {
@@ -10576,21 +10654,69 @@
             // Settings tab
             document.getElementById('editUsername').value = user.username || '';
             document.getElementById('editFullName').value = user.full_name || '';
+            document.getElementById('editPhone').value = user.phone || '';
+
+            // Initialize birth date dropdowns
+            initializeBirthDateDropdowns();
+
+            // Pre-fill birth date if available
+            if (user.birth_date) {
+                const birthDate = new Date(user.birth_date);
+                document.getElementById('editBirthDay').value = birthDate.getDate();
+                document.getElementById('editBirthMonth').value = birthDate.getMonth() + 1;
+                document.getElementById('editBirthYear').value = birthDate.getFullYear();
+            }
+        }
+
+        function initializeBirthDateDropdowns() {
+            // Initialize day dropdown (1-31)
+            const daySelect = document.getElementById('editBirthDay');
+            if (daySelect.options.length <= 1) { // Only has default option
+                for (let i = 1; i <= 31; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    daySelect.appendChild(option);
+                }
+            }
+
+            // Initialize year dropdown (1950-2026)
+            const yearSelect = document.getElementById('editBirthYear');
+            if (yearSelect.options.length <= 1) { // Only has default option
+                for (let year = 2026; year >= 1950; year--) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearSelect.appendChild(option);
+                }
+            }
         }
 
         async function handleProfileUpdate() {
             const username = document.getElementById('editUsername').value;
             const fullName = document.getElementById('editFullName').value;
+            const phone = document.getElementById('editPhone').value;
+            const birthDay = document.getElementById('editBirthDay').value;
+            const birthMonth = document.getElementById('editBirthMonth').value;
+            const birthYear = document.getElementById('editBirthYear').value;
             const errorDiv = document.getElementById('profileError');
             const successDiv = document.getElementById('profileSuccess');
 
+            // Construct birth date from dropdowns
+            let birthDate = null;
+            if (birthDay && birthMonth && birthYear) {
+                birthDate = `${birthYear}-${birthMonth}-${birthDay}`;
+            }
+
             const result = await userManagement.updateProfile({
                 username: username,
-                full_name: fullName
+                full_name: fullName,
+                phone: phone,
+                birth_date: birthDate
             });
 
             if (result.success) {
-                successDiv.innerHTML = 'Profil başarıyla güncellendi';
+                successDiv.innerHTML = 'Profil bilgileriniz başarıyla güncellendi';
                 successDiv.style.display = 'block';
                 errorDiv.style.display = 'none';
                 updateProfileUI();
@@ -10612,6 +10738,7 @@
             if (!currentPassword || !newPassword || !confirmPassword) {
                 errorDiv.innerHTML = 'Lütfen tüm alanları doldurun';
                 errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
                 return;
             }
 
@@ -10633,9 +10760,8 @@
         }
 
         function handleLogout() {
-            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                auth.logout();
-            }
+            auth.logout();
+            closeProfileModal();
         }
 
         function handleAuthClick() {
